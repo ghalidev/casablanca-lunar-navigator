@@ -1,0 +1,77 @@
+{
+  "mock": false,
+  "sites": [
+    {
+      "id": "peak-near-cabeus-b",
+      "name": "Peak near Cabeus B",
+      "lat": -83.66,
+      "lon": -68.63,
+      "source": "Digitized region-box center from NASA's official 9-region map (NASA/GSFC/ASU/JSC/AGDT; LPSC 2026 abstract, NTRS 20250011660). Approx. +/-3 km.",
+      "approximate": true
+    },
+    {
+      "id": "haworth",
+      "name": "Haworth",
+      "lat": -86.77,
+      "lon": -22.67,
+      "source": "Digitized region-box center from NASA's official 9-region map (NASA/GSFC/ASU/JSC/AGDT; LPSC 2026 abstract, NTRS 20250011660). Approx. +/-3 km.",
+      "approximate": true
+    },
+    {
+      "id": "malapert-massif",
+      "name": "Malapert Massif",
+      "lat": -86.0,
+      "lon": -0.17,
+      "source": "Digitized region-box center from NASA's official 9-region map (NASA/GSFC/ASU/JSC/AGDT; LPSC 2026 abstract, NTRS 20250011660). Approx. +/-3 km.",
+      "approximate": true
+    },
+    {
+      "id": "mons-mouton-plateau",
+      "name": "Mons Mouton Plateau",
+      "lat": -84.34,
+      "lon": 30.59,
+      "source": "Digitized region-box center from NASA's official 9-region map (NASA/GSFC/ASU/JSC/AGDT; LPSC 2026 abstract, NTRS 20250011660). Approx. +/-3 km.",
+      "approximate": true
+    },
+    {
+      "id": "mons-mouton",
+      "name": "Mons Mouton",
+      "lat": -85.43,
+      "lon": 31.65,
+      "source": "Digitized region-box center from NASA's official 9-region map (NASA/GSFC/ASU/JSC/AGDT; LPSC 2026 abstract, NTRS 20250011660). Approx. +/-3 km.",
+      "approximate": true
+    },
+    {
+      "id": "nobile-rim-1",
+      "name": "Nobile Rim 1",
+      "lat": -85.44,
+      "lon": 37.36,
+      "source": "Digitized region-box center from NASA's official 9-region map (NASA/GSFC/ASU/JSC/AGDT; LPSC 2026 abstract, NTRS 20250011660). Approx. +/-3 km.",
+      "approximate": true
+    },
+    {
+      "id": "nobile-rim-2",
+      "name": "Nobile Rim 2",
+      "lat": -83.97,
+      "lon": 58.78,
+      "source": "Digitized region-box center from NASA's official 9-region map (NASA/GSFC/ASU/JSC/AGDT; LPSC 2026 abstract, NTRS 20250011660). Approx. +/-3 km.",
+      "approximate": true
+    },
+    {
+      "id": "de-gerlache-rim-2",
+      "name": "de Gerlache Rim 2",
+      "lat": -88.25,
+      "lon": -64.18,
+      "source": "Digitized region-box center from NASA's official 9-region map (NASA/GSFC/ASU/JSC/AGDT; LPSC 2026 abstract, NTRS 20250011660). Approx. +/-3 km.",
+      "approximate": true
+    },
+    {
+      "id": "slater-plain",
+      "name": "Slater Plain",
+      "lat": -87.17,
+      "lon": 125.24,
+      "source": "Digitized region-box center from NASA's official 9-region map (NASA/GSFC/ASU/JSC/AGDT; LPSC 2026 abstract, NTRS 20250011660). Approx. +/-3 km.",
+      "approximate": true
+    }
+  ]
+}
