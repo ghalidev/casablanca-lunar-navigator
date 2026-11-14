@@ -8,6 +8,7 @@ import { Timeline } from './components/timeline/Timeline';
 import { MetricCards } from './components/cards/MetricCards';
 import { computeMetricsLocal } from './components/cards/localMetrics';
 import { CompareTable } from './components/compare/CompareTable';
+import { downloadCompare, downloadTrack } from './components/layout/csv';
 
 function useTracks(sites: Site[], startISO: string, endISO: string, stepMin: number): Map<string, Sample[]> {
   return useMemo(() => {
@@ -18,7 +19,7 @@ function useTracks(sites: Site[], startISO: string, endISO: string, stepMin: num
 }
 
 function Main() {
-  const { sites, focusId, compareIds, startISO, endISO, stepMin, mode, tab, setTab } = useApp();
+  const { sites, focusId, compareIds, startISO, endISO, startDate, endDate, stepMin, mode, tab, setTab } = useApp();
 
   const focus = sites.find((s) => s.id === focusId) ?? null;
   const needed = useMemo(() => {
@@ -55,10 +56,15 @@ function Main() {
       {tab === 'site' && focus && (
         <>
           <div className="site-head">
-            <h2>{focus.name}</h2>
-            <div className="mono muted small">
-              {focus.lat.toFixed(3)}°, {focus.lon.toFixed(3)}°E · {focus.source}
+            <div>
+              <h2>{focus.name}</h2>
+              <div className="mono muted small">
+                {focus.lat.toFixed(3)}°, {focus.lon.toFixed(3)}°E · {focus.source}
+              </div>
             </div>
+            <button className="btn" onClick={() => downloadTrack(focus, focusSamples, startDate, endDate)} disabled={focusSamples.length === 0}>
+              Download CSV
+            </button>
           </div>
           {mode === 'explore' && (
             <p className="explain">
@@ -72,7 +78,16 @@ function Main() {
         </>
       )}
 
-      {tab === 'compare' && <CompareTable rows={compareRows} />}
+      {tab === 'compare' && (
+        <>
+          <CompareTable rows={compareRows} />
+          {compareRows.length >= 2 && (
+            <button className="btn" style={{ alignSelf: 'flex-start' }} onClick={() => downloadCompare(compareRows, startISO, endISO)}>
+              Download comparison CSV
+            </button>
+          )}
+        </>
+      )}
     </main>
   );
 }
