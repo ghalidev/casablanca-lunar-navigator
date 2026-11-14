@@ -45,7 +45,7 @@ interface Segment {
   state: SampleState;
 }
 
-export function Timeline({ samples }: { samples: Sample[] }) {
+export function Timeline({ samples, cursorIndex }: { samples: Sample[]; cursorIndex?: number }) {
   const { data, segments, yMin, yMax } = useMemo(() => {
     const pts: Point[] = samples.map((s) => ({
       ts: Date.parse(s.t),
@@ -71,6 +71,7 @@ export function Timeline({ samples }: { samples: Sample[] }) {
   }, [samples]);
 
   if (data.length === 0) return <div className="empty">No samples for this range.</div>;
+  const cursorTs = cursorIndex !== undefined ? data[Math.min(cursorIndex, data.length - 1)]?.ts : undefined;
 
   return (
     <div className="timeline">
@@ -122,6 +123,7 @@ export function Timeline({ samples }: { samples: Sample[] }) {
               );
             }}
           />
+          {cursorTs !== undefined && <ReferenceLine x={cursorTs} stroke="var(--text)" strokeWidth={1} />}
           <Line type="monotone" dataKey="sunEl" stroke="var(--sun)" strokeWidth={2} dot={false} isAnimationActive={false} name="Sun elevation" />
           <Line type="monotone" dataKey="earthEl" stroke="var(--earth)" strokeWidth={2} dot={false} isAnimationActive={false} name="Earth elevation" />
         </LineChart>

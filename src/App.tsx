@@ -1,4 +1,5 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import { SkyPanel } from './components/layout/SkyPanel';
 import { computeTrack } from './lib/ephemeris';
 import type { Sample, Site } from './types';
 import { AppProvider, useApp } from './state/store';
@@ -31,6 +32,7 @@ function Main() {
   const tracks = useTracks(needed, startISO, endISO, stepMin);
   const focusSamples = useMemo(() => (focus ? tracks.get(focus.id) ?? [] : []), [focus, tracks]);
   const focusMetrics = useMemo(() => computeMetricsLocal(focusSamples, stepMin), [focusSamples, stepMin]);
+  const [timeIndex, setTimeIndex] = useState(0);
   const compareRows = useMemo(
     () =>
       sites
@@ -73,8 +75,9 @@ function Main() {
               coloured stripes show what the lander has at every moment.
             </p>
           )}
-          <Timeline samples={focusSamples} />
+          <Timeline samples={focusSamples} cursorIndex={timeIndex} />
           <MetricCards metrics={focusMetrics} mode={mode} />
+          <SkyPanel site={focus} samples={focusSamples} index={timeIndex} onIndex={setTimeIndex} />
         </>
       )}
 
