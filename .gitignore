@@ -22,3 +22,31 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# --- LASTLIGHT pipeline / video
+# Raw terrain / kernels: NEVER commit (multi-GB, lives on a Modal Volume)
+*.img
+*.IMG
+*.tif
+*.tiff
+*.lbl
+*.LBL
+*.bsp
+*.bpc
+*.tpc
+*.tf
+pipeline/data/
+pipeline/cache/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+.vercel/
+video/out/
+*.mp4
+
+.env
+.env.*
