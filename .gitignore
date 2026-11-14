@@ -1,0 +1,30 @@
+# Raw terrain / kernels: NEVER commit (multi-GB, lives on a Modal Volume)
+*.img
+*.IMG
+*.tif
+*.tiff
+*.lbl
+*.LBL
+*.bsp
+*.bpc
+*.tpc
+*.tf
+pipeline/data/
+pipeline/cache/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Node / web / video
+node_modules/
+dist/
+.vercel/
+video/out/
+*.mp4
+
+.DS_Store
+.env
+.env.*

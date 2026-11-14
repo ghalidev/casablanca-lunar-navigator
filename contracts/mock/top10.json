@@ -1,0 +1,103 @@
+{
+  "generated_at": "2026-11-14T00:00:00Z",
+  "mock": true,
+  "params_ref": "mock",
+  "criteria": {
+    "survive_days": 14,
+    "p_threshold": 0.95,
+    "from_utc": "2027-01-01T00:00:00Z",
+    "to_utc": "2031-01-01T00:00:00Z"
+  },
+  "windows": [
+    {
+      "landing_utc": "2027-01-25T00:00:00Z",
+      "p_survive_14d": 0.995,
+      "p_comm_ok": 0.786,
+      "median_days_alive": 14.0,
+      "slip_tolerance_days": 11,
+      "site_id": "de-gerlache-rim-2",
+      "rank": 1
+    },
+    {
+      "landing_utc": "2027-02-23T00:00:00Z",
+      "p_survive_14d": 0.995,
+      "p_comm_ok": 0.92,
+      "median_days_alive": 14.0,
+      "slip_tolerance_days": 11,
+      "site_id": "de-gerlache-rim-2",
+      "rank": 2
+    },
+    {
+      "landing_utc": "2027-03-04T00:00:00Z",
+      "p_survive_14d": 0.995,
+      "p_comm_ok": 0.875,
+      "median_days_alive": 14.0,
+      "slip_tolerance_days": 11,
+      "site_id": "mons-mouton",
+      "rank": 3
+    },
+    {
+      "landing_utc": "2027-03-05T00:00:00Z",
+      "p_survive_14d": 0.995,
+      "p_comm_ok": 0.966,
+      "median_days_alive": 14.0,
+      "slip_tolerance_days": 11,
+      "site_id": "mons-mouton",
+      "rank": 4
+    },
+    {
+      "landing_utc": "2027-04-03T00:00:00Z",
+      "p_survive_14d": 0.995,
+      "p_comm_ok": 0.879,
+      "median_days_alive": 14.0,
+      "slip_tolerance_days": 11,
+      "site_id": "mons-mouton",
+      "rank": 5
+    },
+    {
+      "landing_utc": "2027-04-04T00:00:00Z",
+      "p_survive_14d": 0.995,
+      "p_comm_ok": 0.889,
+      "median_days_alive": 14.0,
+      "slip_tolerance_days": 11,
+      "site_id": "mons-mouton",
+      "rank": 6
+    },
+    {
+      "landing_utc": "2027-12-16T00:00:00Z",
+      "p_survive_14d": 0.995,
+      "p_comm_ok": 0.876,
+      "median_days_alive": 14.0,
+      "slip_tolerance_days": 11,
+      "site_id": "de-gerlache-rim-2",
+      "rank": 7
+    },
+    {
+      "landing_utc": "2028-01-14T00:00:00Z",
+      "p_survive_14d": 0.995,
+      "p_comm_ok": 0.911,
+      "median_days_alive": 14.0,
+      "slip_tolerance_days": 11,
+      "site_id": "de-gerlache-rim-2",
+      "rank": 8
+    },
+    {
+      "landing_utc": "2028-01-15T00:00:00Z",
+      "p_survive_14d": 0.995,
+      "p_comm_ok": 0.955,
+      "median_days_alive": 14.0,
+      "slip_tolerance_days": 11,
+      "site_id": "de-gerlache-rim-2",
+      "rank": 9
+    },
+    {
+      "landing_utc": "2028-01-23T00:00:00Z",
+      "p_survive_14d": 0.995,
+      "p_comm_ok": 0.827,
+      "median_days_alive": 14.0,
+      "slip_tolerance_days": 11,
+      "site_id": "mons-mouton",
+      "rank": 10
+    }
+  ]
+}
