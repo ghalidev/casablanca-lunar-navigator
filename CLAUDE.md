@@ -17,7 +17,8 @@ We started late, so we MERGE the two plans:
 Background #0B0B0C, text #E8E6E1, grey #6B6B6B. Sun #F2A93B, Earth #4C8DF6, both #3FB68B,
 alert/death #E5484D (only for that). IBM Plex Sans for text, IBM Plex Mono for every number.
 No purple gradients, no glassmorphism, no emojis, no decorative icons. Mission-console look.
-The Sun at the pole never rises above ~2°: any view showing a high Sun is a bug.
+Max Sun elevation at a site = (90 - abs(lat)) + ~1.6 deg (e.g. ~6.7 deg at 85°S, ~2 deg at 89.5°S).
+Any view showing a Sun higher than that is a bug.
 
 Challenge: let mission planners, educators and the public compare lunar south pole landing
 sites and dates, showing Sun and Earth positions relative to the local horizon
