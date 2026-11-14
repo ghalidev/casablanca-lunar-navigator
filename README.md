@@ -1,32 +1,101 @@
-# React + TypeScript + Vite
+# LASTLIGHT
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+**Choose where and when your lander survives the lunar south pole.**
 
-Currently, two official plugins are available:
+Team Casablanca, NASA Space Apps Challenge 2026: *Lunar Landing Site Navigator*.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Live app: _(add the Vercel link)_
 
-## React Compiler
+## The problem
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+At the lunar south pole the Sun and Earth never climb high. They skim the horizon, so a ridge
+can cut a lander's power (no sunlight on the panels) or its direct-to-Earth radio link (Earth
+below the horizon). On 6 March 2025, Intuitive Machines' Athena lander touched down near Mons
+Mouton, on its side in a crater. Its mission ended less than 13 hours later: the solar panels could
+not recharge the batteries.
 
-## Expanding the Oxlint configuration
+NASA's tools can compute Sun and Earth positions for a landing site, but they take expertise and
+time. LASTLIGHT lets mission planners, educators and the public compare sites and dates in seconds.
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## What it does
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+- **Pick a site**: the 9 NASA Artemis III candidate regions on a south polar map, or any custom point.
+- **Pick dates**: any UTC date range.
+- **Timeline**: Sun and Earth elevation above the horizon over time, with bands showing when the
+  site has power and comms (Sun + Earth), power only, comms only, or neither.
+- **Six metrics**: sunlight %, longest darkness (what the battery must survive), Earth in view %,
+  longest comms gap, Sun + Earth %, energy per kW of solar panel.
+- **Compare** 2 to 4 sites side by side, best value per row highlighted.
+- **Planner / Explore** modes: technical wording or plain language for classrooms and the public.
+- **CSV export** of the time series and of the comparison.
+- **Shareable link**: the address bar holds the site, dates and view, so any view can be shared.
+
+### Challenge requirement → feature
+
+| Challenge asks for | LASTLIGHT |
+|---|---|
+| Compare landing sites | Compare tab, 2–4 sites, best value highlighted |
+| Compare dates | Date range picker; every view recomputes instantly |
+| Sun and Earth relative to the horizon | Timeline of Sun/Earth elevation with the horizon line |
+| Power generation potential | Sunlight %, longest darkness, energy per kW |
+| Direct-to-Earth communication windows | Earth in view %, longest comms gap, Sun + Earth bands |
+| Intuitive, for planners, educators and the public | One screen, Planner/Explore modes, plain-language cards |
+
+## How it works
+
+Everything runs in the browser; there is no server.
+
+1. For each time step (30 min by default), the Moon's orientation comes from the IAU lunar rotation
+   model and the Sun and Earth positions from the [astronomy-engine](https://github.com/cosinekitty/astronomy)
+   library (`src/lib/ephemeris.ts`).
+2. The Sun and Earth vectors are moved into the site's local frame (east / north / up), including
+   the Earth parallax from the site's position on the Moon (about 0.26°).
+3. Elevation and azimuth give what the site sees. The visible fraction of the solar disc
+   (radius 0.267°) is computed above the local horizon; Earth counts as visible 0.5° above it.
+4. The metrics are computed from that time series.
+
+30 days at 30-minute steps (1,441 samples) take about 0.1 s.
+
+## Validation
+
+_In progress_: computed Sun and Earth azimuth/elevation are being compared with NASA JPL Horizons
+for several sites and dates. Results will be in `docs/validation.md`.
+
+## Data
+
+| Data | Source | Use |
+|---|---|---|
+| Artemis III candidate regions (Oct 2024 list) | NASA/GSFC/ASU/JSC/AGDT 9-region map, via George et al., LPSC 2026 ([NTRS 20250011660](https://ntrs.nasa.gov/citations/20250011660)); [NASA update](https://www.nasa.gov/news-release/nasa-provides-update-on-artemis-iii-moon-landing-regions/) | Site positions, digitized from the map (about ±3 km) |
+| Lunar orientation and Sun/Earth positions | astronomy-engine (IAU rotation model) | Ephemeris |
+| JPL Horizons | NASA JPL | Validation |
+
+Full list: `docs/data-sources.md`. Model assumptions: `docs/assumptions.md`.
+
+## Limitations
+
+- **Terrain is not included yet**: the horizon is treated as flat (0°). Near the pole, mountains up
+  to ~150 km away can block a Sun that is only a few degrees high, so real sites can be darker than shown.
+- NASA publishes no numeric coordinates for the 9 regions; each is one point digitized from NASA's
+  map and stands for a region 15–30 km wide.
+- No thermal model, no lander-specific panel geometry.
+
+Full list: `docs/limitations.md`.
+
+## Use of AI
+
+Code was co-written with Claude Code (Anthropic). No scientific data or results were generated by
+AI: positions come from astronomy-engine, site positions from NASA's map, and every number shown is
+computed by the code in this repository.
+
+## Run locally
+
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Then open http://localhost:5173.
+
+## Team
+
+Ghali, Yasin and Adam, Casablanca.

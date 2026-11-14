@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { MAX_COMPARE, useApp } from '../../state/store';
+import { SouthPoleMap } from '../map/SouthPoleMap';
 
 export function SitePanel() {
   const { sites, sitesLoading, focusId, compareIds, setFocus, toggleCompare, startDate, endDate, setRange, stepMin, addCustomSite } =
@@ -17,9 +18,8 @@ export function SitePanel() {
 
   return (
     <aside className="panel">
-      {/* Slot for Adam's SouthPoleMap (src/components/map/). */}
-      <div className="map-slot">
-        <span className="muted">South pole map</span>
+      <div className="map-box">
+        <SouthPoleMap sites={sites} focusId={focusId} compareIds={compareIds} onFocus={setFocus} onCustom={addCustomSite} />
       </div>
 
       <section>
