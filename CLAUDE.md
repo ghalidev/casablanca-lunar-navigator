@@ -1,4 +1,23 @@
-# Lunar Landing Site Navigator — Team Casablanca (NASA Space Apps 2026)
+# LASTLIGHT — Lunar Landing Site Navigator — Team Casablanca (NASA Space Apps 2026)
+
+## SCOPE DECISION (Ghali, Sat 14 Nov ~21:50) — overrides docs/LASTLIGHT-brief.md
+We started late, so we MERGE the two plans:
+- KEEP from LASTLIGHT: the name and tagline ("Choose where and when your lander survives the
+  lunar south pole"), the Athena story for the pitch, the design system (below), the 9 Artemis III
+  regions, the rules "no invented numbers / MOCK DATA banner / no chatbot / no ML",
+  docs/assumptions.md, docs/limitations.md, docs/data-sources.md, docs/log.md.
+- BUILD: one web app at the repo root (NOT /web). Ephemeris in the browser with astronomy-engine
+  (src/lib/ephemeris.ts, already working). Screens: Site view (timeline + metrics), Compare,
+  Horizon ring (sky view), best-window finder. Terrain horizons from LOLA if time allows (Adam).
+- STRETCH (Sunday only, if everything else is done): simplified survival odds per window.
+- DROPPED: Python/Skyfield/Modal pipeline, crash-test 3D, raymarched lander view, Remotion video.
+  Read docs/LASTLIGHT-brief.md for background and the pitch story only.
+
+## Design system (from LASTLIGHT)
+Background #0B0B0C, text #E8E6E1, grey #6B6B6B. Sun #F2A93B, Earth #4C8DF6, both #3FB68B,
+alert/death #E5484D (only for that). IBM Plex Sans for text, IBM Plex Mono for every number.
+No purple gradients, no glassmorphism, no emojis, no decorative icons. Mission-console look.
+The Sun at the pole never rises above ~2°: any view showing a high Sun is a bug.
 
 Challenge: let mission planners, educators and the public compare lunar south pole landing
 sites and dates, showing Sun and Earth positions relative to the local horizon
@@ -31,7 +50,11 @@ and their own Claude Code. We stay in sync through GitHub, on branch `main`.
   `src/lib/*.test.ts`, `docs/validation.md`
 - Adam: `public/data/`, `scripts/` (Python terrain pipeline), `src/components/map/`,
   `src/components/sky/`
-- Shared/frozen: `src/types.ts`, `CLAUDE.md`, `package.json`
+- Shared/frozen: `src/types.ts`, `CLAUDE.md`, `package.json`, `contracts/`
+- Shared docs (anyone may append): `docs/`
+- `public/data/sites.json` may use either the `Site[]` shape from src/types.ts or the LASTLIGHT
+  `sites_file` shape (`{ mock, sites: [{ id, name, lat, lon, horizon: { mast_2m: [...] } }] }`);
+  the app reads both.
 
 ## Conventions
 - Angles in degrees. Times are ISO 8601 UTC strings. Durations in hours. Distances in km.

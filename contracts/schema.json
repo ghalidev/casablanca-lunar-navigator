@@ -1,0 +1,475 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/shizkn/nasaspaceapp/contracts/schema.json",
+  "title": "LASTLIGHT data contract",
+  "description": "Shared contract between /pipeline (producer) and /web, /video (consumers). Conventions: all times are UTC ISO-8601 with a trailing 'Z'. Angles are degrees. Azimuth: 0 = local north (direction to the lunar north pole along the local meridian), increasing clockwise as seen from above (90 = local east). Elevation: angle above the local geometric horizontal plane (the ellipsoid/sphere tangent plane, R = 1737.4 km), not above the terrain. Longitude: east-positive, range [-180, 180). Latitude: planetocentric, Moon ME (Mean Earth/polar axis) frame. Every file carries 'mock': if true, the UI must show the MOCK DATA banner. Pick a file type via $defs: sites_file, series_file, survival_file, top10_file.",
+  "$defs": {
+    "utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$",
+      "description": "UTC timestamp, ISO-8601, mandatory 'Z' suffix."
+    },
+    "site_id": {
+      "type": "string",
+      "enum": [
+        "peak-near-cabeus-b",
+        "haworth",
+        "malapert-massif",
+        "mons-mouton-plateau",
+        "mons-mouton",
+        "nobile-rim-1",
+        "nobile-rim-2",
+        "de-gerlache-rim-2",
+        "slater-plain"
+      ],
+      "description": "The 9 Artemis III candidate regions. Kebab-case, stable: used in file names and URLs."
+    },
+    "mock": {
+      "type": "boolean",
+      "description": "true = synthetic test data, NOT a pipeline result. The UI shows a 'MOCK DATA' banner while any loaded file has mock = true."
+    },
+    "params_ref": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Version of pipeline/config.py that produced the file (short hash of the config). 'mock' for mock data."
+    },
+    "elevation_profile": {
+      "type": "array",
+      "items": {
+        "type": "number",
+        "minimum": -90,
+        "maximum": 90
+      },
+      "minItems": 720,
+      "maxItems": 720,
+      "description": "Horizon elevation in degrees, index i = azimuth i * az_step_deg (i = 0 is north, clockwise)."
+    },
+    "fraction_array": {
+      "type": "array",
+      "items": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+      }
+    },
+    "angle_array": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    },
+    "sites_file": {
+      "title": "web/public/data/sites.json",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "generated_at",
+        "mock",
+        "params_ref",
+        "sites"
+      ],
+      "properties": {
+        "generated_at": {
+          "$ref": "#/$defs/utc"
+        },
+        "mock": {
+          "$ref": "#/$defs/mock"
+        },
+        "params_ref": {
+          "$ref": "#/$defs/params_ref"
+        },
+        "sites": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/site"
+          }
+        }
+      }
+    },
+    "site": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "lat",
+        "lon",
+        "elevation_m",
+        "position_source",
+        "horizon",
+        "validation"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/site_id"
+        },
+        "name": {
+          "type": "string",
+          "description": "Display name in English, e.g. 'Mons Mouton'."
+        },
+        "lat": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": -80,
+          "description": "Representative target point of the region, degrees."
+        },
+        "lon": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180,
+          "description": "East-positive degrees."
+        },
+        "elevation_m": {
+          "type": "number",
+          "description": "Terrain height of the target point relative to the 1737.4 km reference sphere, metres (from the DEM)."
+        },
+        "position_source": {
+          "type": "string",
+          "enum": [
+            "official",
+            "digitized",
+            "mock"
+          ],
+          "description": "'official' = numeric coordinates published by NASA/LEAG/NTRS; 'digitized' = read off an official NASA map (approximation, see docs/assumptions.md); 'mock' = placeholder."
+        },
+        "horizon": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "az_step_deg",
+            "mast_2m",
+            "mast_10m"
+          ],
+          "properties": {
+            "az_step_deg": {
+              "const": 0.5
+            },
+            "mast_2m": {
+              "$ref": "#/$defs/elevation_profile"
+            },
+            "mast_10m": {
+              "$ref": "#/$defs/elevation_profile"
+            }
+          }
+        },
+        "validation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "lroc_illum_pct",
+            "model_illum_pct"
+          ],
+          "properties": {
+            "lroc_illum_pct": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 100,
+              "description": "Illumination % at this point from the LROC WAC time-weighted map (2010-02-15 to 2011-02-05). null if outside 88–90°S or not yet computed."
+            },
+            "model_illum_pct": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 100,
+              "description": "Our model's illumination % at this point over the same period. null if not yet computed."
+            }
+          }
+        }
+      }
+    },
+    "series_file": {
+      "title": "web/public/data/series/{site_id}_{year}.json",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "site_id",
+        "mock",
+        "params_ref",
+        "t0",
+        "step_h",
+        "n",
+        "mast_m",
+        "sun_el",
+        "sun_az",
+        "earth_el",
+        "earth_az",
+        "sun_frac",
+        "earth_frac",
+        "irradiance_wm2"
+      ],
+      "properties": {
+        "site_id": {
+          "$ref": "#/$defs/site_id"
+        },
+        "mock": {
+          "$ref": "#/$defs/mock"
+        },
+        "params_ref": {
+          "$ref": "#/$defs/params_ref"
+        },
+        "t0": {
+          "$ref": "#/$defs/utc",
+          "description": "Time of index 0. Sample i is at t0 + i * step_h hours."
+        },
+        "step_h": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "n": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Length of every array in this file."
+        },
+        "mast_m": {
+          "type": "number",
+          "description": "Observer height above ground used for sun_frac / earth_frac / irradiance (2 or 10)."
+        },
+        "sun_el": {
+          "$ref": "#/$defs/angle_array",
+          "description": "Sun centre elevation above local horizontal plane, degrees (ignores terrain)."
+        },
+        "sun_az": {
+          "$ref": "#/$defs/angle_array",
+          "description": "Sun centre azimuth, degrees [0, 360)."
+        },
+        "earth_el": {
+          "$ref": "#/$defs/angle_array"
+        },
+        "earth_az": {
+          "$ref": "#/$defs/angle_array"
+        },
+        "sun_frac": {
+          "$ref": "#/$defs/fraction_array",
+          "description": "Fraction of the solar disk above the terrain horizon, 0..1."
+        },
+        "earth_frac": {
+          "$ref": "#/$defs/fraction_array",
+          "description": "Fraction of the Earth disk above the terrain horizon, 0..1."
+        },
+        "irradiance_wm2": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": 0
+          },
+          "description": "W/m^2 on an ideally oriented vertical panel: 1361 * cos(sun_el) * sun_frac (solar constant fixed at 1361, see docs/assumptions.md)."
+        }
+      }
+    },
+    "survival_file": {
+      "title": "web/public/data/survival/{site_id}.json",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "site_id",
+        "mock",
+        "params_ref",
+        "windows",
+        "ghost_landers_sample"
+      ],
+      "properties": {
+        "site_id": {
+          "$ref": "#/$defs/site_id"
+        },
+        "mock": {
+          "$ref": "#/$defs/mock"
+        },
+        "params_ref": {
+          "$ref": "#/$defs/params_ref"
+        },
+        "windows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/window",
+            "unevaluatedProperties": false
+          },
+          "description": "One entry per candidate landing time (sorted by landing_utc)."
+        },
+        "ghost_landers_sample": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "landing_utc",
+            "sim_duration_h",
+            "landers"
+          ],
+          "description": "Monte Carlo sample shown in the Crash Test 3D view, for one landing time.",
+          "properties": {
+            "landing_utc": {
+              "$ref": "#/$defs/utc",
+              "description": "Which window this sample belongs to (matches a windows[].landing_utc)."
+            },
+            "sim_duration_h": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "Simulated duration; died_at_h = null means alive at the end."
+            },
+            "landers": {
+              "type": "array",
+              "maxItems": 2000,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "dx_m",
+                  "dy_m",
+                  "tilt_deg",
+                  "died_at_h"
+                ],
+                "properties": {
+                  "dx_m": {
+                    "type": "number",
+                    "description": "Offset from target, metres, local east."
+                  },
+                  "dy_m": {
+                    "type": "number",
+                    "description": "Offset from target, metres, local north."
+                  },
+                  "tilt_deg": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 90,
+                    "description": "90 = on its side."
+                  },
+                  "yaw_deg": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 360,
+                    "description": "Optional heading of the lander, azimuth convention."
+                  },
+                  "died_at_h": {
+                    "type": [
+                      "number",
+                      "null"
+                    ],
+                    "minimum": 0,
+                    "description": "Hours after landing when the battery hit 0; null = survived the whole simulation."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "window": {
+      "type": "object",
+      "required": [
+        "landing_utc",
+        "p_survive_14d",
+        "p_comm_ok",
+        "median_days_alive",
+        "slip_tolerance_days"
+      ],
+      "properties": {
+        "landing_utc": {
+          "$ref": "#/$defs/utc"
+        },
+        "p_survive_14d": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "p_comm_ok": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Probability that direct-to-Earth comms are available (definition in docs/assumptions.md)."
+        },
+        "median_days_alive": {
+          "type": "number",
+          "minimum": 0
+        },
+        "slip_tolerance_days": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 30,
+          "description": "Number of consecutive days of launch slip (0..30) that keep p_survive_14d above the threshold."
+        }
+      }
+    },
+    "top10_file": {
+      "title": "web/public/data/top10.json",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "generated_at",
+        "mock",
+        "params_ref",
+        "criteria",
+        "windows"
+      ],
+      "properties": {
+        "generated_at": {
+          "$ref": "#/$defs/utc"
+        },
+        "mock": {
+          "$ref": "#/$defs/mock"
+        },
+        "params_ref": {
+          "$ref": "#/$defs/params_ref"
+        },
+        "criteria": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "survive_days",
+            "p_threshold",
+            "from_utc",
+            "to_utc"
+          ],
+          "properties": {
+            "survive_days": {
+              "type": "number"
+            },
+            "p_threshold": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "from_utc": {
+              "$ref": "#/$defs/utc"
+            },
+            "to_utc": {
+              "$ref": "#/$defs/utc"
+            }
+          }
+        },
+        "windows": {
+          "type": "array",
+          "maxItems": 10,
+          "items": {
+            "allOf": [
+              {
+                "$ref": "#/$defs/window"
+              }
+            ],
+            "type": "object",
+            "required": [
+              "rank",
+              "site_id"
+            ],
+            "properties": {
+              "rank": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 10
+              },
+              "site_id": {
+                "$ref": "#/$defs/site_id"
+              }
+            },
+            "unevaluatedProperties": false
+          },
+          "description": "Ranked best-first. May hold fewer than 10 entries if fewer windows pass the threshold."
+        }
+      }
+    }
+  }
+}
