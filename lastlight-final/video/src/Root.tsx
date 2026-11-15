@@ -20,7 +20,7 @@ export function Root() {
     <>
       <Composition id="LastLight" component={LastLight} durationInFrames={30 * FPS} fps={FPS} width={1920} height={1080} />
       <Composition id="Cinematic" component={Cinematic} durationInFrames={30 * FPS} fps={FPS} width={1920} height={1080} />
-      <Composition id="Film2D" component={Film2D} durationInFrames={897} fps={FPS} width={1920} height={1080} />
+      <Composition id="Film2D" component={Film2D} durationInFrames={869} fps={FPS} width={1920} height={1080} />
       <Composition id="Film" component={Film} durationInFrames={30 * FPS} fps={FPS} width={1920} height={1080} />
       <Composition id="Explainer" component={Explainer} durationInFrames={30 * FPS} fps={FPS} width={1920} height={1080} />
     </>
