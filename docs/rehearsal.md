@@ -11,7 +11,7 @@ Do two full runs with a phone timer. One person times and ticks the boxes; swap 
 | 1 | 0:00 | Ghali | Cover | Team + one sentence: "choose where and when your lander survives the lunar south pole" |
 | 2 | 0:05 | Ghali | Athena | 6 March 2025, under 13 hours, panels could not recharge; Sun skims the horizon; Earth needed to call home |
 | 3 | 0:30 | Ghali | The question | 9 Artemis III regions × every date; NASA tools are for experts |
-| 4 | 0:45 | Ghali | **Live app** (or slides 4–5 if offline) | Map → timeline colours → longest darkness card → Play sky → Compare → Best dates (6 days) → Explore |
+| 4 | 0:45 | Ghali | **Live 3D app** (or slides 4–5 if offline) | Moon → pole → Haworth on the ground (play, 14-day stripe, longest night) → Compare → Best landing windows (6 days) → CSV |
 | 5 | 2:00 | Yasin | Trust | JPL Horizons: 600 comparisons, max 0.004°; real LOLA terrain out to 200 km |
 | 6 | 2:30 | Adam | For everyone | NASA says several regions must stay open; LASTLIGHT shows which works when; open source, CSV |
 | 7 | 2:50 | Ghali | For everyone | Closing sentence, "Thank you" |
@@ -29,6 +29,6 @@ Do two full runs with a phone timer. One person times and ticks the boxes; swap 
 Cut in this order: Explore mode switch (5 s), Compare (10 s), the second sentence of slide 3.
 
 ## Before going on stage
-- Live app open, already on Haworth, December 2026; deck open in another tab, on the cover
+- Live 3D app open on the first shot (the Moon); classic view open in a second tab as backup; deck in a third tab, on the cover
 - Laptop charger in, notifications off, screen sleep off
 - Offline fallback: slides 4 and 5 have real screenshots of the app

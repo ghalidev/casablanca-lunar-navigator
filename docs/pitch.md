@@ -21,17 +21,18 @@ with a timer.
 > NASA's tools can answer that, but they are built for experts. Our challenge: make it fast and
 > intuitive, for planners, teachers and the public."
 
-## 0:45–2:00 · Live demo (Ghali drives, ~75 s)
-Open the live link. Have it loaded before you start. Planner mode.
-1. **Map** (10 s): "These are NASA's 9 Artemis III regions, placed from NASA's official map." Click Haworth.
-2. **Timeline** (15 s): "Amber is the Sun, blue is Earth, the dashed line is the horizon. Green stripes:
-   power and a phone line. Black: dark and silent, the lander lives on its battery."
-3. **Cards** (10 s): point at *Longest darkness*: "This is how long the battery must survive here."
-4. **Sky view** (15 s): press **Play**. "This is the sky seen from the site. Watch the Sun skim the horizon."
-5. **Compare** (10 s): "Three sites side by side. Green is the best in each row."
-6. **Best dates** (15 s): mission length 6 days (Artemis III's planned surface stay), *Find best windows*.
-   "In under a second it tries every landing date at every site and ranks them." Click the first row.
-7. **Explore mode** (5 s): switch it on: "Same tool, plain words, for a classroom."
+## 0:45–2:00 · Live demo (Ghali drives, ~75 s): the 3D LASTLIGHT film
+Open the live link before you start, on the first shot (the Moon). Scroll or press ↓ to move between shots.
+1. **The Moon → the pole** (10 s): scroll once. "The Sun never sets here. It never rises either." Scroll again: the camera dives onto the pole.
+   "NASA's 9 Artemis III regions, on NASA's laser-measured terrain." Click **Haworth**.
+2. **On the ground** (25 s): "We're standing at Haworth. The Sun slides along the real skyline." Let it **play**.
+   Point at the **14-day stripe**: "Green: power and a line home. Amber: power only. Blue: Earth only. Dark: battery only."
+   Point at **Longest night**: "That is what the battery must survive."
+3. **Compare** (15 s): click *Compare sites*. Tap two more pins: "Up to four regions, best value in green."
+4. **Best landing windows** (15 s): click *Find the best dates*. "For a 6-day mission, Artemis III's planned stay, we tried
+   a landing every 6 hours at every region for all of 2027, and ranked them." Click row 1: the film lands there on that date.
+5. **Export** (5 s): "And a planner can export it all as CSV."
+Backup if the 3D is slow on the venue laptop: the classic view (same numbers) at the second link.
 
 ## 2:00–2:30 · Why trust it (Yasin)
 > "Every number is computed in your browser from the Moon's real orientation and the positions of the
