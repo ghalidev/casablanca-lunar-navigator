@@ -273,10 +273,9 @@ export function Mission() {
     if (clean) return
     const u = new URL(window.location.href)
     u.searchParams.set('ch', chapter)
-    if (chapter === 'site' || chapter === 'crash') u.searchParams.set('site', siteId)
-    else u.searchParams.delete('site')
-    if (chapter === 'pole' || chapter === 'site' || chapter === 'crash') u.searchParams.set('date', new Date(pickMs).toISOString().slice(0, 10))
-    else u.searchParams.delete('date')
+    // Keep the chosen region and day on every shot, so a shared link (or coming back) never loses them.
+    u.searchParams.set('site', siteId)
+    u.searchParams.set('date', new Date(pickMs).toISOString().slice(0, 10))
     window.history.replaceState(null, '', u)
   }, [chapter, siteId, clean, pickMs])
 
@@ -725,7 +724,7 @@ export function Mission() {
             <AnimatePresence mode="popLayout">
               <motion.section
                 key={chapter + (chapter === 'site' ? siteId : '') + (compare ? 'cmp' : '') + (cmpMode ? 'pick' : '')}
-                className={'mm-panel is-' + chapter}
+                className={'mm-panel is-' + chapter + (compare ? ' has-compare' : '')}
                 initial={reduce ? false : { opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, transition: { duration: 0.2 } }}
@@ -740,7 +739,7 @@ export function Mission() {
                     <CompareCard a={compare[0]} b={compare[1]} startMs={pickMs} names={names} pa={surv[compare[0]]?.get(pickDay)?.p} pb={surv[compare[1]]?.get(pickDay)?.p} />
                     <p className="mm-sub">Drag the date below: both sites update.</p>
                     <div className="mm-actions">
-                      <button className="mm-cta" onClick={() => { userPicked.current = true; setSiteId(surv[compare[0]]?.get(pickDay)?.p ?? 0 >= (surv[compare[1]]?.get(pickDay)?.p ?? 0) ? compare[0] : compare[1]); setCompare(null); go('crash') }}>
+                      <button className="mm-cta" onClick={() => { userPicked.current = true; setSiteId((surv[compare[0]]?.get(pickDay)?.p ?? 0) >= (surv[compare[1]]?.get(pickDay)?.p ?? 0) ? compare[0] : compare[1]); setCompare(null); go('crash') }}>
                         Crash-test the safer one <ArrowRight size={16} />
                       </button>
                       <button className="mm-cta ghost" onClick={() => setCompare(null)}>
@@ -835,7 +834,7 @@ export function Mission() {
                         {dayGhosts === null && ghostDay != null && <p className="mm-design-note">This data has one simulated day per site: its best day.</p>}
                         <div className="mm-design">
                           <label htmlFor="tilt">
-                            Your lander <span>takes <b className="num">{tiltMax >= 90 ? 'any' : `up to ${tiltMax}°`}</b> of tilt</span>
+                            Your lander <span>{tiltMax >= 90 ? <>survives <b className="num">any</b> tilt</> : <>survives up to <b className="num">{tiltMax}°</b> of tilt</>}</span>
                           </label>
                           <input
                             id="tilt"
@@ -851,7 +850,7 @@ export function Mission() {
                             }}
                           />
                           <p className="mm-design-note">
-                            {tiltNeeded == null ? '' : tiltNeeded < 0 ? 'No tilt tolerance reaches 95% on this date.' : `95% needs ${tiltNeeded}° of tilt.`}
+                            {tiltNeeded == null ? '' : tiltNeeded < 0 ? 'No tilt tolerance reaches 95% on this date.' : `To stay at 95% or more, it must survive at least ${tiltNeeded}° of tilt.`}
                           </p>
                         </div>
                         <div className="mm-actions">
