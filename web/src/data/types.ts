@@ -74,3 +74,27 @@ export interface Top10File {
   criteria: { survive_days: number; p_threshold: number; year_start: number; year_end: number; from_utc?: string; to_utc?: string; ranking?: string }
   windows: (SurvivalWindow & { rank: number; site_id: string })[]
 }
+
+/** Real ranking of landing windows (web/scripts/gen-real-data.mts, from src/lib/windows.ts). */
+export interface WindowRow {
+  rank: number
+  site_id: string
+  landing_utc: string
+  end_utc: string
+  sun_pct: number
+  earth_pct: number
+  both_pct: number
+  longest_dark_h: number
+  longest_comm_gap_h: number
+  energy_kwh_per_kw: number
+  score: number
+}
+
+export interface WindowsFile {
+  generated_at: string
+  mock: boolean
+  params_ref: string
+  year: number
+  score: string
+  windows: Record<string, WindowRow[]> // keyed by mission length in days ("6", "14")
+}

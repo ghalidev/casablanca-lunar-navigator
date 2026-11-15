@@ -2,8 +2,8 @@ import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState, useS
 import { useLocation } from 'react-router-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { ArrowRight, DownloadSimple, Pause, Play, SpeakerHigh, SpeakerSlash } from '@phosphor-icons/react'
-import { useSeries, useSites, useMockFlag, useSurvival, useTop10 } from '../data/hooks'
-import { VISIBLE_FRAC, windowStats } from '../data/stats'
+import { useSeries, useSites, useMockFlag, useSurvival, useWindows } from '../data/hooks'
+import { VISIBLE_FRAC, dailySummaries, windowStats, type WindowStats } from '../data/stats'
 import { loadPoleTerrain, siteXZ, skyDir, type PoleTerrain } from './terrain'
 import type { Crash, Light, Scrub, Shot } from './MissionScene'
 import { Soundscape } from './sound'
@@ -17,7 +17,7 @@ import { LABEL, ORDER, isShot, type ShotId } from '../film/shots'
 import { createClock, hourOfDate, sampleAt, sampleAzAt } from '../film/clock'
 import { FilmContext, useClock, type FilmController } from '../film/controller'
 import { camBus } from '../film/bus'
-import { ranksBySite, toCsv, verdictRows } from '../film/verdict'
+import type { WindowRow } from '../data/types'
 import './mission.css'
 
 const MissionScene = lazy(() => import('./MissionScene').then((m) => ({ default: m.MissionScene })))
@@ -93,15 +93,106 @@ function CompareCard({ a, b, startMs, names }: { a: string; b: string; startMs: 
 function initialShot(q: URLSearchParams): ShotId {
   const ch = q.get('ch')
   if (isShot(ch)) return ch
-  if (ch === 'plan') return 'verdict'
+  if (ch === 'crash') return 'site'
   return 'moon'
+}
+
+// ---- Real planning tools (data from web/scripts/gen-real-data.mts) ----------------------------
+
+const csvCell = (v: string | number) => {
+  const s = String(v)
+  return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s
+}
+
+function saveCsv(name: string, lines: (string | number)[][]) {
+  const blob = new Blob([lines.map((l) => l.map(csvCell).join(',')).join('\n') + '\n'], { type: 'text/csv' })
+  const a = document.createElement('a')
+  a.href = URL.createObjectURL(blob)
+  a.download = name
+  a.click()
+  URL.revokeObjectURL(a.href)
+}
+
+/** One coloured stripe per day for the next N days: green both, amber Sun only, blue Earth only, dark neither. */
+function DayStripe({ series, startIdx, days }: { series: SeriesFile; startIdx: number; days: number }) {
+  const all = useMemo(() => dailySummaries(series), [series])
+  const d0 = Math.floor(startIdx / 24)
+  const slice = all.slice(d0, d0 + days)
+  return (
+    <div className="mm-stripe" role="img" aria-label={`Day by day for the next ${days} days: sunlight and Earth in view`}>
+      {slice.map((d, i) => (
+        <span key={i} className={'d-' + d.state} title={`Day ${i + 1}: Sun ${Math.round(d.sun * 100)}% · Earth ${Math.round(d.earth * 100)}%`} />
+      ))}
+    </div>
+  )
+}
+
+const METRICS: { key: keyof WindowStats; label: string; unit: string; lower?: boolean; tone?: string }[] = [
+  { key: 'sunPct', label: 'Sunlight', unit: '%', tone: 'sun' },
+  { key: 'longestDarkH', label: 'Longest night', unit: 'h', lower: true },
+  { key: 'earthPct', label: 'Earth in view', unit: '%', tone: 'earth' },
+  { key: 'longestNoEarthH', label: 'Longest silence', unit: 'h', lower: true },
+  { key: 'bothPct', label: 'Sun + Earth', unit: '%', tone: 'both' },
+]
+
+/** Loads one site's series and reports its stats for the window (hooks stay per site). */
+function StatsProbe({ id, startMs, days, onStats }: { id: string; startMs: number; days: number; onStats: (id: string, s: WindowStats | null) => void }) {
+  const s = useSeries(id, YEAR).data
+  useEffect(() => {
+    onStats(id, s ? windowStats(s, startMs, days) : null)
+  }, [id, s, startMs, days, onStats])
+  return null
+}
+
+/** Up to four regions side by side over `days` days from the ground clock's date. Best value per row in green. */
+function CompareMany({ ids, startMs, days, names }: { ids: string[]; startMs: number; days: number; names: Record<string, string> }) {
+  const [stats, setStats] = useState<Record<string, WindowStats | null>>({})
+  const onStats = useCallback((id: string, s: WindowStats | null) => setStats((p) => (p[id] === s ? p : { ...p, [id]: s })), [])
+  const fmt = (v: number | undefined, unit: string) => (v == null ? '…' : unit === '%' ? `${Math.round(v)}%` : `${Math.round(v)} h`)
+  return (
+    <div className="mm-compare mm-compare-many">
+      {ids.map((id) => (
+        <StatsProbe key={id} id={id} startMs={startMs} days={days} onStats={onStats} />
+      ))}
+      <table>
+        <thead>
+          <tr>
+            <th />
+            {ids.map((id) => (
+              <th key={id}>{names[id]}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {METRICS.map((m) => {
+            const vals = ids.map((id) => stats[id]?.[m.key] as number | undefined)
+            const known = vals.filter((v): v is number => v != null)
+            const best = known.length ? (m.lower ? Math.min(...known) : Math.max(...known)) : null
+            const tie = known.length > 1 && known.every((v) => Math.abs(v - known[0]) < 0.5)
+            return (
+              <tr key={m.key} className={m.tone}>
+                <td>{m.label}</td>
+                {vals.map((v, i) => (
+                  <td key={ids[i]} className={'num' + (!tie && best != null && v != null && Math.abs(v - best) < 1e-9 ? ' best' : '')}>
+                    {fmt(v, m.unit)}
+                  </td>
+                ))}
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+    </div>
+  )
 }
 
 export function Mission() {
   const reduce = useReducedMotion()
   const mock = useMockFlag()
   const sites = useSites()
-  const top10 = useTop10().data
+  const winFile = useWindows().data
+  const [days, setDays] = useState<6 | 14>(6)
+  const [planIds, setPlanIds] = useState<string[]>(['malapert-massif', 'haworth', 'mons-mouton-plateau'])
   const [terrain, setTerrain] = useState<PoleTerrain | null>(null)
   // ?ch=pole&site=haworth opens a shot directly (shareable, and used to record the video).
   const q = useMemo(() => new URLSearchParams(window.location.search), [])
@@ -314,7 +405,7 @@ export function Mission() {
     (c: ShotId | undefined): Shot | null => {
       if (!c) return null
       if (c === 'moon') return { kind: 'globe' }
-      if (c === 'pole' || c === 'verdict') return { kind: 'pole' }
+      if (c === 'pole' || c === 'verdict' || c === 'plan') return { kind: 'pole' }
       if (c === 'crash') {
         if (!site) return null
         const p = siteXZ(site.lat, site.lon)
@@ -331,8 +422,16 @@ export function Mission() {
     [site, series, sunSample, crashStartMs, crashH0],
   )
   const shot = useMemo(() => shotOf(chapter) ?? { kind: 'globe' as const }, [shotOf, chapter])
-  const prevShot = useMemo(() => shotOf(ORDER[ci - 1]), [shotOf, ci])
-  const nextShot = useMemo(() => shotOf(ORDER[ci + 1]), [shotOf, ci])
+  // Two neighbouring overview shots share one camera pose: no scrub path between them (a zero-length flight is NaN).
+  const samePose = (a: Shot | null, b: Shot) => !!a && a.kind === 'pole' && b.kind === 'pole'
+  const prevShot = useMemo(() => {
+    const p = shotOf(ORDER[ci - 1])
+    return samePose(p, shot) ? null : p
+  }, [shotOf, ci, shot])
+  const nextShot = useMemo(() => {
+    const n = shotOf(ORDER[ci + 1])
+    return samePose(n, shot) ? null : n
+  }, [shotOf, ci, shot])
 
   const crash: Crash | null = useMemo(
     () =>
@@ -351,19 +450,29 @@ export function Mission() {
     [chapter, site, landers, dropAt, crashClock],
   )
 
-  const rows = useMemo(() => (top10 ? verdictRows(top10, names) : []), [top10, names])
+  const rows: WindowRow[] = useMemo(() => winFile?.windows[String(days)] ?? [], [winFile, days])
   const badges = useMemo(() => {
-    if (chapter === 'verdict') return Object.fromEntries(Object.entries(ranksBySite(rows)).map(([id, r]) => [id, r.map((k) => `#${k}`).join(' ')]))
+    if (chapter === 'verdict') {
+      const by: Record<string, number[]> = {}
+      for (const r of rows) (by[r.site_id] ??= []).push(r.rank)
+      return Object.fromEntries(Object.entries(by).map(([id, r]) => [id, r.map((k) => `#${k}`).join(' ')]))
+    }
+    if (chapter === 'plan') return Object.fromEntries(planIds.map((id, i) => [id, 'ABCD'[i]]))
     if (compare) return { [compare[0]]: 'A', [compare[1]]: 'B' }
     return undefined
-  }, [chapter, rows, compare])
+  }, [chapter, rows, compare, planIds])
 
   const pick = useCallback(
     (s: Site) => {
+      // On the Compare shot a pin adds or removes the region; elsewhere it lands on it.
+      if (chapter === 'plan') {
+        setPlanIds((ids) => (ids.includes(s.id) ? (ids.length > 1 ? ids.filter((x) => x !== s.id) : ids) : ids.length >= 4 ? [...ids.slice(1), s.id] : [...ids, s.id]))
+        return
+      }
       setSiteId(s.id)
       go('site')
     },
-    [go],
+    [go, chapter],
   )
 
   // The agent's handle on the film: every call is something the user watches happen.
@@ -392,14 +501,32 @@ export function Mission() {
     [chapter, siteId, ground],
   )
 
-  const downloadCsv = () => {
-    const blob = new Blob([toCsv(rows, !!top10?.mock)], { type: 'text/csv' })
-    const a = document.createElement('a')
-    a.href = URL.createObjectURL(blob)
-    a.download = 'lastlight-safest-windows.csv'
-    a.click()
-    URL.revokeObjectURL(a.href)
+  const downloadCsv = () =>
+    saveCsv(`lastlight-best-${days}-day-windows-${YEAR}.csv`, [
+      ['rank', 'site_id', 'site_name', 'landing_utc', 'end_utc', 'sunlight_pct', 'earth_in_view_pct', 'sun_and_earth_pct', 'longest_darkness_h', 'longest_comms_gap_h', 'energy_kwh_per_kw', 'score'],
+      ...rows.map((r) => [r.rank, r.site_id, names[r.site_id] ?? r.site_id, r.landing_utc, r.end_utc, r.sun_pct, r.earth_pct, r.both_pct, r.longest_dark_h, r.longest_comm_gap_h, r.energy_kwh_per_kw, r.score]),
+    ])
+
+  const downloadSiteCsv = () => {
+    if (!series || !site) return
+    const t0 = Date.parse(series.t0)
+    saveCsv(`lastlight-${site.id}-${YEAR}-hourly.csv`, [
+      ['utc', 'sun_az_deg', 'sun_el_deg', 'sun_visible_fraction', 'earth_az_deg', 'earth_el_deg', 'earth_visible_fraction', 'panel_irradiance_wm2'],
+      ...series.sun_el.map((_, i) => [
+        new Date(t0 + i * series.step_h * 3_600_000).toISOString(),
+        series.sun_az[i],
+        series.sun_el[i],
+        series.sun_frac[i],
+        series.earth_az[i],
+        series.earth_el[i],
+        series.earth_frac[i],
+        series.irradiance_wm2[i],
+      ]),
+    ])
   }
+
+  const togglePlan = (id: string) =>
+    setPlanIds((ids) => (ids.includes(id) ? (ids.length > 1 ? ids.filter((x) => x !== id) : ids) : ids.length >= 4 ? [...ids.slice(1), id] : [...ids, id]))
 
   const toggleSound = () => {
     if (!sound.current) sound.current = new Soundscape()
@@ -430,7 +557,7 @@ export function Mission() {
                 earthDir={earthDir}
                 onPick={pick}
                 activeSite={chapter === 'site' ? siteId : null}
-                showPins={chapter === 'pole' || chapter === 'verdict'}
+                showPins={chapter === 'pole' || chapter === 'verdict' || chapter === 'plan'}
                 badges={badges}
                 athena={chapter === 'athena' ? ATHENA : null}
                 crash={crash}
@@ -524,7 +651,7 @@ export function Mission() {
                     <div className="mm-readout">
                       <div className={sunOn ? 'sun' : 'off'}>
                         <span>Sun</span>
-                        <b>{series ? (sunOn ? 'Visible' : 'Behind terrain') : '…'}</b>
+                        <b>{series ? (sunOn ? 'Visible' : 'Below horizon') : '…'}</b>
                       </div>
                       <div className={earthOn ? 'earth' : 'off'}>
                         <span>Earth</span>
@@ -540,12 +667,58 @@ export function Mission() {
                         <HorizonRing site={site} series={series} idx={idx} />
                       </div>
                     )}
+                    {series && (() => {
+                      const w = windowStats(series, groundStartMs, 14)
+                      return (
+                        <div className="mm-next">
+                          <p className="mm-kicker mm-sub">Next 14 days from {prettyDate(groundStartMs)}</p>
+                          <DayStripe series={series} startIdx={idx} days={14} />
+                          <div className="mm-readout mm-five">
+                            <div className="sun"><span>Sunlight</span><b className="num">{Math.round(w.sunPct)}%</b></div>
+                            <div><span>Longest night</span><b className="num">{Math.round(w.longestDarkH)} h</b></div>
+                            <div className="earth"><span>Earth in view</span><b className="num">{Math.round(w.earthPct)}%</b></div>
+                            <div><span>Longest silence</span><b className="num">{Math.round(w.longestNoEarthH)} h</b></div>
+                            <div className="both"><span>Sun + Earth</span><b className="num">{Math.round(w.bothPct)}%</b></div>
+                          </div>
+                        </div>
+                      )
+                    })()}
                     <div className="mm-actions">
-                      <button className="mm-cta" onClick={() => go('crash')}>
-                        Crash-test this site <ArrowRight size={16} />
+                      <button className="mm-cta" onClick={() => { setPlanIds((ids) => (ids.includes(site.id) ? ids : [site.id, ...ids].slice(0, 4))); go('plan') }}>
+                        Compare sites <ArrowRight size={16} />
+                      </button>
+                      <button className="mm-cta ghost" onClick={downloadSiteCsv}>
+                        <DownloadSimple size={16} /> Hourly CSV
                       </button>
                       <button className="mm-cta ghost" onClick={() => go('pole')}>
                         Pick another site
+                      </button>
+                    </div>
+                  </>
+                )}
+                {!compare && chapter === 'plan' && (
+                  <>
+                    <p className="mm-kicker">Compare · {days} days from {prettyDate(groundStartMs)}</p>
+                    <h2>Which region, which date?</h2>
+                    <p>Tap the pins, or the names below, to compare up to four regions. Green is the best value in each row.</p>
+                    <div className="mm-chips">
+                      {(sites.data?.sites ?? []).map((s) => (
+                        <button key={s.id} className={planIds.includes(s.id) ? 'on' : ''} onClick={() => togglePlan(s.id)}>
+                          {s.name}
+                        </button>
+                      ))}
+                    </div>
+                    <div className="mm-seg" role="group" aria-label="Mission length">
+                      {([6, 14] as const).map((d) => (
+                        <button key={d} className={days === d ? 'on' : ''} onClick={() => setDays(d)}>
+                          {d} days
+                        </button>
+                      ))}
+                    </div>
+                    <CompareMany ids={planIds} startMs={groundStartMs} days={days} names={names} />
+                    <div className="mm-actions">
+                      <button className="mm-cta" onClick={() => go('verdict')}>
+                        Find the best dates <ArrowRight size={16} />
                       </button>
                     </div>
                   </>
@@ -595,35 +768,44 @@ export function Mission() {
                 )}
                 {chapter === 'verdict' && (
                   <>
-                    <p className="mm-kicker">
-                      {top10 ? `${top10.criteria.year_start}–${top10.criteria.year_end} · ${top10.criteria.survive_days}-day survival ≥ ${Math.round(top10.criteria.p_threshold * 100)}%` : 'Loading'}
-                    </p>
-                    <h2>The safest landing windows.</h2>
+                    <p className="mm-kicker">{winFile ? `${winFile.year} · every landing time at every region, ranked` : 'Loading'}</p>
+                    <h2>The best landing windows.</h2>
+                    <div className="mm-seg" role="group" aria-label="Mission length">
+                      {([6, 14] as const).map((d) => (
+                        <button key={d} className={days === d ? 'on' : ''} onClick={() => setDays(d)}>
+                          {d}-day mission{d === 6 ? ' (Artemis III)' : ''}
+                        </button>
+                      ))}
+                    </div>
+                    <div className="mm-verdict-head">
+                      <span>#</span>
+                      <span>Region</span>
+                      <span>Landing (UTC)</span>
+                      <span>Sun</span>
+                      <span>Earth</span>
+                    </div>
                     <ol className="mm-verdict">
-                      {rows.map((r) => {
-                        const inData = r.landingUtc.startsWith(String(YEAR))
-                        return (
-                          <li key={r.rank}>
-                            <button
-                              disabled={!inData}
-                              title={inData ? 'Stand on the ground on this date' : 'Ground view covers 2027 only'}
-                              onClick={() => {
-                                setSiteId(r.siteId)
-                                ground.set(hourOfDate(r.landingUtc.slice(0, 10), `${YEAR}-01-01T00:00:00Z`, 365 * 24))
-                                setPlaying(false)
-                                go('site')
-                              }}
-                            >
-                              <span className="num rank">{String(r.rank).padStart(2, '0')}</span>
-                              <span className="name">{r.siteName}</span>
-                              <span className="num date">{r.landingUtc.slice(0, 10)}</span>
-                              <span className="num p">{Math.round(r.pSurvive * 100)}%</span>
-                              <span className="num slip">±{r.slipDays} d</span>
-                            </button>
-                          </li>
-                        )
-                      })}
+                      {rows.map((r) => (
+                        <li key={r.rank}>
+                          <button
+                            title={`Stand on the ground on this date · longest night ${r.longest_dark_h} h · longest silence ${r.longest_comm_gap_h} h`}
+                            onClick={() => {
+                              setSiteId(r.site_id)
+                              ground.set(hourOfDate(r.landing_utc.slice(0, 10), `${YEAR}-01-01T00:00:00Z`, 365 * 24))
+                              setPlaying(false)
+                              go('site')
+                            }}
+                          >
+                            <span className="num rank">{String(r.rank).padStart(2, '0')}</span>
+                            <span className="name">{names[r.site_id] ?? r.site_id}</span>
+                            <span className="num date">{r.landing_utc.slice(0, 16).replace('T', ' ')}</span>
+                            <span className="num p">{Math.round(r.sun_pct)}%</span>
+                            <span className="num slip">{Math.round(r.earth_pct)}%</span>
+                          </button>
+                        </li>
+                      ))}
                     </ol>
+                    <p className="mm-fine">Score: sunlight % + 0.5 × Earth-in-view % − 2 × longest night (h). Flat horizon: terrain shadows not included yet.</p>
                     <div className="mm-actions">
                       <button className="mm-cta ghost" onClick={downloadCsv} disabled={!rows.length}>
                         <DownloadSimple size={16} /> Export CSV
@@ -689,7 +871,9 @@ export function Mission() {
               {chapter === 'crash'
                 ? 'Ghost landers drawn 3× real size; positions and failures from the landing simulation. Relief ×2.5, real LOLA terrain.'
                 : chapter === 'site'
-                  ? 'Sun and Earth positions from our ephemeris data. Relief ×2.5, LOLA terrain.'
+                  ? 'Sun and Earth: our ephemeris, checked against NASA JPL Horizons (max 0.004°). Horizon treated as flat; relief ×2.5 is visual only.'
+                  : chapter === 'plan' || chapter === 'verdict'
+                    ? 'Real hourly Sun and Earth data for 2027 from our validated ephemeris. Flat horizon: terrain shadows not included yet.'
                   : chapter === 'moon'
                     ? 'LROC colour, LOLA relief: NASA SVS CGI Moon Kit.'
                     : 'Relief ×2.5, overview lighting. Terrain and colour: LRO (LOLA, LROC), NASA SVS CGI Moon Kit.'}

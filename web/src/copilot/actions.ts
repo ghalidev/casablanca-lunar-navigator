@@ -14,7 +14,7 @@ export const SITE_IDS = [
 ] as const
 export type SiteId = (typeof SITE_IDS)[number]
 export const DURATIONS = [6, 7, 14, 21, 28] as const
-export const FLY_SHOTS = ['moon', 'pole', 'athena', 'site', 'crash', 'verdict'] as const
+export const FLY_SHOTS = ['moon', 'pole', 'athena', 'site', 'plan', 'verdict'] as const
 export type FlyShot = (typeof FLY_SHOTS)[number]
 export type Need = 'sun' | 'earth' | 'both' | 'survival'
 
@@ -45,7 +45,7 @@ export function sanitizePlan(raw: unknown): CopilotPlan {
     const t = (a ?? {}) as Record<string, unknown>
     if (t.type === 'fly' && (FLY_SHOTS as readonly string[]).includes(t.shot as string)) {
       const shot = t.shot as FlyShot
-      if ((shot === 'site' || shot === 'crash') && !isSite(t.site)) continue
+      if (shot === 'site' && !isSite(t.site)) continue
       actions.push({ type: 'fly', shot, ...(isSite(t.site) ? { site: t.site } : {}) })
     } else if (t.type === 'set_time' && isDate(t.date)) {
       actions.push({ type: 'set_time', date: t.date })

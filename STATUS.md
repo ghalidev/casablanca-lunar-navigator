@@ -31,3 +31,12 @@ Read this first tomorrow, then `git pull`.
 - **Adam:** LOLA terrain for the 9 sites (time-box: stop after 2 h if blocked, keep the flat horizon).
 
 Feature freeze at hour 2:30. Submit at least 1 hour before the deadline.
+
+## Update Sun 15 Nov ~02:30: apps merged
+- `web/` (Yasin's 3D film) is now the main app and runs on REAL data: `cd web && node --experimental-strip-types scripts/gen-real-data.mts`
+  regenerates `web/public/data/` from our validated calculator (9 regions, hourly 2027, ranked 6- and 14-day windows).
+- New in the film: "On the ground" shows 14-day stripe + 5 metrics + hourly CSV; new "Compare" chapter (up to 4 regions, pins or chips);
+  "Best landing windows" = real ranking with CSV. Crash test removed (no landing simulation). Method page and footer rewritten honestly.
+- Fixed: black 3D view when two overview chapters sit next to each other (zero-length camera flight → NaN).
+- Deploy: in Vercel, set the project's Root Directory to `web` (main link), and add a second project at the repo root for the classic app.
+- Not verified on a real GPU: open http://localhost:5191 (or the Vercel preview) and scroll through all chapters once.

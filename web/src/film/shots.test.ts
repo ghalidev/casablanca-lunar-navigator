@@ -6,8 +6,8 @@ test('old pages redirect to their shot', () => {
   assert.equal(legacyRedirect('/sites', ''), '/?ch=pole')
   assert.equal(legacyRedirect('/sites/haworth', ''), '/?ch=site&site=haworth')
   assert.equal(legacyRedirect('/plan', '?date=2027-03-01&site=haworth'), '/?ch=verdict&site=haworth')
-  assert.equal(legacyRedirect('/crash-test', '?site=mons-mouton'), '/?ch=crash&site=mons-mouton')
-  assert.equal(legacyRedirect('/crash-test', ''), '/?ch=crash')
+  assert.equal(legacyRedirect('/crash-test', '?site=mons-mouton'), '/?ch=site&site=mons-mouton')
+  assert.equal(legacyRedirect('/crash-test', ''), '/?ch=site')
   assert.equal(legacyRedirect('/story', ''), '/')
 })
 
@@ -18,6 +18,7 @@ test('live routes are left alone', () => {
 
 test('isShot accepts only known shots', () => {
   assert.equal(isShot('verdict'), true)
-  assert.equal(isShot('plan'), false)
+  assert.equal(isShot('plan'), true)
+  assert.equal(isShot('crash'), false)
   assert.equal(isShot(undefined), false)
 })

@@ -1,6 +1,6 @@
 import { useEffect, useState, useSyncExternalStore } from 'react'
-import { loadSeries, loadSites, loadSurvival, loadTop10 } from './load'
-import type { SeriesFile, SitesFile, SurvivalFile, Top10File } from './types'
+import { loadSeries, loadSites, loadSurvival, loadTop10, loadWindows } from './load'
+import type { SeriesFile, SitesFile, SurvivalFile, Top10File, WindowsFile } from './types'
 
 // --- mock flag: any loaded file with mock: true lights the banner -------------
 let mockSeen = false
@@ -47,3 +47,4 @@ export const useSeries = (id: string | undefined, year: number) =>
 export const useTop10 = () => useAsync<Top10File>(loadTop10, 'top10')
 export const useSurvival = (id: string | undefined) =>
   useAsync<SurvivalFile>(() => (id ? loadSurvival(id) : Promise.reject(new Error('no site'))), `surv:${id}`)
+export const useWindows = () => useAsync<WindowsFile>(loadWindows, 'windows')

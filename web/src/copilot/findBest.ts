@@ -26,21 +26,21 @@ const LABEL: Record<Need, string> = {
 export async function findBest(opts: { site?: string; days: number; from: string; to: string; need?: Need }): Promise<Best | null> {
   const sites = await loadSites()
   const year = Number(opts.from.slice(0, 4))
-  let need: Need = opts.need ?? 'both'
-  if (need === 'survival' && opts.days !== 14) need = 'both'
+  let need: Need = opts.need ?? 'both' as Need
+  if (need === 'survival') need = 'both' // no landing simulation: rank by sunlight and Earth instead
   const candidates = sites.sites.filter((s) => !opts.site || s.id === opts.site)
   let best: Best | null = null
   for (const s of candidates) {
     const ser = await loadSeries(s.id, year).catch(() => null)
     if (!ser) continue
-    const surv = need === 'survival' ? await loadSurvival(s.id).catch(() => undefined) : undefined
+    const surv = (need as Need) === 'survival' ? await loadSurvival(s.id).catch(() => undefined) : undefined
     const from = Date.parse(`${opts.from}T00:00:00Z`)
     const to = Date.parse(`${opts.to}T00:00:00Z`)
     for (let t = from; t <= to; t += DAY_MS) {
       const w = windowStats(ser, t, opts.days)
       if (!w.covered) continue
       let v: number
-      if (need === 'survival') {
+      if ((need as Need) === 'survival') {
         const p = survivalFor(surv, t)
         if (!p) continue
         v = p.p_survive_14d * 100

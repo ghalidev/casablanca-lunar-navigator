@@ -111,7 +111,7 @@ export function Copilot() {
           else {
             setResult(best)
             film.setTime(best.date)
-            await film.fly(best.need === 'survival' ? 'crash' : 'site', best.siteId)
+            await film.fly('site', best.siteId)
           }
         }
         tick(i + 1)

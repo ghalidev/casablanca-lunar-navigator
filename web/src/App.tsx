@@ -45,8 +45,8 @@ export default function App() {
             LASTLIGHT by <b>Casablanca, We Have A Solution</b> for NASA Space Apps 2026.
           </span>
           <span>
-            Built on LOLA terrain and NAIF SPICE ephemerides.{' '}
-            <a href="https://github.com/ShizKN/lastlight">Open source</a>
+            Sun and Earth checked against NASA JPL Horizons (max 0.004°). 3D relief: NASA CGI Moon Kit (LOLA, LROC).{' '}
+            <a href="https://github.com/ghalidev/casablanca-lunar-navigator">Open source</a>
           </span>
         </div>
         <p className="notice">{NOTICE}</p>

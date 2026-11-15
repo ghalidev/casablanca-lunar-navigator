@@ -45,7 +45,8 @@ export function buildFlight(from: Pose, to: Pose, start: number): Flight {
   const ra = from.pos.distanceTo(MOON_CENTER)
   const rb = to.pos.distanceTo(MOON_CENTER)
   mid.setLength(Math.max(mid.length(), (ra + rb) / 2) + 0.15 * d).add(MOON_CENTER)
-  const path = new THREE.CatmullRomCurve3([from.pos.clone(), mid, to.pos.clone()], false, 'centripetal')
+  // A zero-length flight (same pose) breaks the centripetal parametrisation (NaN): use the uniform one.
+  const path = new THREE.CatmullRomCurve3([from.pos.clone(), mid, to.pos.clone()], false, d < 1e-6 ? 'catmullrom' : 'centripetal')
   return { from: clonePose(from), to: clonePose(to), path, qFrom: orientation(from), qTo: orientation(to), start, duration: flightDuration(from.pos, to.pos) }
 }
 

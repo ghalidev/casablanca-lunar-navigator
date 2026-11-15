@@ -1,14 +1,16 @@
 // The film's shots, in viewing order. One scene, one URL scheme: /?ch=<shot>&site=<id>.
 
-export type ShotId = 'moon' | 'pole' | 'athena' | 'site' | 'crash' | 'verdict'
+export type ShotId = 'moon' | 'pole' | 'athena' | 'site' | 'plan' | 'verdict' | 'crash'
 
-export const ORDER: ShotId[] = ['moon', 'pole', 'athena', 'site', 'crash', 'verdict']
+// 'crash' is kept as a type only: its landing simulation was never built, so the shot is not in the film.
+export const ORDER: ShotId[] = ['moon', 'pole', 'athena', 'site', 'plan', 'verdict']
 
 export const LABEL: Record<ShotId, string> = {
   moon: 'The Moon',
   pole: 'South pole',
   athena: 'Athena',
   site: 'On the ground',
+  plan: 'Compare',
   crash: 'Crash test',
   verdict: 'The verdict',
 }
@@ -24,7 +26,7 @@ export function legacyRedirect(pathname: string, search: string): string | null 
   const m = pathname.match(/^\/sites\/([^/]+)$/)
   if (m) return withSite('site', decodeURIComponent(m[1]))
   if (pathname === '/plan') return withSite('verdict', site)
-  if (pathname === '/crash-test') return withSite('crash', site)
+  if (pathname === '/crash-test') return withSite('site', site)
   if (pathname === '/story') return '/'
   return null
 }

@@ -260,3 +260,38 @@
 .mm-letterbox::after { transform: translateY(calc(100% - var(--scrub, 0) * 100%)); }
 .mm-letterbox::before, .mm-letterbox::after { transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1); }
 .mm.is-flying .mm-panel, .mm.is-flying .mm-time { opacity: 0; }
+
+/* Real planning tools (site stats, compare, best windows) */
+.mm-panel.is-plan { width: min(640px, calc(100vw - 36px)); }
+.mm-next { margin-top: 18px; }
+.mm-kicker.mm-sub { color: var(--fg-3); margin-bottom: 8px; }
+.mm-stripe { display: flex; gap: 2px; height: 14px; width: min(520px, 100%); }
+.mm-stripe span { flex: 1; border-radius: 2px; background: #16181d; }
+.mm-stripe .d-both { background: #5bd69a; }
+.mm-stripe .d-sun { background: var(--amber); }
+.mm-stripe .d-earth { background: var(--earth); }
+.mm-readout.mm-five { grid-template-columns: repeat(5, auto); margin-top: 12px; }
+.mm-readout.mm-five > div { padding-right: 18px; }
+.mm-readout.mm-five b { font-size: 16px; }
+.mm-readout .both b { color: #5bd69a; }
+.mm-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+.mm-chips button, .mm-seg button {
+  background: transparent; color: var(--fg-2); border: 1px solid var(--hair); font: inherit; font-size: 13px;
+  padding: 6px 10px; cursor: pointer; transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.mm-chips button.on { color: var(--ink); background: var(--fg); border-color: var(--fg); }
+.mm-chips button:hover:not(.on), .mm-seg button:hover:not(.on) { border-color: rgba(236, 235, 230, 0.5); color: var(--fg); }
+.mm-seg { display: inline-flex; margin-top: 14px; }
+.mm-seg button + button { border-left: 0; }
+.mm-seg button.on { color: var(--ink); background: var(--amber); border-color: var(--amber); }
+.mm-compare-many td.num { font-size: 18px; }
+.mm-compare-many th { padding-right: 12px; }
+.mm-compare td.num.best { color: #5bd69a; font-weight: 600; }
+.mm-compare tr.sun td.num.best, .mm-compare tr.earth td.num.best { color: #5bd69a; }
+.mm-verdict-head { display: grid; grid-template-columns: 34px 1fr auto 52px 56px; gap: 14px; margin-top: 16px; font-size: 12px; color: var(--fg-3); }
+.mm-verdict-head span:nth-child(n + 4) { text-align: right; }
+.mm-verdict .slip { color: var(--earth); }
+.mm-fine { font-size: 12px !important; color: var(--fg-3) !important; margin-top: 10px !important; }
+@media (max-width: 720px) {
+  .mm-readout.mm-five { grid-template-columns: repeat(3, auto); }
+}

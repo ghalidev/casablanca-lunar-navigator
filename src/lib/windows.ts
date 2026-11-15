@@ -1,7 +1,7 @@
 // Best landing windows: slide a mission of N days over a search period and rank the start dates.
 import type { FindBestWindows, MissionWindow, Sample, Site } from '../types';
-import { computeTrack } from './ephemeris';
-import { isSunlit, longestRun, panelFraction } from './metrics';
+import { computeTrack } from './ephemeris.ts';
+import { isSunlit, longestRun, panelFraction } from './metrics.ts';
 
 export const WINDOW_STEP_MIN = 120; // sample every 2 h (keeps a 6-month search for 9 sites around 1-2 s)
 export const START_STEP_H = 6; // candidate landing every 6 h

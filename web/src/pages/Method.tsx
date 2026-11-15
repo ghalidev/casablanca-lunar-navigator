@@ -1,48 +1,33 @@
 import { motion } from 'motion/react'
-import { useSites } from '../data/hooks'
 
+// Every statement here describes what the shipped code does (see docs/validation.md, docs/assumptions.md).
 const STEPS = [
-  { n: 1, title: 'Laser-mapped terrain', text: 'NASA’s LOLA instrument measured the height of the south pole every few meters. We read that map out to 80° S.' },
-  { n: 2, title: 'The skyline from each spot', text: 'From each site we walk outward in 720 directions, up to about 150 km, and keep the highest angle. Moon curvature included.' },
-  { n: 3, title: 'Sun and Earth, hour by hour', text: 'NASA’s SPICE ephemerides give where the Sun and Earth are, every hour of every year. We compare them with the skyline.' },
-  { n: 4, title: 'A thousand landings', text: 'We scatter virtual landers around the target, tilt them, delay the launch, and track each battery for 14 days.' },
+  { n: 1, title: 'The Moon’s orientation', text: 'For every hour, the Moon’s pole direction and spin come from the IAU lunar rotation model, so we know which way each site faces.' },
+  { n: 2, title: 'Sun and Earth, hour by hour', text: 'The astronomy-engine library gives where the Sun and Earth are. We turn that into azimuth and elevation seen from the site, including the Earth parallax (about 0.26°).' },
+  { n: 3, title: 'Power and a line home', text: 'The share of the Sun’s disc above the horizon gives sunlight; a vertical panel turned to the Sun gives power. Earth counts when its centre is above the horizon.' },
+  { n: 4, title: 'Every landing date, ranked', text: 'For a 6- or 14-day mission we try a landing every 6 hours at every region and rank them: sunlight first, Earth second, long nights penalised.' },
 ]
 
-function Scatter({ pts }: { pts: { x: number; y: number; name: string }[] }) {
-  const S = 260
-  return (
-    <svg className="scatter" viewBox={`-34 -10 ${S + 50} ${S + 44}`} role="img" aria-label="Our predicted illumination versus LROC observations">
-      <rect width={S} height={S} className="frame" />
-      <line x1={0} y1={S} x2={S} y2={0} className="diag" />
-      {pts.map((p) => (
-        <circle key={p.name} cx={(p.x / 100) * S} cy={S - (p.y / 100) * S} r={5} className="pt">
-          <title>{p.name}</title>
-        </circle>
-      ))}
-      <text x={S / 2} y={S + 30} textAnchor="middle" className="axis">Seen by LRO cameras (% of time lit)</text>
-      <text x={-24} y={S / 2} textAnchor="middle" transform={`rotate(-90 -24 ${S / 2})`} className="axis">LASTLIGHT (%)</text>
-    </svg>
-  )
-}
+const ROWS = [
+  { body: 'Sun', what: 'azimuth', max: '0.0037°', mean: '0.0015°' },
+  { body: 'Sun', what: 'elevation', max: '0.0006°', mean: '0.0004°' },
+  { body: 'Earth', what: 'azimuth', max: '0.0030°', mean: '0.0016°' },
+  { body: 'Earth', what: 'elevation', max: '0.0007°', mean: '0.0004°' },
+]
 
 export function Method() {
-  const sites = useSites()
-  const pts = (sites.data?.sites ?? [])
-    .filter((s) => s.validation.lroc_illum_pct != null && s.validation.model_illum_pct != null)
-    .map((s) => ({ x: s.validation.lroc_illum_pct!, y: s.validation.model_illum_pct!, name: s.name }))
-
   return (
     <section className="page">
       <div className="page-head">
         <p className="kicker">Why trust it</p>
         <h1>Geometry, not guesses.</h1>
-        <p className="lead">No machine learning and no made-up scores. Just terrain, orbits and a lot of counting.</p>
+        <p className="lead">No machine learning and no made-up scores. Orbits, the Moon’s rotation and a lot of counting, checked against NASA.</p>
       </div>
 
       <ol className="steps">
         {STEPS.map((s, i) => (
           <motion.li key={s.n} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}>
-            <span className="step-n">{String(s.n).padStart(2, "0")}</span>
+            <span className="step-n">{String(s.n).padStart(2, '0')}</span>
             <h3>{s.title}</h3>
             <p>{s.text}</p>
           </motion.li>
@@ -51,32 +36,52 @@ export function Method() {
 
       <div className="validate">
         <div>
-          <h2>Checked against real photos</h2>
+          <h2>Checked against NASA JPL Horizons</h2>
           <p className="lead">
-            The LRO Wide Angle Camera photographed the pole 3,807 times over one year. From those photos, LROC mapped how
-            often each spot was lit. We run our model over the same year and compare, spot by spot.
+            We compared our Sun and Earth positions with NASA JPL Horizons, the reference tool of NASA’s Jet Propulsion Laboratory: 4 south-pole
+            sites, 3 dates from 2026 to 2028, every hour. 600 comparisons in all.
           </p>
-          <p className="fine">If our dots sit on the diagonal, our skylines are right.</p>
+          <p className="fine">The largest difference is 0.004°. The Sun is 0.53° wide. Script and raw results are in the repository (validation/, docs/validation.md).</p>
         </div>
         <div className="validate-fig">
-          {pts.length ? <Scatter pts={pts} /> : <div className="pending">Comparison not computed yet. It appears here as soon as the pipeline finishes.</div>}
+          <table className="method-table">
+            <thead>
+              <tr>
+                <th>Body</th>
+                <th>Angle</th>
+                <th>Max difference</th>
+                <th>Mean</th>
+              </tr>
+            </thead>
+            <tbody>
+              {ROWS.map((r) => (
+                <tr key={r.body + r.what}>
+                  <td>{r.body}</td>
+                  <td>{r.what}</td>
+                  <td className="num">{r.max}</td>
+                  <td className="num">{r.mean}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 
       <div className="two-col">
         <div>
-          <h2 className="section-title">What we don’t model</h2>
+          <h2 className="section-title">What we don’t model yet</h2>
           <ul className="plain">
-            <li>Temperature. Cold killed Athena too; we only track the battery.</li>
-            <li>Rocks and slopes at the meter scale.</li>
-            <li>Dust on the panels.</li>
+            <li>Terrain shadows: the horizon is treated as flat. Mountains up to 150 km away can hide a low Sun, so real sites can be darker. NASA LOLA terrain horizons are our next step.</li>
+            <li>Exact landing points: each Artemis III region is one point read off NASA’s map (about ±3 km).</li>
+            <li>Temperature, dust, rocks and slopes, landing error.</li>
+            <li>The 3D relief (×2.5) is a visual from NASA’s CGI Moon Kit (LOLA, LROC); it does not enter the numbers.</li>
           </ul>
         </div>
         <div>
           <h2 className="section-title">Where AI is used</h2>
           <ul className="plain">
-            <li>The copilot is an open model on Groq. It only flies the film: it picks shots and dates, and every number you see comes from our data files. Digits in its replies are removed.</li>
-            <li>Code was co-written with Claude Code. The voice in our video is AI-generated.</li>
+            <li>The copilot is an open model on Groq. It only flies the film: it picks shots, regions and dates. Every number comes from our data files, and digits in its replies are removed.</li>
+            <li>Code was co-written with Claude Code.</li>
             <li>No result on this site is produced by AI.</li>
           </ul>
         </div>

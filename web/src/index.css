@@ -452,3 +452,8 @@ h1.reveal .line { display: block; }
   .steps { grid-template-columns: 1fr 1fr; }
   .steps li:nth-child(3) { padding-left: 0; border-left: 0; }
 }
+
+.method-table { border-collapse: collapse; width: 100%; max-width: 440px; font-size: 15px; }
+.method-table th { text-align: left; font-weight: 500; color: var(--muted); font-size: 13px; padding: 0 12px 8px 0; }
+.method-table td { padding: 10px 12px 10px 0; border-top: 1px solid var(--line); }
+.method-table td.num { color: var(--sun); font-variant-numeric: tabular-nums; }

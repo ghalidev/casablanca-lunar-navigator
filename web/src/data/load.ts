@@ -1,4 +1,4 @@
-import type { SeriesFile, SitesFile } from './types'
+import type { SeriesFile, SitesFile, WindowsFile } from './types'
 import { normalizeSurvival, normalizeTop10 } from './normalize'
 
 // Real pipeline output lives in /data (web/public/data). Until it exists we fall
@@ -45,3 +45,4 @@ export const loadSites = () => load<SitesFile>('sites.json')
 export const loadSeries = (siteId: string, year: number) => load<SeriesFile>(`series/${siteId}_${year}.json`)
 export const loadSurvival = (siteId: string) => load(`survival/${siteId}.json`, normalizeSurvival)
 export const loadTop10 = () => load('top10.json', normalizeTop10)
+export const loadWindows = () => load<WindowsFile>('windows.json')

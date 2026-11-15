@@ -95,7 +95,7 @@ computed by the code in this repository.
 ## Repository layout
 
 - `src/`: the LASTLIGHT planning app (this README).
-- `web/`: a separate 3D story app (Moon → pole → Athena → crash test), see `web/README.md`. It runs on mock data for now.
+- `web/`: **the main LASTLIGHT app**: a 3D scrolling film (Moon → pole → Athena → on the ground → compare → best landing windows) running on REAL data generated from `src/lib/` (`web/scripts/gen-real-data.mts`: hourly Sun/Earth for 2027, flat horizon, ranked windows). Crash test removed: its landing simulation was never built.
 - `video/`: the 30-second video (Remotion).
 - `docs/`: assumptions, limitations, data sources, pitch, slides and submission texts.
 
