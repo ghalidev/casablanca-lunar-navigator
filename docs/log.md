@@ -16,3 +16,8 @@ Each session ends with 3 lines: done / in progress / blocked.
 - **Done**: `src/components/map/SouthPoleMap.tsx` (mounted by Ghali), `src/components/sky/SkyPlot.tsx` (horizon ring; checked on Mons Mouton Jan 2027: Sun max 5.16° < 6.2° limit, Earth near az 329°, 30 days/30 min in 64 ms).
 - **In progress**: nothing; SkyPlot waits for Ghali to mount it on the Site tab.
 - **Blocked**: terrain horizons (Task 4, LOLA) not started — tomorrow.
+
+## 2026-11-15 — Adam: LOLA terrain horizons
+- **Done**: `scripts/terrain_horizons.py` → `horizon` (360 az), `heightM`, lander point = highest LOLA point in NASA's region box (A11, A12). 2027 check: Sun max stays under the (90-|lat|)+1.6 limit at all 9 sites; Malapert Earth 95 %, de Gerlache Rim 2 Sun 85 %.
+- **In progress**: rerun on the 64 px/deg LOLA grid (530 MB download).
+- **Blocked**: nothing.

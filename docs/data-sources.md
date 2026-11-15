@@ -4,7 +4,7 @@ Every dataset, kernel, map, audio file used. Fill URL + version + licence + how 
 
 | Data | Provider | URL | Version / date | Use | Licence |
 |---|---|---|---|---|---|
-| LOLA south polar DEM | NASA PDS Geosciences / PGDA | TBD (verify before download) | | Horizon computation | Public domain (NASA) |
+| LOLA elevation (global, `ldem_16_uint.tif` 16 px/deg / `ldem_64_uint.tif` 64 px/deg, uint16 half-metres +20000, relative to 1737.4 km) | NASA SVS CGI Moon Kit (ID 4720), from LRO LOLA | https://svs.gsfc.nasa.gov/4720 | downloaded 2026-11-15 | Terrain horizons + lander point (A11, A12) | Public domain (NASA) |
 | SPICE kernels (de421.bsp, moon_080317.tf, moon_pa_de421_1900-2050.bpc, pck00008.tpc) | NASA NAIF | TBD | | Sun/Earth positions | Public domain |
 | LROC WAC Time-Weighted South Pole Illumination Map | LROC / ASU | TBD | 2010-02-15 → 2011-02-05, 3,807 WAC images | Validation 1 | |
 | Lunar Polar Illumination (Mazarico et al. 2011) | NASA PGDA | TBD | | Validation 2 | |

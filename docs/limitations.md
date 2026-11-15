@@ -4,3 +4,5 @@
 - Terrain resolution limits horizon accuracy for nearby obstacles (DEM resolution TBD).
 - (add every limitation as soon as it is known)
 - Site positions are one digitized point per Artemis III region (±~3 km), not NASA's actual landing sites inside each region, which are not public. Lighting changes over a few km near the pole.
+- Terrain horizons come from a global LOLA grid (see horizonSource in sites.json for the resolution), not the 5–20 m polar LOLA products: obstacles smaller than a few DEM pixels (boulders, small craters, the local slope under the lander) are not resolved.
+- Each site is one point (the region's highest LOLA point). Lighting differs elsewhere inside the same region.
