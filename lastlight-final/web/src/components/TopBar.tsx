@@ -21,7 +21,7 @@ export function TopBar({ variant = 'page', right }: { variant?: 'page' | 'missio
       </div>
       <nav className="topbar-right">
         {right}
-        <Link to="/" className={'topbar-link hide-sm' + here('/')}>
+        <Link to="/" className={'topbar-link' + here('/')}>
           Story
         </Link>
         <Link to="/explore" className={'topbar-link' + here('/explore')}>

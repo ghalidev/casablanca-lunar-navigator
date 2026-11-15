@@ -446,7 +446,7 @@ export function Explore() {
           </div>
           <div>
             <dt>Launch can slip</dt>
-            <dd>{site && day >= 0 ? `${site.slip[day]} d` : '…'}</dd>
+            <dd title='How many of the following landing days also stay at or above 95%'>{site && day >= 0 && alive != null ? (!meets ? 'No (below 95%)' : site.slip[day] === 0 ? 'No: the next day drops below 95%' : `Up to ${site.slip[day]} day${site.slip[day] === 1 ? '' : 's'}`) : '…'}</dd>
           </div>
         </dl>
 

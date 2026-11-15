@@ -273,9 +273,15 @@ export function Mission() {
     if (clean) return
     const u = new URL(window.location.href)
     u.searchParams.set('ch', chapter)
-    // Keep the chosen region and day on every shot, so a shared link (or coming back) never loses them.
-    u.searchParams.set('site', siteId)
-    u.searchParams.set('date', new Date(pickMs).toISOString().slice(0, 10))
+    // Keep the chosen region and day from the pole onwards (verdict included), so a shared link never loses them.
+    // The Moon and Athena shots come before any choice: they carry neither.
+    if (chapter === 'moon' || chapter === 'athena') {
+      u.searchParams.delete('site')
+      u.searchParams.delete('date')
+    } else {
+      u.searchParams.set('site', siteId)
+      u.searchParams.set('date', new Date(pickMs).toISOString().slice(0, 10))
+    }
     window.history.replaceState(null, '', u)
   }, [chapter, siteId, clean, pickMs])
 
@@ -803,7 +809,7 @@ export function Mission() {
                         <b>{series ? (earthOn ? 'In view' : 'Hidden') : '…'}</b>
                       </div>
                       <div>
-                        <span>Panel power</span>
+                        <span>Sunlight on panels</span>
                         <b className="num">{series ? `${Math.round(series.irradiance_wm2[idx])} W/m²` : '…'}</b>
                       </div>
                     </div>
