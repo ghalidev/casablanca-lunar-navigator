@@ -14,8 +14,8 @@ const STEPS = [
 // The case in one screen. Every figure comes from the pipeline outputs (web/public/data) or the published mission record.
 const PROOF = [
   { n: '13,023,000', l: 'simulated landings: 1,000 landers × 1,447 days × 9 regions' },
-  { n: '96.4%', l: 'best 14-day survival found: Malapert Massif, 15 Oct 2029' },
-  { n: '0.004°', l: 'largest gap to NASA JPL Horizons on the Sun and Earth' },
+  { n: '96.4%', l: 'best 14-day power survival found (generic lander, 964 of 1,000 draws, 95% interval 95.1–97.4%): Malapert Massif, 15 Oct 2029' },
+  { n: '0.014°', l: 'largest gap on the Sun and Earth vs an independent calculator, itself within 0.004° of NASA JPL Horizons' },
 ]
 const RECORD = [
   'Athena (IM-2) reached Mons Mouton on 6 March 2025, landed on its side and went dark in under 13 hours: its panels could not see the Sun.',
@@ -138,9 +138,12 @@ export function Method() {
         <div>
           <h2 className="section-title">What we don’t model</h2>
           <ul className="plain">
-            <li>Temperature. Cold killed Athena too; we only track the battery.</li>
-            <li>The lander is generic (four vertical panels, 2.5 kWh, 60 W). It is not any real vehicle, and all its numbers are in the repository.</li>
-            <li>Region positions come from NASA’s map and are good to about 3 km.</li>
+            <li>The survival % is a power-survival index for comparing places and days: the share of 1,000 simulated landings whose battery lasts 14 days. It is not the chance that a real mission succeeds.</li>
+            <li>Temperature, heat loss, battery fade in the cold, part temperature limits. Cold killed Athena too. In the Planner you can add a night-time heater draw to see what it costs; that is a proxy, not a thermal model.</li>
+            <li>The lander is generic (four vertical panels, 2.5 kWh, 60 W), not any real vehicle. In the Planner you can enter your own battery, load and panels; a sensitivity study shows the site ranking holds in 7 of 8 variants.</li>
+            <li>Tip-over is a simple 15° limit (10° and 20° tested).</li>
+            <li>Region positions are digitized by hand from NASA’s map (no coordinates are published), good to about 3 km.</li>
+            <li>The terrain light is not yet compared pixel by pixel with LROC photos. Sun and Earth positions are checked; the skyline is not, yet.</li>
             <li>Rocks and slopes under 20 m, dust on panels.</li>
           </ul>
         </div>

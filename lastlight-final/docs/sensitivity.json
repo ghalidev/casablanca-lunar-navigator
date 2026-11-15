@@ -1,0 +1,506 @@
+{
+ "baseline": {
+  "peak-near-cabeus-b": {
+   "id": "peak-near-cabeus-b",
+   "best_p": 0.574,
+   "mean_p": 0.10901451278507257,
+   "days_ge_95": 0
+  },
+  "haworth": {
+   "id": "haworth",
+   "best_p": 0.839,
+   "mean_p": 0.15650103662750517,
+   "days_ge_95": 0
+  },
+  "malapert-massif": {
+   "id": "malapert-massif",
+   "best_p": 0.964,
+   "mean_p": 0.18098825155494125,
+   "days_ge_95": 12
+  },
+  "mons-mouton-plateau": {
+   "id": "mons-mouton-plateau",
+   "best_p": 0.845,
+   "mean_p": 0.23257774706288875,
+   "days_ge_95": 0
+  },
+  "mons-mouton": {
+   "id": "mons-mouton",
+   "best_p": 0.729,
+   "mean_p": 0.21033102971665515,
+   "days_ge_95": 0
+  },
+  "nobile-rim-1": {
+   "id": "nobile-rim-1",
+   "best_p": 0.766,
+   "mean_p": 0.1673006219765031,
+   "days_ge_95": 0
+  },
+  "nobile-rim-2": {
+   "id": "nobile-rim-2",
+   "best_p": 0.923,
+   "mean_p": 0.0960310988251555,
+   "days_ge_95": 0
+  },
+  "de-gerlache-rim-2": {
+   "id": "de-gerlache-rim-2",
+   "best_p": 0.724,
+   "mean_p": 0.1730138217000691,
+   "days_ge_95": 0
+  },
+  "slater-plain": {
+   "id": "slater-plain",
+   "best_p": 0.831,
+   "mean_p": 0.1769986178299931,
+   "days_ge_95": 0
+  }
+ },
+ "battery 1500 Wh": {
+  "peak-near-cabeus-b": {
+   "id": "peak-near-cabeus-b",
+   "best_p": 0.518,
+   "mean_p": 0.07847201105736006,
+   "days_ge_95": 0
+  },
+  "haworth": {
+   "id": "haworth",
+   "best_p": 0.751,
+   "mean_p": 0.09752176917760882,
+   "days_ge_95": 0
+  },
+  "malapert-massif": {
+   "id": "malapert-massif",
+   "best_p": 0.934,
+   "mean_p": 0.13634968901174846,
+   "days_ge_95": 0
+  },
+  "mons-mouton-plateau": {
+   "id": "mons-mouton-plateau",
+   "best_p": 0.798,
+   "mean_p": 0.18986247408431237,
+   "days_ge_95": 0
+  },
+  "mons-mouton": {
+   "id": "mons-mouton",
+   "best_p": 0.661,
+   "mean_p": 0.1696945404284727,
+   "days_ge_95": 0
+  },
+  "nobile-rim-1": {
+   "id": "nobile-rim-1",
+   "best_p": 0.666,
+   "mean_p": 0.12491015894955079,
+   "days_ge_95": 0
+  },
+  "nobile-rim-2": {
+   "id": "nobile-rim-2",
+   "best_p": 0.909,
+   "mean_p": 0.05359295093296475,
+   "days_ge_95": 0
+  },
+  "de-gerlache-rim-2": {
+   "id": "de-gerlache-rim-2",
+   "best_p": 0.683,
+   "mean_p": 0.12610020732550103,
+   "days_ge_95": 0
+  },
+  "slater-plain": {
+   "id": "slater-plain",
+   "best_p": 0.803,
+   "mean_p": 0.13536420179682102,
+   "days_ge_95": 0
+  }
+ },
+ "battery 4000 Wh": {
+  "peak-near-cabeus-b": {
+   "id": "peak-near-cabeus-b",
+   "best_p": 0.624,
+   "mean_p": 0.1586572218382861,
+   "days_ge_95": 0
+  },
+  "haworth": {
+   "id": "haworth",
+   "best_p": 0.903,
+   "mean_p": 0.22358051140290255,
+   "days_ge_95": 0
+  },
+  "malapert-massif": {
+   "id": "malapert-massif",
+   "best_p": 0.979,
+   "mean_p": 0.24998548721492742,
+   "days_ge_95": 66
+  },
+  "mons-mouton-plateau": {
+   "id": "mons-mouton-plateau",
+   "best_p": 0.903,
+   "mean_p": 0.2988064961990325,
+   "days_ge_95": 0
+  },
+  "mons-mouton": {
+   "id": "mons-mouton",
+   "best_p": 0.863,
+   "mean_p": 0.2796724257083621,
+   "days_ge_95": 0
+  },
+  "nobile-rim-1": {
+   "id": "nobile-rim-1",
+   "best_p": 0.878,
+   "mean_p": 0.2334118866620594,
+   "days_ge_95": 0
+  },
+  "nobile-rim-2": {
+   "id": "nobile-rim-2",
+   "best_p": 0.923,
+   "mean_p": 0.1591271596406358,
+   "days_ge_95": 0
+  },
+  "de-gerlache-rim-2": {
+   "id": "de-gerlache-rim-2",
+   "best_p": 0.77,
+   "mean_p": 0.23341741534208707,
+   "days_ge_95": 0
+  },
+  "slater-plain": {
+   "id": "slater-plain",
+   "best_p": 0.886,
+   "mean_p": 0.24343192812715964,
+   "days_ge_95": 0
+  }
+ },
+ "load 40 W": {
+  "peak-near-cabeus-b": {
+   "id": "peak-near-cabeus-b",
+   "best_p": 0.624,
+   "mean_p": 0.1514229440221147,
+   "days_ge_95": 0
+  },
+  "haworth": {
+   "id": "haworth",
+   "best_p": 0.898,
+   "mean_p": 0.21456392536281962,
+   "days_ge_95": 0
+  },
+  "malapert-massif": {
+   "id": "malapert-massif",
+   "best_p": 0.977,
+   "mean_p": 0.24022736696613683,
+   "days_ge_95": 53
+  },
+  "mons-mouton-plateau": {
+   "id": "mons-mouton-plateau",
+   "best_p": 0.899,
+   "mean_p": 0.28896890117484453,
+   "days_ge_95": 0
+  },
+  "mons-mouton": {
+   "id": "mons-mouton",
+   "best_p": 0.845,
+   "mean_p": 0.271550794747754,
+   "days_ge_95": 0
+  },
+  "nobile-rim-1": {
+   "id": "nobile-rim-1",
+   "best_p": 0.864,
+   "mean_p": 0.2227083621285418,
+   "days_ge_95": 0
+  },
+  "nobile-rim-2": {
+   "id": "nobile-rim-2",
+   "best_p": 0.923,
+   "mean_p": 0.14812370421561852,
+   "days_ge_95": 0
+  },
+  "de-gerlache-rim-2": {
+   "id": "de-gerlache-rim-2",
+   "best_p": 0.765,
+   "mean_p": 0.2246268140981341,
+   "days_ge_95": 0
+  },
+  "slater-plain": {
+   "id": "slater-plain",
+   "best_p": 0.878,
+   "mean_p": 0.2330905321354527,
+   "days_ge_95": 0
+  }
+ },
+ "load 90 W": {
+  "peak-near-cabeus-b": {
+   "id": "peak-near-cabeus-b",
+   "best_p": 0.523,
+   "mean_p": 0.08306150656530753,
+   "days_ge_95": 0
+  },
+  "haworth": {
+   "id": "haworth",
+   "best_p": 0.76,
+   "mean_p": 0.10535590877677954,
+   "days_ge_95": 0
+  },
+  "malapert-massif": {
+   "id": "malapert-massif",
+   "best_p": 0.943,
+   "mean_p": 0.1416185210780926,
+   "days_ge_95": 0
+  },
+  "mons-mouton-plateau": {
+   "id": "mons-mouton-plateau",
+   "best_p": 0.797,
+   "mean_p": 0.19495507947477536,
+   "days_ge_95": 0
+  },
+  "mons-mouton": {
+   "id": "mons-mouton",
+   "best_p": 0.674,
+   "mean_p": 0.17398894263994472,
+   "days_ge_95": 0
+  },
+  "nobile-rim-1": {
+   "id": "nobile-rim-1",
+   "best_p": 0.675,
+   "mean_p": 0.13068970283344852,
+   "days_ge_95": 0
+  },
+  "nobile-rim-2": {
+   "id": "nobile-rim-2",
+   "best_p": 0.909,
+   "mean_p": 0.059498272287491355,
+   "days_ge_95": 0
+  },
+  "de-gerlache-rim-2": {
+   "id": "de-gerlache-rim-2",
+   "best_p": 0.688,
+   "mean_p": 0.13093296475466482,
+   "days_ge_95": 0
+  },
+  "slater-plain": {
+   "id": "slater-plain",
+   "best_p": 0.81,
+   "mean_p": 0.14034485141672426,
+   "days_ge_95": 0
+  }
+ },
+ "landing sigma 100 m": {
+  "peak-near-cabeus-b": {
+   "id": "peak-near-cabeus-b",
+   "best_p": 0.643,
+   "mean_p": 0.13859986178299932,
+   "days_ge_95": 0
+  },
+  "haworth": {
+   "id": "haworth",
+   "best_p": 0.974,
+   "mean_p": 0.17604768486523842,
+   "days_ge_95": 32
+  },
+  "malapert-massif": {
+   "id": "malapert-massif",
+   "best_p": 0.992,
+   "mean_p": 0.1889716655148583,
+   "days_ge_95": 95
+  },
+  "mons-mouton-plateau": {
+   "id": "mons-mouton-plateau",
+   "best_p": 0.97,
+   "mean_p": 0.3055127850725639,
+   "days_ge_95": 33
+  },
+  "mons-mouton": {
+   "id": "mons-mouton",
+   "best_p": 0.898,
+   "mean_p": 0.23058534899792676,
+   "days_ge_95": 0
+  },
+  "nobile-rim-1": {
+   "id": "nobile-rim-1",
+   "best_p": 0.957,
+   "mean_p": 0.209364201796821,
+   "days_ge_95": 4
+  },
+  "nobile-rim-2": {
+   "id": "nobile-rim-2",
+   "best_p": 0.98,
+   "mean_p": 0.10333310297166551,
+   "days_ge_95": 83
+  },
+  "de-gerlache-rim-2": {
+   "id": "de-gerlache-rim-2",
+   "best_p": 0.925,
+   "mean_p": 0.22118037318590186,
+   "days_ge_95": 0
+  },
+  "slater-plain": {
+   "id": "slater-plain",
+   "best_p": 0.956,
+   "mean_p": 0.22470076019350385,
+   "days_ge_95": 8
+  }
+ },
+ "landing sigma 400 m": {
+  "peak-near-cabeus-b": {
+   "id": "peak-near-cabeus-b",
+   "best_p": 0.534,
+   "mean_p": 0.09963510711817554,
+   "days_ge_95": 0
+  },
+  "haworth": {
+   "id": "haworth",
+   "best_p": 0.586,
+   "mean_p": 0.14191499654457498,
+   "days_ge_95": 0
+  },
+  "malapert-massif": {
+   "id": "malapert-massif",
+   "best_p": 0.818,
+   "mean_p": 0.1606668970283345,
+   "days_ge_95": 0
+  },
+  "mons-mouton-plateau": {
+   "id": "mons-mouton-plateau",
+   "best_p": 0.653,
+   "mean_p": 0.1713600552868003,
+   "days_ge_95": 0
+  },
+  "mons-mouton": {
+   "id": "mons-mouton",
+   "best_p": 0.532,
+   "mean_p": 0.1488500345542502,
+   "days_ge_95": 0
+  },
+  "nobile-rim-1": {
+   "id": "nobile-rim-1",
+   "best_p": 0.598,
+   "mean_p": 0.13152315134761577,
+   "days_ge_95": 0
+  },
+  "nobile-rim-2": {
+   "id": "nobile-rim-2",
+   "best_p": 0.704,
+   "mean_p": 0.07589080856945404,
+   "days_ge_95": 0
+  },
+  "de-gerlache-rim-2": {
+   "id": "de-gerlache-rim-2",
+   "best_p": 0.484,
+   "mean_p": 0.12582446440912234,
+   "days_ge_95": 0
+  },
+  "slater-plain": {
+   "id": "slater-plain",
+   "best_p": 0.665,
+   "mean_p": 0.1295922598479613,
+   "days_ge_95": 0
+  }
+ },
+ "tilt limit 10 deg": {
+  "peak-near-cabeus-b": {
+   "id": "peak-near-cabeus-b",
+   "best_p": 0.429,
+   "mean_p": 0.08579612992398064,
+   "days_ge_95": 0
+  },
+  "haworth": {
+   "id": "haworth",
+   "best_p": 0.794,
+   "mean_p": 0.14506150656530753,
+   "days_ge_95": 0
+  },
+  "malapert-massif": {
+   "id": "malapert-massif",
+   "best_p": 0.927,
+   "mean_p": 0.17471527297857636,
+   "days_ge_95": 0
+  },
+  "mons-mouton-plateau": {
+   "id": "mons-mouton-plateau",
+   "best_p": 0.809,
+   "mean_p": 0.22309606081548033,
+   "days_ge_95": 0
+  },
+  "mons-mouton": {
+   "id": "mons-mouton",
+   "best_p": 0.659,
+   "mean_p": 0.18430407740152038,
+   "days_ge_95": 0
+  },
+  "nobile-rim-1": {
+   "id": "nobile-rim-1",
+   "best_p": 0.729,
+   "mean_p": 0.15624118866620595,
+   "days_ge_95": 0
+  },
+  "nobile-rim-2": {
+   "id": "nobile-rim-2",
+   "best_p": 0.476,
+   "mean_p": 0.05225846579129233,
+   "days_ge_95": 0
+  },
+  "de-gerlache-rim-2": {
+   "id": "de-gerlache-rim-2",
+   "best_p": 0.58,
+   "mean_p": 0.1348963372494817,
+   "days_ge_95": 0
+  },
+  "slater-plain": {
+   "id": "slater-plain",
+   "best_p": 0.795,
+   "mean_p": 0.17229163787145818,
+   "days_ge_95": 0
+  }
+ },
+ "tilt limit 20 deg": {
+  "peak-near-cabeus-b": {
+   "id": "peak-near-cabeus-b",
+   "best_p": 0.579,
+   "mean_p": 0.1105784381478922,
+   "days_ge_95": 0
+  },
+  "haworth": {
+   "id": "haworth",
+   "best_p": 0.839,
+   "mean_p": 0.15716655148583278,
+   "days_ge_95": 0
+  },
+  "malapert-massif": {
+   "id": "malapert-massif",
+   "best_p": 0.967,
+   "mean_p": 0.18133448514167244,
+   "days_ge_95": 15
+  },
+  "mons-mouton-plateau": {
+   "id": "mons-mouton-plateau",
+   "best_p": 0.845,
+   "mean_p": 0.23261437456807188,
+   "days_ge_95": 0
+  },
+  "mons-mouton": {
+   "id": "mons-mouton",
+   "best_p": 0.756,
+   "mean_p": 0.21278369039391848,
+   "days_ge_95": 0
+  },
+  "nobile-rim-1": {
+   "id": "nobile-rim-1",
+   "best_p": 0.766,
+   "mean_p": 0.16763787145818937,
+   "days_ge_95": 0
+  },
+  "nobile-rim-2": {
+   "id": "nobile-rim-2",
+   "best_p": 0.992,
+   "mean_p": 0.10301313061506566,
+   "days_ge_95": 59
+  },
+  "de-gerlache-rim-2": {
+   "id": "de-gerlache-rim-2",
+   "best_p": 0.747,
+   "mean_p": 0.1834443676572218,
+   "days_ge_95": 0
+  },
+  "slater-plain": {
+   "id": "slater-plain",
+   "best_p": 0.832,
+   "mean_p": 0.17710158949550797,
+   "days_ge_95": 0
+  }
+ }
+}

@@ -1,0 +1,446 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lastlight.local/contracts/schema.json",
+  "title": "LASTLIGHT data contract",
+  "description": "Shared contract between /pipeline (producer) and /web (consumer). Files live in web/public/data/ (real) or contracts/mock/ (mock). CONVENTIONS: all times are UTC ISO-8601 with 'Z'. Angles are degrees. Azimuth: 0 = local north (direction of the lunar north pole along the surface), increasing clockwise (east = 90). Elevation: angle above the local geometric horizontal plane (ellipsoid-free, sphere R = 1737.4 km); negative = below. Horizon arrays are indexed by azimuth: index i <-> az = i * az_step_deg. Every file carries 'mock': true when it is test data; the UI must show a 'MOCK DATA' banner if any loaded file has mock = true. Changing this file = update schema + mock + both sides in the same PR.",
+  "$defs": {
+    "utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$",
+      "description": "UTC timestamp, ISO-8601, must end with Z."
+    },
+    "site_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "description": "kebab-case slug, e.g. 'mons-mouton', 'de-gerlache-rim-2'."
+    },
+    "deg_el": {
+      "type": "number",
+      "minimum": -90,
+      "maximum": 90
+    },
+    "deg_az": {
+      "type": "number",
+      "minimum": 0,
+      "exclusiveMaximum": 360
+    },
+    "frac": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "horizon_profile": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/deg_el"
+      },
+      "minItems": 720,
+      "maxItems": 720,
+      "description": "Max terrain elevation angle (deg) per azimuth bin, seen from ground + mast height. 720 bins at 0.5 deg."
+    },
+    "sites_file": {
+      "title": "sites.json",
+      "type": "object",
+      "required": [
+        "generated_at",
+        "mock",
+        "sites"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "generated_at": {
+          "$ref": "#/$defs/utc"
+        },
+        "mock": {
+          "type": "boolean"
+        },
+        "params_ref": {
+          "type": "string",
+          "description": "Hash/version of pipeline/config.py that produced this file."
+        },
+        "sites": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "name",
+              "lat",
+              "lon",
+              "elevation_m",
+              "horizon",
+              "validation"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/site_id"
+              },
+              "name": {
+                "type": "string",
+                "description": "Display name, English, e.g. 'Mons Mouton'."
+              },
+              "lat": {
+                "type": "number",
+                "minimum": -90,
+                "maximum": -80,
+                "description": "Planetocentric latitude, deg (MOON_ME)."
+              },
+              "lon": {
+                "type": "number",
+                "minimum": -180,
+                "maximum": 360,
+                "description": "East longitude, deg (MOON_ME)."
+              },
+              "position_source": {
+                "type": "string",
+                "description": "Where lat/lon come from; 'approximate: digitized from ...' if not an official numeric source."
+              },
+              "elevation_m": {
+                "type": "number",
+                "description": "DEM height relative to R = 1737.4 km."
+              },
+              "horizon": {
+                "type": "object",
+                "required": [
+                  "az_step_deg",
+                  "mast_2m",
+                  "mast_10m"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "az_step_deg": {
+                    "const": 0.5
+                  },
+                  "mast_2m": {
+                    "$ref": "#/$defs/horizon_profile"
+                  },
+                  "mast_10m": {
+                    "$ref": "#/$defs/horizon_profile"
+                  }
+                }
+              },
+              "validation": {
+                "type": "object",
+                "required": [
+                  "lroc_illum_pct",
+                  "model_illum_pct"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "lroc_illum_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ],
+                    "minimum": 0,
+                    "maximum": 100,
+                    "description": "LROC WAC time-weighted illumination at this pixel, % (null if outside 88-90S coverage)."
+                  },
+                  "model_illum_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ],
+                    "minimum": 0,
+                    "maximum": 100,
+                    "description": "Our model, same period as LROC (2010-02-15 -> 2011-02-05), %."
+                  },
+                  "pgda_illum_pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ],
+                    "minimum": 0,
+                    "maximum": 100,
+                    "description": "PGDA (Mazarico et al. 2011) average illumination, %."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "series_file": {
+      "title": "series/{site_id}_{year}.json",
+      "description": "Hourly time series for one site over one calendar year (UTC). All arrays have the same length N; sample k is at t0 + k*step_h hours. Topocentric frame at the site (az from local north, clockwise).",
+      "type": "object",
+      "required": [
+        "site_id",
+        "mock",
+        "t0",
+        "step_h",
+        "sun_el",
+        "sun_az",
+        "earth_el",
+        "earth_az",
+        "sun_frac",
+        "earth_frac",
+        "irradiance_wm2"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "site_id": {
+          "$ref": "#/$defs/site_id"
+        },
+        "mock": {
+          "type": "boolean"
+        },
+        "params_ref": {
+          "type": "string"
+        },
+        "mast_m": {
+          "type": "number",
+          "description": "Mast height used for sun_frac/earth_frac (default 2)."
+        },
+        "t0": {
+          "$ref": "#/$defs/utc"
+        },
+        "step_h": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "sun_el": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/deg_el"
+          }
+        },
+        "sun_az": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/deg_az"
+          }
+        },
+        "earth_el": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/deg_el"
+          }
+        },
+        "earth_az": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/deg_az"
+          }
+        },
+        "sun_frac": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/frac"
+          },
+          "description": "Visible fraction of the solar disk above the terrain horizon."
+        },
+        "earth_frac": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/frac"
+          },
+          "description": "Visible fraction of the Earth disk above the terrain horizon."
+        },
+        "irradiance_wm2": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": 0
+          },
+          "description": "W/m2 on an ideally oriented vertical panel = S0 * cos(sun_el) * sun_frac."
+        }
+      }
+    },
+    "survival_window": {
+      "type": "object",
+      "required": [
+        "landing_utc",
+        "p_survive_14d",
+        "p_comm_ok",
+        "median_days_alive",
+        "slip_tolerance_days"
+      ],
+      "properties": {
+        "landing_utc": {
+          "$ref": "#/$defs/utc"
+        },
+        "p_survive_14d": {
+          "$ref": "#/$defs/frac",
+          "description": "Monte Carlo probability the generic lander is alive at landing + 14 days."
+        },
+        "p_comm_ok": {
+          "$ref": "#/$defs/frac",
+          "description": "Fraction of the 14-day window with Direct-to-Earth comm (earth_frac > threshold), averaged over Monte Carlo draws."
+        },
+        "median_days_alive": {
+          "type": "number",
+          "minimum": 0
+        },
+        "slip_tolerance_days": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 30,
+          "description": "Max launch slip (days, from 0) for which p_survive_14d stays >= threshold."
+        },
+        "n_draws": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "survival_file": {
+      "title": "survival/{site_id}.json",
+      "type": "object",
+      "required": [
+        "site_id",
+        "mock",
+        "params_ref",
+        "windows",
+        "ghost_landers_sample"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "site_id": {
+          "$ref": "#/$defs/site_id"
+        },
+        "mock": {
+          "type": "boolean"
+        },
+        "params_ref": {
+          "type": "string",
+          "description": "Hash/version of pipeline/config.py."
+        },
+        "windows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/survival_window",
+            "unevaluatedProperties": false
+          }
+        },
+        "ghost_landers_sample": {
+          "type": "array",
+          "maxItems": 2000,
+          "description": "Sample of Monte Carlo landers for the 3D Crash Test, for ONE reference window (ghost_window_utc).",
+          "items": {
+            "type": "object",
+            "required": [
+              "dx_m",
+              "dy_m",
+              "tilt_deg",
+              "died_at_h"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "dx_m": {
+                "type": "number",
+                "description": "East offset from target, m."
+              },
+              "dy_m": {
+                "type": "number",
+                "description": "North offset from target, m."
+              },
+              "tilt_deg": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 180,
+                "description": "Tilt from vertical; >= 90 means tipped over."
+              },
+              "yaw_deg": {
+                "$ref": "#/$defs/deg_az"
+              },
+              "died_at_h": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0,
+                "description": "Hours after landing when battery hit 0; null = survived the simulated horizon."
+              }
+            }
+          }
+        },
+        "ghost_window_utc": {
+          "$ref": "#/$defs/utc"
+        }
+      }
+    },
+    "top10_file": {
+      "title": "top10.json",
+      "description": "Headline result: the 10 safest landing windows 2027-2030.",
+      "type": "object",
+      "required": [
+        "generated_at",
+        "mock",
+        "params_ref",
+        "criteria",
+        "windows"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "generated_at": {
+          "$ref": "#/$defs/utc"
+        },
+        "mock": {
+          "type": "boolean"
+        },
+        "params_ref": {
+          "type": "string"
+        },
+        "criteria": {
+          "type": "object",
+          "required": [
+            "survive_days",
+            "p_threshold",
+            "year_start",
+            "year_end"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "survive_days": {
+              "type": "number"
+            },
+            "p_threshold": {
+              "$ref": "#/$defs/frac"
+            },
+            "year_start": {
+              "type": "integer"
+            },
+            "year_end": {
+              "type": "integer"
+            },
+            "ranking": {
+              "type": "string",
+              "description": "Human-readable ranking rule, e.g. 'p_survive_14d desc, then slip_tolerance_days desc'."
+            }
+          }
+        },
+        "windows": {
+          "type": "array",
+          "maxItems": 10,
+          "items": {
+            "allOf": [
+              {
+                "$ref": "#/$defs/survival_window"
+              }
+            ],
+            "type": "object",
+            "required": [
+              "rank",
+              "site_id"
+            ],
+            "properties": {
+              "rank": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 10
+              },
+              "site_id": {
+                "$ref": "#/$defs/site_id"
+              }
+            },
+            "unevaluatedProperties": false
+          }
+        }
+      }
+    }
+  }
+}

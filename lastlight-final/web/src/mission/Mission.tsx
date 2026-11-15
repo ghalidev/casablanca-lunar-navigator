@@ -3,7 +3,7 @@ import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState, useS
 import { Link, useLocation } from 'react-router-dom'
 import { loadSurvival } from '../data/load'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
-import { ArrowLeft, ArrowRight, CaretLeft, CaretRight, DownloadSimple, Pause, Play, SpeakerHigh, SpeakerSlash } from '@phosphor-icons/react'
+import { ArrowLeft, ArrowRight, CaretDown, CaretLeft, CaretRight, CaretUp, DownloadSimple, Pause, Play, SpeakerHigh, SpeakerSlash } from '@phosphor-icons/react'
 import { useGhostDay, useSeries, useSites, useMockFlag, useSurvival, useTop10 } from '../data/hooks'
 import { VISIBLE_FRAC, windowStats } from '../data/stats'
 import { loadPoleTerrain, siteXZ, skyDir, type PoleTerrain } from './terrain'
@@ -297,7 +297,7 @@ export function Mission() {
   }, [])
 
   // Scroll scrubbing: the wheel (or a swipe) moves the camera along the path to the next shot
-  // in real time. Let go past a third of the way and it lands there; otherwise it springs back.
+  // in real time. Let go past a fifth of the way (one mouse-wheel notch) and it lands there; otherwise it springs back.
   const scrub = useRef<Scrub>({ current: 0 }).current
   const root = useRef<HTMLDivElement>(null)
   const settleTimer = useRef(0)
@@ -343,7 +343,7 @@ export function Mission() {
     const release = () => {
       const v = scrub.current
       const d = Math.sign(v)
-      if (Math.abs(v) >= 0.3 && canGo(d)) commit(d)
+      if (Math.abs(v) >= 0.2 && canGo(d)) commit(d)
       else springBack()
     }
     const push = (delta: number) => {
@@ -367,7 +367,7 @@ export function Mission() {
     }
     const onWheel = (e: WheelEvent) => {
       if ((e.target as HTMLElement).closest('.mm-panel, .copilot-dock')) return
-      push(e.deltaY / (e.deltaMode === 1 ? 24 : 700))
+      push(e.deltaY / (e.deltaMode === 1 ? 16 : 480))
     }
     let touchY: number | null = null
     const onTouchStart = (e: TouchEvent) => {
@@ -713,13 +713,24 @@ export function Mission() {
             </div>
 
             <nav className="mm-rail" aria-label="Shots">
+              <button className="step" aria-label="Previous shot" title="Previous shot (scroll up, ↑)" disabled={ci <= 0} onClick={() => ci > 0 && go(ORDER[ci - 1])}>
+                <CaretUp size={14} weight="bold" />
+              </button>
               {ORDER.map((c) => (
                 <button key={c} className={c === chapter ? 'on' : ''} onClick={() => go(c)}>
                   <span className="bar" />
                   <span className="label">{c === 'site' && site ? site.name : LABEL[c]}</span>
                 </button>
               ))}
+              <button className="step" aria-label="Next shot" title="Next shot (scroll down, ↓)" disabled={ci >= ORDER.length - 1} onClick={() => ci < ORDER.length - 1 && go(ORDER[ci + 1])}>
+                <CaretDown size={14} weight="bold" />
+              </button>
             </nav>
+            {ci === 0 && !clean && (
+              <button className="mm-scrollhint" onClick={() => go(ORDER[1])} aria-label="Next shot">
+                <CaretDown size={14} weight="bold" /> <span className="d">Scroll down for the next shot, up to go back</span><span className="m">Swipe up for the next shot</span>
+              </button>
+            )}
 
             <div className="mm-panelwrap">
             <AnimatePresence mode="popLayout">
