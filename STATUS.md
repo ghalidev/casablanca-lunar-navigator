@@ -21,12 +21,12 @@ Read this first tomorrow, then `git pull`.
 | Film app fed with real data instead of `contracts/mock` | Yasin | Film shows "Mock data"; can't quote its numbers |
 | ~~Vercel link in README + submission~~ done: https://lunarnavigator-chi.vercel.app | Ghali | |
 | Video: render with real captures / numbers | Yasin + Ghali | Demo link for the submission |
-| Slides from `docs/slides.md` | Ghali | Alternative demo format |
-| Phone polish: map and site list push the chart far down | Ghali | First impression on mobile |
+| ~~Slides~~ done: "LASTLIGHT pitch deck" (Claude artifact, owner Ghali, share it from its Share menu) | | |
+| ~~Phone polish~~ done: chart first on phones, "Change site or dates" button | | |
 | Submit on the Space Apps site | Ghali | Check the exact deadline on the event page |
 
 ## Tomorrow, first hour
-- **Ghali:** phone polish, then slides; rehearse the pitch.
+- **Ghali:** rehearse the pitch twice with docs/rehearsal.md; share the deck with Yasin and Adam.
 - **Yasin:** real data into the film app, then the video with real captures.
 - **Adam:** LOLA terrain for the 9 sites (time-box: stop after 2 h if blocked, keep the flat horizon).
 
