@@ -12,14 +12,14 @@
   min-height: 100vh;
   background: var(--ink);
   color: var(--fg);
-  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  font-family: 'Host Grotesk', system-ui, sans-serif;
   font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
 }
 /* Only the Planner's own controls: the top bar keeps its own colours. */
 .pl-main button, .pl-main input { font: inherit; color: inherit; }
 .pl-main a { color: inherit; }
-.pl-ax { fill: var(--fg-3); font: 11px 'IBM Plex Sans', system-ui, sans-serif; }
+.pl-ax { fill: var(--fg-3); font: 11px 'Host Grotesk', system-ui, sans-serif; }
 .pl-ax.sunlbl { fill: var(--amber); }
 .skel { background: #0f1014; border-radius: 10px; animation: pl-pulse 1.4s ease-in-out infinite; }
 @keyframes pl-pulse { 50% { opacity: 0.5; } }
@@ -159,3 +159,11 @@
 .pl-batt { display: flex; align-items: center; gap: 10px; margin: 12px 0 0; max-width: 300px; font-size: 13px; line-height: 1.35; color: var(--fg-2); }
 .pl-batt svg { flex: none; color: var(--fg-3); }
 .pl-batt.ok svg { color: var(--amber); }
+
+/* The year tabs keep their own width; the day strip takes what is left (a wider font clipped "2030"). */
+.pl-when { grid-template-columns: max-content minmax(0, 1fr) auto; }
+.pl-years { flex-shrink: 0; }
+.pl-years button { white-space: nowrap; }
+@media (max-width: 760px) { .pl-when { grid-template-columns: minmax(0, 1fr); } }
+/* Words, not a number: smaller so the sentence fits its card. */
+.pl-facts dd.words { font-size: 15px; line-height: 1.3; letter-spacing: 0; font-weight: 500; }
