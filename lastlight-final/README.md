@@ -5,6 +5,7 @@
 NASA Space Apps Challenge 2026 · Challenge: *Lunar Landing Site Navigator* · Team **Casablanca, We Have A Solution** (CWS): Adam, Ghali and Yassine, Casablanca.
 
 - **Live app:** https://lastlight.apospace.com (no login, laptop and phone)
+- **30 s demo:** https://www.youtube.com/watch?v=ykuUuBfE5Ec (AI-generated voice, English subtitles)
 - **Planner for mission teams:** https://lastlight.apospace.com/explore
 - **Method, validation, limits:** https://lastlight.apospace.com/method
 - **30 s video:** see the project page (link in `docs/submission.md`)
