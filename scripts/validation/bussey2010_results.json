@@ -1,0 +1,249 @@
+{
+ "meta": {
+  "dem": "ldem_64_uint.tif (64 px/deg, ~474 m)",
+  "reference": "Bussey et al. 2010, Icarus 208, Table 2"
+ },
+ "stepMin": 30,
+ "rows": [
+  {
+   "name": "Point A (Shackleton rim)",
+   "where": "published",
+   "mastM": 0,
+   "movedKm": 0,
+   "refPct": 81,
+   "anyPartPct": 54.6,
+   "centrePct": 51.6,
+   "meanDiscPct": 51.6
+  },
+  {
+   "name": "Point A (Shackleton rim)",
+   "where": "published",
+   "mastM": 2,
+   "movedKm": 0,
+   "refPct": 81,
+   "anyPartPct": 56.1,
+   "centrePct": 53,
+   "meanDiscPct": 53
+  },
+  {
+   "name": "Point A (Shackleton rim)",
+   "where": "nearest LOLA summit",
+   "mastM": 0,
+   "movedKm": 0.74,
+   "refPct": 81,
+   "anyPartPct": 87.9,
+   "centrePct": 83.9,
+   "meanDiscPct": 83.8
+  },
+  {
+   "name": "Point A (Shackleton rim)",
+   "where": "nearest LOLA summit",
+   "mastM": 2,
+   "movedKm": 0.74,
+   "refPct": 81,
+   "anyPartPct": 88.3,
+   "centrePct": 84.5,
+   "meanDiscPct": 84.4
+  },
+  {
+   "name": "Point B (ridge near Shackleton)",
+   "where": "published",
+   "mastM": 0,
+   "movedKm": 0,
+   "refPct": 82,
+   "anyPartPct": 44.6,
+   "centrePct": 41.9,
+   "meanDiscPct": 42
+  },
+  {
+   "name": "Point B (ridge near Shackleton)",
+   "where": "published",
+   "mastM": 2,
+   "movedKm": 0,
+   "refPct": 82,
+   "anyPartPct": 45.6,
+   "centrePct": 42.8,
+   "meanDiscPct": 42.9
+  },
+  {
+   "name": "Point B (ridge near Shackleton)",
+   "where": "nearest LOLA summit",
+   "mastM": 0,
+   "movedKm": 1.39,
+   "refPct": 82,
+   "anyPartPct": 90.9,
+   "centrePct": 88.1,
+   "meanDiscPct": 88
+  },
+  {
+   "name": "Point B (ridge near Shackleton)",
+   "where": "nearest LOLA summit",
+   "mastM": 2,
+   "movedKm": 1.39,
+   "refPct": 82,
+   "anyPartPct": 93.5,
+   "centrePct": 90.5,
+   "meanDiscPct": 90.4
+  },
+  {
+   "name": "Point C (de Gerlache rim)",
+   "where": "published",
+   "mastM": 0,
+   "movedKm": 0,
+   "refPct": 85,
+   "anyPartPct": 55.7,
+   "centrePct": 52,
+   "meanDiscPct": 52
+  },
+  {
+   "name": "Point C (de Gerlache rim)",
+   "where": "published",
+   "mastM": 2,
+   "movedKm": 0,
+   "refPct": 85,
+   "anyPartPct": 58.1,
+   "centrePct": 54.1,
+   "meanDiscPct": 54.2
+  },
+  {
+   "name": "Point C (de Gerlache rim)",
+   "where": "nearest LOLA summit",
+   "mastM": 0,
+   "movedKm": 1.34,
+   "refPct": 85,
+   "anyPartPct": 83.1,
+   "centrePct": 79.6,
+   "meanDiscPct": 79.6
+  },
+  {
+   "name": "Point C (de Gerlache rim)",
+   "where": "nearest LOLA summit",
+   "mastM": 2,
+   "movedKm": 1.34,
+   "refPct": 85,
+   "anyPartPct": 85.1,
+   "centrePct": 81.3,
+   "meanDiscPct": 81.5
+  },
+  {
+   "name": "Point D (ridge off Shackleton rim)",
+   "where": "published",
+   "mastM": 0,
+   "movedKm": 0,
+   "refPct": 86,
+   "anyPartPct": 52.8,
+   "centrePct": 51.6,
+   "meanDiscPct": 51.6
+  },
+  {
+   "name": "Point D (ridge off Shackleton rim)",
+   "where": "published",
+   "mastM": 2,
+   "movedKm": 0,
+   "refPct": 86,
+   "anyPartPct": 54.8,
+   "centrePct": 53.6,
+   "meanDiscPct": 53.6
+  },
+  {
+   "name": "Point D (ridge off Shackleton rim)",
+   "where": "nearest LOLA summit",
+   "mastM": 0,
+   "movedKm": 0.76,
+   "refPct": 86,
+   "anyPartPct": 84.6,
+   "centrePct": 80.3,
+   "meanDiscPct": 80.3
+  },
+  {
+   "name": "Point D (ridge off Shackleton rim)",
+   "where": "nearest LOLA summit",
+   "mastM": 2,
+   "movedKm": 0.76,
+   "refPct": 86,
+   "anyPartPct": 87.3,
+   "centrePct": 82.9,
+   "meanDiscPct": 82.9
+  },
+  {
+   "name": "Point M1 (Malapert)",
+   "where": "published",
+   "mastM": 0,
+   "movedKm": 0,
+   "refPct": 74,
+   "anyPartPct": 57.1,
+   "centrePct": 49.8,
+   "meanDiscPct": 49.6
+  },
+  {
+   "name": "Point M1 (Malapert)",
+   "where": "published",
+   "mastM": 2,
+   "movedKm": 0,
+   "refPct": 74,
+   "anyPartPct": 61.7,
+   "centrePct": 54.6,
+   "meanDiscPct": 54.8
+  },
+  {
+   "name": "Point M1 (Malapert)",
+   "where": "nearest LOLA summit",
+   "mastM": 0,
+   "movedKm": 1.4,
+   "refPct": 74,
+   "anyPartPct": 60.5,
+   "centrePct": 57.5,
+   "meanDiscPct": 57.5
+  },
+  {
+   "name": "Point M1 (Malapert)",
+   "where": "nearest LOLA summit",
+   "mastM": 2,
+   "movedKm": 1.4,
+   "refPct": 74,
+   "anyPartPct": 62.7,
+   "centrePct": 59.2,
+   "meanDiscPct": 59.2
+  },
+  {
+   "name": "Point M2 (Malapert)",
+   "where": "published",
+   "mastM": 0,
+   "movedKm": 0,
+   "refPct": 74,
+   "anyPartPct": 37.5,
+   "centrePct": 34.4,
+   "meanDiscPct": 34.4
+  },
+  {
+   "name": "Point M2 (Malapert)",
+   "where": "published",
+   "mastM": 2,
+   "movedKm": 0,
+   "refPct": 74,
+   "anyPartPct": 38.1,
+   "centrePct": 35,
+   "meanDiscPct": 35
+  },
+  {
+   "name": "Point M2 (Malapert)",
+   "where": "nearest LOLA summit",
+   "mastM": 0,
+   "movedKm": 1.59,
+   "refPct": 74,
+   "anyPartPct": 75.4,
+   "centrePct": 71.4,
+   "meanDiscPct": 71.3
+  },
+  {
+   "name": "Point M2 (Malapert)",
+   "where": "nearest LOLA summit",
+   "mastM": 2,
+   "movedKm": 1.59,
+   "refPct": 74,
+   "anyPartPct": 79.2,
+   "centrePct": 74.7,
+   "meanDiscPct": 74.7
+  }
+ ]
+}

@@ -22,3 +22,8 @@ Each session ends with 3 lines: done / in progress / blocked.
 - **Done (later)**: rerun on the 64 px/deg grid (474 m): 2027 Sun % 48–75, Earth % 41–95; values moved up to 15 points vs 16 px/deg (resolution sensitivity, see limitations).
 - **In progress**: nothing.
 - **Blocked**: nothing.
+
+## 2026-11-15 — Adam: terrain sunlight validation
+- **Done**: `scripts/validate_illumination.py` + `.mts`: our 2020 sunlight vs Bussey et al. 2010 (Icarus 208) at 6 published south pole points. At the nearest LOLA summit, the gap is at most 2 points at 3 of 6 points and at most 9 points at 5 of 6 (outlier Malapert M1, 61 vs 74 %). Results in `docs/validation.md`.
+- **In progress**: nothing.
+- **Blocked**: nothing.

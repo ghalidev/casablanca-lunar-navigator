@@ -79,7 +79,9 @@ def distances_km(px_km: float) -> np.ndarray:
     return np.concatenate([near, np.array(far)])
 
 
-def horizon_for(sample, lat0: float, lon0: float, px_km: float) -> tuple[list[float], float, list[float]]:
+def horizon_for(
+    sample, lat0: float, lon0: float, px_km: float, mast_m: float = MAST_M
+) -> tuple[list[float], float, list[float]]:
     d = distances_km(px_km) * 1000.0
     az = np.radians(np.arange(360.0))[:, None]
     th = (d / R_M)[None, :]
@@ -91,12 +93,12 @@ def horizon_for(sample, lat0: float, lon0: float, px_km: float) -> tuple[list[fl
     lon = np.degrees(l0 + np.arctan2(np.sin(az) * np.sin(th) * np.cos(p0), np.cos(th) - np.sin(p0) * sp))
     lon = (lon + 180.0) % 360.0 - 180.0
     h = sample(lat, lon)
-    h0 = float(sample(np.array([lat0]), np.array([lon0]))[0]) + MAST_M
+    h0 = float(sample(np.array([lat0]), np.array([lon0]))[0]) + mast_m
     el = np.degrees(np.arctan2((R_M + h) * np.cos(th) - (R_M + h0), (R_M + h) * np.sin(th)))
     k = np.argmax(el, axis=1)
     hor = el[np.arange(360), k]
     dist_of_max = d[k] / 1000.0
-    return [round(float(v), 3) for v in hor], h0 - MAST_M, [float(v) for v in dist_of_max]
+    return [round(float(v), 3) for v in hor], h0 - mast_m, [float(v) for v in dist_of_max]
 
 
 def dest(lat0: float, lon0: float, az: np.ndarray, d_m: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
