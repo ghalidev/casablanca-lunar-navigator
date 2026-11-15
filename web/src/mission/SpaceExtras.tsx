@@ -302,7 +302,13 @@ function LaunchListener({ onLaunch }: { onLaunch: (t: number) => void }) {
   useEffect(() => {
     const h = () => onLaunch(clock.getElapsedTime())
     window.addEventListener('lastlight:launch', h)
-    return () => window.removeEventListener('lastlight:launch', h)
+    // ?launch=<seconds> fires the liftoff automatically (video capture, demos).
+    const auto = Number(new URLSearchParams(window.location.search).get('launch'))
+    const id = Number.isFinite(auto) && auto > 0 ? window.setTimeout(() => window.dispatchEvent(new CustomEvent('lastlight:launch')), auto * 1000) : 0
+    return () => {
+      window.removeEventListener('lastlight:launch', h)
+      window.clearTimeout(id)
+    }
   }, [clock, onLaunch])
   return null
 }
