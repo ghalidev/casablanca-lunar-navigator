@@ -61,7 +61,7 @@ All parameters: `pipeline/config.py`. Every assumption with its source: `docs/as
 
 - **96.4 %** = 964 of 1,000 simulated landings of the *generic* lander at Malapert Massif on 15 Oct 2029 whose battery never ran empty in 14 days. Sampling uncertainty: 95 % interval 95.1 % to 97.4 % (Wilson, n = 1,000).
 - It is a **power-survival index for comparing places and days**, not the probability that a real mission succeeds: no thermal model, a generic lander, a simple 15° tip-over limit, region positions digitized by hand (±3 km). Model uncertainty is larger than the sampling uncertainty: changing the lander moves absolute values by 10 to 45 points, while Malapert stays first in 7 of 8 variants (`docs/sensitivity.md`).
-- Partial answers in the app: your own lander numbers, and a night-time heater draw as a first-order thermal proxy (Planner, `web/src/data/lander.ts`, tests in `lander.test.ts`). With the reference lander, that single upright landing agrees with the Monte Carlo majority verdict on 89.5 % of 1,863 sampled region-days; the gap is landing error.
+- Partial answers in the app: your own lander numbers, and a one-node thermal model (radiator to space, sunlight on the box, thermostat heater paid from the battery) (Planner, `web/src/data/lander.ts`, tests in `lander.test.ts`). With the reference lander, that single upright landing agrees with the Monte Carlo majority verdict on 89.5 % of 1,863 sampled region-days; the gap is landing error.
 
 ## Verify the numbers yourself
 
@@ -69,7 +69,7 @@ All parameters: `pipeline/config.py`. Every assumption with its source: `docs/as
 python3 pipeline/verify_published.py   # 1 s, no download: 9 regions, 13,023,000 landings, 964/1000 at Malapert 2029-10-15,
                                        # and 2027 survivors recounted from the shipped per-landing death hours (3,285 region-days)
 python3 -m pytest pipeline/test_core.py   # horizon and disc-fraction physics
-cd web && npm test                        # 45 tests, including ghost replay = published % for every 2027 day
+cd web && npm test                        # 47 tests, including ghost replay = published % for every 2027 day
 ```
 Full recomputation from NASA data (needs a Modal account): `modal run pipeline/app.py::fetch_all`, then `modal run pipeline/app.py` (horizons, Sun/Earth, survival 2027–2030), `::ghosts`, `::sensitivity`. Every output file carries `params_ref 319725853747`, the hash of `pipeline/config.py`.
 
@@ -80,13 +80,13 @@ Full recomputation from NASA data (needs a Modal account): `modal run pipeline/a
 - Our Sun/Earth angles vs an independent implementation (astronomy-engine): ≤ 0.014° over every hour of 2027; that implementation vs NASA JPL Horizons: ≤ 0.004° (600 comparisons). `docs/validation-pipeline.md`
 - Sun elevation never exceeds the physical limit at each latitude (within 0.05°).
 - Crash-test survivors equal the published probability for every site and day of 2027 (automated test).
-- **Not modelled / not yet proven:** no thermal model (survival is likely overestimated; night-heater proxy only); generic lander (own numbers in the Planner); the pixel-by-pixel comparison with the LROC illumination map is not finished; region positions digitized from NASA's map (±3 km). `docs/limitations.md`
+- **Not modelled / not yet proven:** no thermal model in the 1,000-lander percentages (survival is likely overestimated; a one-node thermal model is in the Planner); generic lander (own numbers in the Planner); skyline vs LROC photos checked at the only region inside the 88–90°S map, de Gerlache Rim 2: photos 87 % lit, our model 61 % (pessimistic on power, `docs/validation-lroc.md`, `python3 pipeline/validate_lroc.py`); region positions digitized from NASA's map (±3 km). `docs/limitations.md`
 
 ## Run it
 
 ```bash
 cd web && npm install && npm run dev      # http://localhost:5173
-npm test                                  # 45 unit tests (camera continuity, ghost replay, copilot whitelist, data)
+npm test                                  # 47 unit tests (camera continuity, ghost replay, copilot whitelist, data)
 npm run build
 python3 contracts/validate.py web/public/data   # every shipped file against contracts/schema.json
 ```
