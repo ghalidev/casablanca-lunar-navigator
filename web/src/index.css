@@ -11,8 +11,8 @@
   --earth: #4da3ff;
   --both: #5bd69a;
   --danger: #ff5a4e;
-  --display: 'Geist Variable', system-ui, sans-serif;
-  --body: 'Geist Variable', system-ui, sans-serif;
+  --display: 'Host Grotesk', system-ui, sans-serif;
+  --body: 'Host Grotesk', system-ui, sans-serif;
   --mono: 'Geist Mono Variable', ui-monospace, monospace;
   --r: 0px;
   color-scheme: dark;
@@ -23,7 +23,7 @@ html, body { margin: 0; background: var(--sky); color: var(--text); }
 body { font: 16px/1.55 var(--body); -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }
 a { color: inherit; }
 button, input { font: inherit; color: inherit; }
-h1, h2, h3 { font-family: var(--display); font-weight: 600; letter-spacing: -0.035em; line-height: 1.08; margin: 0; }
+h1, h2, h3 { font-family: var(--display); font-weight: 800; letter-spacing: -0.025em; line-height: 1.08; margin: 0; }
 h1 { font-size: clamp(36px, 5.4vw, 64px); }
 h2 { font-size: clamp(28px, 3.6vw, 42px); }
 h3 { font-size: 20px; }
@@ -422,10 +422,11 @@ h1.reveal .line { display: block; }
 .status.sun.on, .status.earth.on, .status.both.on { background: var(--panel); }
 
 /* ---------- one top bar for the whole app ---------- */
-.topbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 18px clamp(18px, 3vw, 40px); font-family: 'Geist Variable', system-ui, sans-serif; }
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 18px clamp(18px, 3vw, 40px); font-family: 'Host Grotesk', system-ui, sans-serif; }
 .topbar.is-page { position: sticky; top: 0; z-index: 20; background: rgba(7, 8, 11, .92); border-bottom: 1px solid var(--line); }
 .topbar-left { display: flex; align-items: center; gap: 22px; }
-.topbar-mark { color: #ecebe6; text-decoration: none; font-weight: 600; font-size: 17px; letter-spacing: -0.01em; }
+.topbar-mark { color: #ecebe6; text-decoration: none; font-weight: 800; font-size: 17px; letter-spacing: 0.14em; display: inline-flex; align-items: center; gap: 10px; }
+.topbar-mark img { display: block; }
 .topbar-back { display: inline-flex; align-items: center; gap: 6px; color: #ecebe6; text-decoration: none; font-size: 14px; padding: 7px 12px; border: 1px solid rgba(255, 181, 71, .55); transition: background .2s; }
 .topbar-back:hover { background: rgba(255, 181, 71, .1); }
 .topbar-links { display: flex; gap: 4px; margin-left: auto; }

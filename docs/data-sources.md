@@ -13,3 +13,6 @@ Every dataset, kernel, map, audio file used. Fill URL + version + licence + how 
 | Athena (IM-2) landing site & time | NASA / LROC / IM | TBD | | Athena replay | |
 | Voice-over | ElevenLabs (AI-generated) | — | | Video | |
 | Music / SFX | TBD | | | Video | must be licensed |
+| 3D models: Lunar Reconnaissance Orbiter (A), Apollo Lunar Module, Saturn V | NASA 3D Resources | https://github.com/nasa/NASA-3D-Resources (3D Models/…) | downloaded 2026-11-15 | Visual only in the 3D app (web/public/models/), shown enlarged, not to scale; labelled with info cards | Free to use (NASA 3D Resources usage guidelines) |
+| Soundtrack | Generated in the browser (Web Audio), web/src/mission/sound.ts | — | 2026-11-15 | Optional background music | No third-party audio |
+| Fonts: Host Grotesk, Geist Mono, IBM Plex Mono | Google Fonts / Fontsource | fonts.google.com | | UI text | SIL Open Font License |

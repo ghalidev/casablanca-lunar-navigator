@@ -1,5 +1,5 @@
 /* Mission mode. Instrument language: one accent (sunlight), sharp corners, hairlines,
-   Geist for words, Geist Mono for values. Blue only means Earth, red only means failure. */
+   Host Grotesk for words (ExtraBold titles, Regular text), Geist Mono for values. Blue only means Earth, red only means failure. */
 .mm {
   --ink: #07080b;
   --fg: #ecebe6;
@@ -14,7 +14,7 @@
   overflow: hidden;
   background: var(--ink);
   color: var(--fg);
-  font-family: 'Geist Variable', system-ui, sans-serif;
+  font-family: 'Host Grotesk', system-ui, sans-serif;
   font-feature-settings: 'ss01', 'tnum';
   -webkit-font-smoothing: antialiased;
 }
@@ -66,7 +66,7 @@
   position: absolute; z-index: 4; left: clamp(18px, 4vw, 64px); bottom: clamp(28px, 9vh, 96px);
   width: min(560px, calc(100vw - 36px));
 }
-.mm-panel h1, .mm-panel h2 { font-weight: 600; letter-spacing: -0.035em; line-height: 1.02; margin: 0; }
+.mm-panel h1, .mm-panel h2 { font-weight: 800; letter-spacing: -0.025em; line-height: 1.02; margin: 0; }
 .mm-panel h1 { font-size: clamp(38px, 5.2vw, 68px); max-width: 13ch; }
 .mm-panel h2 { font-size: clamp(32px, 4vw, 52px); }
 .mm-panel p { color: var(--fg-2); font-size: 17px; line-height: 1.5; margin: 18px 0 0; max-width: 46ch; }
@@ -104,7 +104,7 @@
 .pin {
   display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
   background: rgba(7, 8, 11, 0.72); color: #ecebe6; border: 1px solid rgba(236, 235, 230, 0.18);
-  padding: 6px 10px; font: 500 12px 'Geist Variable', system-ui, sans-serif; cursor: pointer;
+  padding: 6px 10px; font: 500 12px 'Host Grotesk', system-ui, sans-serif; cursor: pointer;
   transform: translateY(-50%); transition: border-color 0.2s, background 0.2s;
 }
 .pin:hover, .pin.on { border-color: #ffb547; background: rgba(7, 8, 11, 0.9); }
@@ -295,3 +295,27 @@
 @media (max-width: 720px) {
   .mm-readout.mm-five { grid-template-columns: repeat(3, auto); }
 }
+
+/* Info tags on 3D objects (SpaceExtras) */
+.sx-tag { position: relative; font-family: 'Host Grotesk', system-ui, sans-serif; color: var(--fg); transform: translateY(-8px); }
+.sx-tag-btn {
+  display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; cursor: pointer;
+  background: rgba(7, 8, 11, 0.62); border: 1px solid rgba(236, 235, 230, 0.22); color: var(--fg);
+  font: 600 12px 'Host Grotesk', system-ui, sans-serif; letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 9px;
+  backdrop-filter: blur(4px); transition: border-color 0.2s, background 0.2s;
+}
+.sx-tag-btn:hover, .sx-tag.open .sx-tag-btn { border-color: var(--amber); background: rgba(7, 8, 11, 0.85); }
+.sx-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 0 0 rgba(255, 181, 71, 0.6); animation: sx-pulse 2.4s ease-out infinite; }
+@keyframes sx-pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 181, 71, 0.55); } 70% { box-shadow: 0 0 0 8px rgba(255, 181, 71, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 181, 71, 0); } }
+.sx-card {
+  position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%); width: 280px;
+  background: rgba(7, 8, 11, 0.92); border: 1px solid var(--hair); border-top: 2px solid var(--amber); padding: 14px 16px;
+  animation: sx-in 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes sx-in { from { opacity: 0; transform: translate(-50%, 6px); } to { opacity: 1; transform: translate(-50%, 0); } }
+.sx-card p { margin: 0; font-size: 14px; line-height: 1.45; color: var(--fg-2); }
+.sx-card .sx-kicker { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); margin-bottom: 8px; }
+.sx-card .sx-credit { font-size: 11px; color: var(--fg-3); margin-top: 10px; }
+.sx-launch { margin-top: 12px; width: 100%; padding: 9px 12px; background: var(--amber); color: var(--ink); border: 0; font: 600 13px 'Host Grotesk', system-ui, sans-serif; cursor: pointer; }
+.sx-launch:hover { filter: brightness(1.08); }
+@media (prefers-reduced-motion: reduce) { .sx-dot, .sx-card { animation: none; } }

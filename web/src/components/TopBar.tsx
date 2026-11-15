@@ -7,8 +7,9 @@ export function TopBar({ variant = 'page', right }: { variant?: 'page' | 'missio
   return (
     <header className={'topbar is-' + variant}>
       <div className="topbar-left">
-        <Link to="/?ch=moon" className="topbar-mark">
-          Lastlight
+        <Link to="/?ch=moon" className="topbar-mark" aria-label="LASTLIGHT, back to the start">
+          <img src="/brand/lastlight-mark.svg" alt="" width={34} height={27} />
+          <span>LASTLIGHT</span>
         </Link>
         {variant === 'page' && (
           <Link to={lastMissionUrl()} className="topbar-back">

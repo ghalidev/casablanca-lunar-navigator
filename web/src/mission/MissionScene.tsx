@@ -8,6 +8,7 @@ import { EXAG, MOON_R_KM, localFrame, siteXZ, skyDir, type PoleTerrain } from '.
 import type { GhostLander, Site } from '../data/types'
 import { buildFlight, clonePose, sampleFlight, sampleFlightAt, turnUp, type Flight, type Pose } from '../film/camera'
 import { camBus } from '../film/bus'
+import { Lander, Orbiter, Rocket, StarField } from './SpaceExtras'
 
 /*
  * One continuous world in kilometres. The Moon's centre is at (0, -R, 0) with its south
@@ -38,7 +39,7 @@ export interface Light {
 
 const CENTER = new THREE.Vector3(0, -MOON_R_KM, 0)
 
-function Globe({ fade }: { fade: React.MutableRefObject<number> }) {
+function Globe({ fade, spin }: { fade: React.MutableRefObject<number>; spin: boolean }) {
   const [color, height] = useLoader(THREE.TextureLoader, ['/moon/color_4k.jpg', '/moon/globe_height.png'])
   // Configure once per texture. Setting needsUpdate on every render re-uploaded the 4K map
   // to the GPU each time the shot changed: a ~200 ms freeze at the start of every flight.
@@ -52,7 +53,17 @@ function Globe({ fade }: { fade: React.MutableRefObject<number> }) {
     }
   }, [color, height])
   const mat = useRef<THREE.MeshStandardMaterial>(null)
-  useFrame(() => {
+  const turn = useRef<THREE.Group>(null)
+  const angle = useRef(0)
+  useFrame((_, dt) => {
+    // Alive when idle: one full turn about the polar axis every ~3 minutes on the opening shot.
+    // Elsewhere it eases back to rest so the globe lines up with the pole relief it fades into.
+    if (spin) angle.current += Math.min(dt, 0.1) * 0.035
+    else {
+      const wrapped = Math.atan2(Math.sin(angle.current), Math.cos(angle.current))
+      angle.current = wrapped * Math.exp(-Math.min(dt, 0.1) * 2.5)
+    }
+    if (turn.current) turn.current.rotation.y = angle.current
     if (mat.current) {
       mat.current.opacity = fade.current
       mat.current.visible = fade.current > 0.01
@@ -61,10 +72,12 @@ function Globe({ fade }: { fade: React.MutableRefObject<number> }) {
   return (
     // Outer group puts 0° longitude at -z and 90° E at +x; inner flips the south pole up.
     <group position={CENTER} rotation={[0, Math.PI / 2, 0]}>
+      <group ref={turn}>
       <mesh rotation={[Math.PI, 0, 0]}>
         <sphereGeometry args={[MOON_R_KM, 256, 128]} />
         <meshStandardMaterial ref={mat} map={color} displacementMap={height} displacementScale={19.38 * 2} displacementBias={-8.88 * 2} roughness={1} metalness={0} transparent />
       </mesh>
+      </group>
     </group>
   )
 }
@@ -391,6 +404,12 @@ function Earth({ dir }: { dir: React.MutableRefObject<{ x: number; y: number; z:
   )
 }
 
+/** Relief coordinates of a site by id (for the lander model). */
+function siteAt(sites: Site[], id: string) {
+  const s = sites.find((x) => x.id === id)
+  return s ? siteXZ(s.lat, s.lon) : null
+}
+
 function poseFor(shot: Shot, terrain: PoleTerrain) {
   if (shot.kind === 'globe') {
     // The familiar near side (0° longitude faces -z), north up, tilted ~20° so the south
@@ -612,7 +631,11 @@ export function MissionScene({
       <FillLight light={light} />
       <SunRig light={light} />
       <Earth dir={earthDir} />
-      <Globe fade={fade} />
+      <StarField fade={fade} />
+      <Globe fade={fade} spin={shot.kind === 'globe'} />
+      <Orbiter visible={shot.kind === 'globe' || shot.kind === 'pole'} />
+      <Rocket visible={shot.kind === 'globe'} />
+      <Lander terrain={terrain} at={shot.kind === 'surface' && activeSite ? siteAt(sites, activeSite) : null} />
       <Relief terrain={terrain} fade={fade} />
       <SiteMarkers sites={sites} terrain={terrain} onPick={onPick} active={activeSite} show={showPins} badges={badges} />
       {athena && <AthenaMark terrain={terrain} at={athena} />}

@@ -221,6 +221,13 @@ export function Mission() {
     loadPoleTerrain().then(setTerrain)
   }, [])
 
+  // The lander's "Launch the ascent stage" button (SpaceExtras) rings a soft low bell.
+  useEffect(() => {
+    const h = () => sound.current?.thud()
+    window.addEventListener('lastlight:launch', h)
+    return () => window.removeEventListener('lastlight:launch', h)
+  }, [])
+
   // In-app links to "/?ch=…" (top bar, old routes) land on the shot they name.
   const loc = useLocation()
   const firstLoc = useRef(loc.key)

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 96" role="img" aria-label="LASTLIGHT">
+  <!-- The last sliver of sunlight grazing a lunar ridge; Earth as the small blue point. -->
+  <defs>
+    <mask id="crescent">
+      <rect width="120" height="96" fill="#fff"/>
+      <circle cx="71.5" cy="34" r="27" fill="#000"/>
+    </mask>
+    <clipPath id="sky"><path d="M0 0H120V80L91 63 78 70 60 52 38 74 0 76Z"/></clipPath>
+  </defs>
+  <g clip-path="url(#sky)">
+    <circle cx="66" cy="40" r="28" fill="#F2A93B" mask="url(#crescent)"/>
+  </g>
+  <circle cx="104" cy="12" r="4.2" fill="#4C8DF6"/>
+  <path d="M6 90 38 74 60 52 78 70 91 63 116 90Z" fill="#E8E6E1"/>
+  <path d="M38 74 60 52 64 72 50 90H6Z" fill="#D6D2C8"/>
+  <path d="M78 70 91 63 96 78 84 90H70Z" fill="#D6D2C8"/>
+  <path d="M60 52 78 70 70 90H50L64 72Z" fill="#F4F2EC"/>
+</svg>

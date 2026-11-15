@@ -10,7 +10,7 @@
   --both: #3fb68b;
   --alert: #e5484d;
   --dark-band: #000000;
-  --sans: 'IBM Plex Sans', system-ui, sans-serif;
+  --sans: 'Host Grotesk', system-ui, sans-serif;
   --mono: 'IBM Plex Mono', ui-monospace, monospace;
   color-scheme: dark;
 }
@@ -23,7 +23,7 @@ button, input { font: inherit; color: inherit; }
 
 .app { min-height: 100vh; display: flex; flex-direction: column; }
 .header { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 14px 20px; border-bottom: 1px solid var(--line); }
-.brand { font-family: var(--mono); font-weight: 600; letter-spacing: 0.28em; font-size: 18px; }
+.brand { font-family: var(--sans); font-weight: 800; letter-spacing: 0.16em; font-size: 20px; display: flex; align-items: center; gap: 10px; }
 .tagline { color: var(--muted); font-size: 13px; }
 
 .seg, .tabs { display: flex; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; width: fit-content; }
@@ -52,7 +52,7 @@ input[type='date'], .custom input { background: var(--bg); border: 1px solid var
 .banner.subtle { border-color: var(--line); }
 .banner.subtle b { color: var(--muted); }
 
-.site-head h2 { margin: 0; font-weight: 500; font-size: 22px; }
+.site-head h2 { margin: 0; font-weight: 800; font-size: 24px; }
 .explain { margin: 0; max-width: 70ch; color: #bdbab3; }
 
 .timeline { border: 1px solid var(--line); border-radius: 4px; padding: 12px 8px 10px; min-width: 0; overflow: hidden; }

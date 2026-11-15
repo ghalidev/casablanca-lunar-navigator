@@ -24,7 +24,10 @@ export function Header() {
   return (
     <header className="header">
       <div>
-        <div className="brand">LASTLIGHT</div>
+        <div className="brand">
+          <img src="/brand/lastlight-mark.svg" alt="" width={36} height={29} />
+          LASTLIGHT
+        </div>
         <div className="tagline">Choose where and when your lander survives the lunar south pole.</div>
       </div>
       <div className="header-actions">
