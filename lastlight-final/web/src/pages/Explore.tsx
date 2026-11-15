@@ -318,7 +318,8 @@ export function Explore() {
       { replace: true },
     )
   const pickDay = (d: number) => site && site.p[d] >= 0 && set({ date: isoOf(T0 + d * DAY) })
-  const pickSite = (id: string) => set({ site: id, date: q.get('date') })
+  // Keep the day on screen: the % on a region's button is the % you get after clicking it.
+  const pickSite = (id: string) => set({ site: id, date: day >= 0 ? iso : q.get('date') })
   const step = (dir: number) => {
     if (!site) return
     for (let d = day + dir; d >= 0 && d < site.p.length; d += dir) if (site.p[d] >= 0) return pickDay(d)
