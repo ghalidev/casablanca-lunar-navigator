@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=3" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=3" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LASTLIGHT · Where and when a lander survives the lunar south pole</title>
+    <meta name="description" content="LASTLIGHT simulates 1,000 landings per day at the nine NASA Artemis III candidate regions, 2027–2030, on NASA LOLA terrain and NASA/JPL SPICE ephemerides, and tells you how many landers keep their power for 14 days. NASA Space Apps Challenge 2026, team Casablanca, We Have A Solution." />
+    <meta name="theme-color" content="#07080B" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="LASTLIGHT · Land where the light lasts" />
+    <meta property="og:description" content="1,000 simulated landings per day at the nine Artemis III regions, 2027–2030. Best found: Malapert Massif, 15 Oct 2029, 96.4% survive 14 days." />
+    <meta property="og:image" content="/film/poster.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body style="background:#07080b">
+    <div id="root"></div>
+    <noscript>
+      <main style="max-width:720px;margin:40px auto;padding:0 18px;font:16px/1.6 system-ui,sans-serif;color:#ecebe6">
+        <h1>LASTLIGHT: land where the light lasts</h1>
+        <p>At the lunar south pole the Sun skims the horizon. One ridge in the wrong place and a lander goes dark: Athena (IM-2) landed at Mons Mouton on 6 March 2025 and went silent in under 13 hours.</p>
+        <p>LASTLIGHT answers one question before launch: if a lander aims at this site on this day, what is the chance it still has power after 14 days?</p>
+        <ul>
+          <li>Terrain: NASA LRO LOLA. Sun and Earth: NASA/JPL NAIF SPICE ephemerides, every hour of 2027–2030.</li>
+          <li>The nine NASA Artemis III candidate regions; 1,000 simulated landings per day with landing error, slope and tip-over; 13,023,000 landings in all.</li>
+          <li>Best day found: Malapert Massif, 15 October 2029, 96.4% of landers survive 14 days. Only Malapert reaches 95% with this generic lander.</li>
+          <li>Sun and Earth angles agree with NASA JPL Horizons to 0.004°. No machine learning; every number comes from the pipeline’s files.</li>
+        </ul>
+        <p>Made in Casablanca by Adam, Ghali and Yassine, team Casablanca, We Have A Solution, for the NASA Space Apps Challenge 2026. This site needs JavaScript for its 3D views.</p>
+        <p>NASA does not endorse any non-U.S. Government entity and is not responsible for information contained on non-U.S. Government websites. For non-U.S. Government websites, participants must comply with any data use parameters of that specific website.</p>
+      </main>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

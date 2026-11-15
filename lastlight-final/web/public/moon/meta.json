@@ -1,0 +1,17 @@
+{
+ "source": "NASA SVS CGI Moon Kit (ID 4720): LROC WAC color + LOLA elevation",
+ "globe": {
+  "height_min_m": -8878.5,
+  "height_max_m": 10504.0,
+  "ppd": 4
+ },
+ "pole": {
+  "size_px": 1024,
+  "lat_edge_deg": -82.5,
+  "radius_km": 227.43,
+  "height_min_m": -5419.677261783041,
+  "height_max_m": 6921.5755927154,
+  "projection": "azimuthal equidistant about the south pole; 0 deg lon up, 90 E right",
+  "dem_ppd": 16
+ }
+}

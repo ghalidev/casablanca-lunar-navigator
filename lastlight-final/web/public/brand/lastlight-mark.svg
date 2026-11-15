@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="LASTLIGHT">
+  <!-- The idea of the tool in one glyph: the Sun grazing the horizon, half gone behind a lunar ridge. -->
+  <defs>
+    <mask id="ll-sky">
+      <rect width="32" height="32" fill="#fff"/>
+      <path d="M0 32V22H5.5L15.5 11.5L21.5 17.5L24.5 15L32 22V32Z" fill="#000"/>
+    </mask>
+  </defs>
+  <circle cx="10.5" cy="19" r="6.2" fill="#FFB547" mask="url(#ll-sky)"/>
+  <path d="M1 22H5.5L15.5 11.5L21.5 17.5L24.5 15L31 22" fill="none" stroke="#ECEBE6" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

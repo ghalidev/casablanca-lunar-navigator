@@ -1,0 +1,5 @@
+public/mock/
+.vite/
+.wrangler/
+dist/
+node_modules/

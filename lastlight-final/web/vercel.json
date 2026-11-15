@@ -1,0 +1,3 @@
+{
+  "rewrites": [{ "source": "/((?!data/|mock/|assets/|favicon).*)", "destination": "/index.html" }]
+}
