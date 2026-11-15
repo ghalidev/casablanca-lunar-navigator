@@ -19,5 +19,6 @@ Each session ends with 3 lines: done / in progress / blocked.
 
 ## 2026-11-15 — Adam: LOLA terrain horizons
 - **Done**: `scripts/terrain_horizons.py` → `horizon` (360 az), `heightM`, lander point = highest LOLA point in NASA's region box (A11, A12). 2027 check: Sun max stays under the (90-|lat|)+1.6 limit at all 9 sites; Malapert Earth 95 %, de Gerlache Rim 2 Sun 85 %.
-- **In progress**: rerun on the 64 px/deg LOLA grid (530 MB download).
+- **Done (later)**: rerun on the 64 px/deg grid (474 m): 2027 Sun % 48–75, Earth % 41–95; values moved up to 15 points vs 16 px/deg (resolution sensitivity, see limitations).
+- **In progress**: nothing.
 - **Blocked**: nothing.
