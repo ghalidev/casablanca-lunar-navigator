@@ -26,7 +26,7 @@ in plain language.
 [TODO: video link (YouTube unlisted or Drive), or the slides]
 
 ## Link to Final Project
-[TODO: Vercel production URL] · Source: https://github.com/ghalidev/casablanca-lunar-navigator
+https://lunarnavigator-chi.vercel.app · Source: https://github.com/ghalidev/casablanca-lunar-navigator
 
 ## Detailed Description
 

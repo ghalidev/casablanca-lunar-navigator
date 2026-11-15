@@ -4,7 +4,7 @@
 
 Team Casablanca, NASA Space Apps Challenge 2026: *Lunar Landing Site Navigator*.
 
-Live app: _(add the Vercel link)_
+Live app: **https://lunarnavigator-chi.vercel.app**
 
 ## The problem
 
