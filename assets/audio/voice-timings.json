@@ -1,0 +1,359 @@
+{
+ "source": "assets/audio/voice.mp3",
+ "duration_s": 26.28,
+ "transcribed_by": "whisper-large-v3 (Groq)",
+ "segments": [
+  {
+   "start": 0,
+   "end": 2.2,
+   "text": "March 2025."
+  },
+  {
+   "start": 2.2,
+   "end": 5,
+   "text": "Athena lands at the lunar South Pole."
+  },
+  {
+   "start": 5,
+   "end": 7.5,
+   "text": "Thirteen hours later, it's dead."
+  },
+  {
+   "start": 7.5,
+   "end": 9.84,
+   "text": "Here, the sun never rises."
+  },
+  {
+   "start": 9.84,
+   "end": 11.64,
+   "text": "It circles the horizon."
+  },
+  {
+   "start": 11.64,
+   "end": 14.28,
+   "text": "One ridge, and your lander goes dark."
+  },
+  {
+   "start": 14.28,
+   "end": 16.24,
+   "text": "So, we crash it first."
+  },
+  {
+   "start": 16.24,
+   "end": 19.62,
+   "text": "Thousands of times, on NASA's real terrain."
+  },
+  {
+   "start": 19.62,
+   "end": 23.46,
+   "text": "Last Light tells you where and when your lander survives."
+  },
+  {
+   "start": 23.46,
+   "end": 26.36,
+   "text": "Open source for every mission to the pole."
+  }
+ ],
+ "words": [
+  {
+   "w": "March",
+   "start": 0,
+   "end": 0.46
+  },
+  {
+   "w": "2025.",
+   "start": 0.46,
+   "end": 2.22
+  },
+  {
+   "w": "Athena",
+   "start": 2.22,
+   "end": 2.66
+  },
+  {
+   "w": "lands",
+   "start": 2.66,
+   "end": 3.04
+  },
+  {
+   "w": "at",
+   "start": 3.04,
+   "end": 3.22
+  },
+  {
+   "w": "the",
+   "start": 3.22,
+   "end": 3.36
+  },
+  {
+   "w": "lunar",
+   "start": 3.36,
+   "end": 3.68
+  },
+  {
+   "w": "South",
+   "start": 3.68,
+   "end": 4.14
+  },
+  {
+   "w": "Pole.",
+   "start": 4.14,
+   "end": 4.94
+  },
+  {
+   "w": "Thirteen",
+   "start": 4.96,
+   "end": 5.36
+  },
+  {
+   "w": "hours",
+   "start": 5.36,
+   "end": 5.68
+  },
+  {
+   "w": "later,",
+   "start": 5.68,
+   "end": 6.14
+  },
+  {
+   "w": "it's",
+   "start": 6.14,
+   "end": 6.68
+  },
+  {
+   "w": "dead.",
+   "start": 6.68,
+   "end": 7.3
+  },
+  {
+   "w": "Here,",
+   "start": 7,
+   "end": 7.92
+  },
+  {
+   "w": "the",
+   "start": 7.92,
+   "end": 8.26
+  },
+  {
+   "w": "sun",
+   "start": 8.26,
+   "end": 8.44
+  },
+  {
+   "w": "never",
+   "start": 8.44,
+   "end": 8.88
+  },
+  {
+   "w": "rises.",
+   "start": 8.88,
+   "end": 9.76
+  },
+  {
+   "w": "It",
+   "start": 9.34,
+   "end": 10.06
+  },
+  {
+   "w": "circles",
+   "start": 10.06,
+   "end": 10.48
+  },
+  {
+   "w": "the",
+   "start": 10.48,
+   "end": 10.7
+  },
+  {
+   "w": "horizon.",
+   "start": 10.7,
+   "end": 11.46
+  },
+  {
+   "w": "One",
+   "start": 11.14,
+   "end": 11.9
+  },
+  {
+   "w": "ridge,",
+   "start": 11.9,
+   "end": 12.32
+  },
+  {
+   "w": "and",
+   "start": 12.32,
+   "end": 12.68
+  },
+  {
+   "w": "your",
+   "start": 12.68,
+   "end": 12.9
+  },
+  {
+   "w": "lander",
+   "start": 12.9,
+   "end": 13.1
+  },
+  {
+   "w": "goes",
+   "start": 13.1,
+   "end": 13.4
+  },
+  {
+   "w": "dark.",
+   "start": 13.4,
+   "end": 14.1
+  },
+  {
+   "w": "So,",
+   "start": 13.78,
+   "end": 14.66
+  },
+  {
+   "w": "we",
+   "start": 14.66,
+   "end": 15
+  },
+  {
+   "w": "crash",
+   "start": 15,
+   "end": 15.36
+  },
+  {
+   "w": "it",
+   "start": 15.36,
+   "end": 15.48
+  },
+  {
+   "w": "first.",
+   "start": 15.48,
+   "end": 16
+  },
+  {
+   "w": "Thousands",
+   "start": 15.74,
+   "end": 16.78
+  },
+  {
+   "w": "of",
+   "start": 16.78,
+   "end": 17.02
+  },
+  {
+   "w": "times,",
+   "start": 17.02,
+   "end": 17.52
+  },
+  {
+   "w": "on",
+   "start": 17.52,
+   "end": 17.82
+  },
+  {
+   "w": "NASA's",
+   "start": 17.82,
+   "end": 18.28
+  },
+  {
+   "w": "real",
+   "start": 18.28,
+   "end": 18.64
+  },
+  {
+   "w": "terrain.",
+   "start": 18.64,
+   "end": 19.44
+  },
+  {
+   "w": "Last",
+   "start": 19.62,
+   "end": 20
+  },
+  {
+   "w": "Light",
+   "start": 20,
+   "end": 20.12
+  },
+  {
+   "w": "tells",
+   "start": 20.12,
+   "end": 20.42
+  },
+  {
+   "w": "you",
+   "start": 20.42,
+   "end": 20.62
+  },
+  {
+   "w": "where",
+   "start": 20.62,
+   "end": 20.92
+  },
+  {
+   "w": "and",
+   "start": 20.92,
+   "end": 21.3
+  },
+  {
+   "w": "when",
+   "start": 21.3,
+   "end": 21.7
+  },
+  {
+   "w": "your",
+   "start": 21.7,
+   "end": 21.98
+  },
+  {
+   "w": "lander",
+   "start": 21.98,
+   "end": 22.34
+  },
+  {
+   "w": "survives.",
+   "start": 22.34,
+   "end": 23.4
+  },
+  {
+   "w": "Open",
+   "start": 22.96,
+   "end": 23.78
+  },
+  {
+   "w": "source",
+   "start": 23.78,
+   "end": 24.22
+  },
+  {
+   "w": "for",
+   "start": 24.22,
+   "end": 24.6
+  },
+  {
+   "w": "every",
+   "start": 24.6,
+   "end": 25.02
+  },
+  {
+   "w": "mission",
+   "start": 25.02,
+   "end": 25.34
+  },
+  {
+   "w": "to",
+   "start": 25.34,
+   "end": 25.58
+  },
+  {
+   "w": "the",
+   "start": 25.58,
+   "end": 25.78
+  },
+  {
+   "w": "pole.",
+   "start": 25.78,
+   "end": 26.22
+  }
+ ]
+}
