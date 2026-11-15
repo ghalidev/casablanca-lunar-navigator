@@ -1,3 +1,8 @@
+> **Final submission: LASTLIGHT, live at https://lastlight.apospace.com**
+> Where and when a lander survives the lunar south pole: 1,000 simulated landings per day at the nine NASA Artemis III regions, 2027–2030, on NASA LOLA terrain and NASA/JPL SPICE ephemerides.
+> 30 s demo: https://www.youtube.com/watch?v=ykuUuBfE5Ec
+> Its complete code, data, demo sources and submission texts are in [`lastlight-final/`](lastlight-final/) (start with [`lastlight-final/README.md`](lastlight-final/README.md)). Everything below documents the team's first prototype, kept as it was.
+
 # LASTLIGHT
 
 **Choose where and when your lander survives the lunar south pole.**
