@@ -88,7 +88,7 @@ Full list: `docs/data-sources.md`. Model assumptions: `docs/assumptions.md`.
   (`scripts/terrain_horizons.py`). Obstacles smaller than a few grid cells (small ridges, boulders) are not seen.
 - NASA publishes no numeric coordinates for the 9 regions; each is one point: the highest LOLA ground
   inside the region box digitized from NASA's map. A region is 15–30 km wide.
-- Terrain lighting is not yet validated against LROC illumination maps (the astronomy is: JPL Horizons).
+- (Prototype) terrain lighting not validated against LROC here. The final submission compares with the LROC map: `lastlight-final/docs/validation-lroc.md`.
 - No thermal model, no lander-specific panel geometry.
 
 Full list: `docs/limitations.md`.

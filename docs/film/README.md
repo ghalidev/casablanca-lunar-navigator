@@ -1,3 +1,5 @@
+> **Archived working notes (14–15 Nov), superseded.** They describe drafts and the first prototype and may contradict the final submission. The final submission, with its current results, validation and limits, is [`lastlight-final/`](../../lastlight-final/README.md) (start with its README).
+
 # Film app docs (`web/` and `video/`)
 
 Everything here belongs to the 3D film app in `web/` and the 30 s video in `video/`. It is kept apart from the shared docs on purpose,

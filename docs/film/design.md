@@ -1,3 +1,5 @@
+> **Archived working notes (14–15 Nov), superseded.** They describe drafts and the first prototype and may contradict the final submission. The final submission, with its current results, validation and limits, is [`lastlight-final/`](../../lastlight-final/README.md) (start with its README).
+
 # Direction visuelle de l'appli film (`web/`), v2, 14/11
 
 Périmètre : l'appli 3D dans `web/` uniquement. L'appli racine garde le design system du `CLAUDE.md` du repo. La structure en pages ci-dessous est remplacée par `single-film-design.md` (un seul film 3D) ; palette, polices, règles de texte et de mouvement restent valables pour `web/`.

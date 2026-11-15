@@ -1,3 +1,5 @@
+> **Archived working notes (14–15 Nov), superseded.** They describe drafts and the first prototype and may contradict the final submission. The final submission, with its current results, validation and limits, is [`lastlight-final/`](../lastlight-final/README.md) (start with its README).
+
 # Submission texts (NASA Space Apps 2026): root app, honest version
 
 Paste into the project page. Every claim below is true for what is on `main` tonight (Sun 15 Nov,

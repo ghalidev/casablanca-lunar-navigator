@@ -1,3 +1,5 @@
+> **Archived working notes (14–15 Nov), superseded.** They describe drafts and the first prototype and may contradict the final submission. The final submission, with its current results, validation and limits, is [`lastlight-final/`](../../lastlight-final/README.md) (start with its README).
+
 # LASTLIGHT web: one continuous film (design)
 
 Date: 2026-11-14. Status: approved in chat. Supersedes the multi-page layout of `design.md` (same folder), section Pages. Palette, fonts and copy rules of `design.md`, and the science rules of the repo `CLAUDE.md` (no invented numbers, mock banner, no ML), still hold. Applies to `web/` only.

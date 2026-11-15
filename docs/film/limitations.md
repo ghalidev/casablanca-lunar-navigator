@@ -1,3 +1,5 @@
+> **Archived working notes (14–15 Nov), superseded.** They describe drafts and the first prototype and may contradict the final submission. The final submission, with its current results, validation and limits, is [`lastlight-final/`](../../lastlight-final/README.md) (start with its README).
+
 # Film app: known limitations
 
 - **Mock data.** Sun, Earth, survival and top-10 files are the contract mock until the pipeline delivers; the "Mock data" banner stays visible and no number may be quoted.
