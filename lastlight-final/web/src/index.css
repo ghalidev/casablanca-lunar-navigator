@@ -343,3 +343,9 @@ body .copilot-dock .copilot-help li.ex code { color: var(--sun); }
 .builton small { font-size: 12px; color: #74746f; }
 .builton b { font-size: 15px; font-weight: 600; color: #ecebe6; letter-spacing: -0.005em; }
 @media (max-width: 760px) { .builton { grid-template-columns: 1fr 1fr; margin-top: -12px; } .builton li:nth-child(3) { border-left: 0; } .builton li:nth-child(n + 3) { border-top: 1px solid rgba(236, 235, 230, 0.12); } }
+
+/* Phones: all three places stay in the bar (Story, Planner, Method); the mark keeps its icon only. */
+@media (max-width: 440px) {
+  .topbar-mark span { display: none; }
+  .topbar-right { gap: 12px; }
+}

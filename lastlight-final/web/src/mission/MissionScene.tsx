@@ -332,7 +332,7 @@ function SiteMarkers({ sites, terrain, onPick, active, show, badges, tones }: { 
   const anchors = useRef<Record<string, THREE.Group | null>>({})
   const labels = useRef<Record<string, HTMLButtonElement | null>>({})
   const lift = useRef<Record<string, number>>({})
-  const { camera, size } = useThree()
+  const { camera, size, gl } = useThree()
   const tmp = useMemo(() => ({ v: new THREE.Vector3(), sc: new THREE.Vector3(), up: new THREE.Vector3(), right: new THREE.Vector3() }), [])
   const shift = useRef<Record<string, number>>({})
   useFrame((_, dt) => {
@@ -362,7 +362,14 @@ function SiteMarkers({ sites, terrain, onPick, active, show, badges, tones }: { 
     }
     items.sort((a, b) => b.sy - a.sy)
     const placed: { sx: number; y: number; w: number; h: number }[] = []
-    const k = 1 - Math.exp(-Math.min(dt, 0.1) * 10)
+    // The landing-day pill floats over the map: treat it as a label already placed so no region hides under it.
+    const pill = document.querySelector('.mm-when:not(.off)')
+    if (pill) {
+      const r = pill.getBoundingClientRect()
+      const c = gl.domElement.getBoundingClientRect()
+      if (r.width > 0) placed.push({ sx: r.left - c.left + r.width / 2, y: r.top - c.top + r.height / 2, w: r.width, h: r.height })
+    }
+    const k =1 - Math.exp(-Math.min(dt, 0.1) * 10)
     // Lift along the camera's own up axis, so a pixel of lift is a pixel on screen even when looking down.
     const up = tmp.up.set(0, 1, 0).applyQuaternion(cam.quaternion)
     const right = tmp.right.set(1, 0, 0).applyQuaternion(cam.quaternion)

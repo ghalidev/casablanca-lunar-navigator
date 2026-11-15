@@ -20,7 +20,7 @@ const PROOF = [
 const RECORD = [
   'Athena (IM-2) reached Mons Mouton on 6 March 2025, landed on its side and went dark in under 13 hours: its panels could not see the Sun.',
   'Odysseus (IM-1, 2024) landed tilted; its panels could not face the Sun. Six days of operations.',
-  'Of four commercial landers sent to the Moon by March 2025: one upright, two on their side, one never arrived.',
+  'Of the first four landers NASA sent through its commercial CLPS program, to March 2025: one upright, two on their side, one never arrived.',
 ]
 const FIT = [
   ['Compare landing sites', 'The nine Artemis III regions on real NASA terrain, ranked, side by side for any day'],

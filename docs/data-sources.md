@@ -16,3 +16,4 @@ Every dataset, kernel, map, audio file used. Fill URL + version + licence + how 
 | 3D models: Lunar Reconnaissance Orbiter (A), Apollo Lunar Module, Saturn V | NASA 3D Resources | https://github.com/nasa/NASA-3D-Resources (3D Models/…) | downloaded 2026-11-15 | Visual only in the 3D app (web/public/models/), shown enlarged, not to scale; labelled with info cards | Free to use (NASA 3D Resources usage guidelines) |
 | Soundtrack | Generated in the browser (Web Audio), web/src/mission/sound.ts | — | 2026-11-15 | Optional background music | No third-party audio |
 | Fonts: Host Grotesk, Geist Mono, IBM Plex Mono | Google Fonts / Fontsource | fonts.google.com | | UI text | SIL Open Font License |
+| Reference illumination (validation) | Bussey et al. 2010, Icarus 208, 558-564 (Kaguya topography) | https://doi.org/10.1016/j.icarus.2010.03.028 | read 2026-11-15 | Table 2 yearly sunlight at 6 points, compared in docs/validation.md | Cited, numbers only |
