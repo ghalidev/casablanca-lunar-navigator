@@ -68,9 +68,14 @@ function Main() {
                 {focus.lat.toFixed(3)}°, {focus.lon.toFixed(3)}°E · {focus.source}
               </div>
             </div>
-            <button className="btn" onClick={() => downloadTrack(focus, focusSamples, startDate, endDate)} disabled={focusSamples.length === 0}>
-              Download CSV
-            </button>
+            <div className="head-actions">
+              <a className="btn mobile-only" href="#site-panel">
+                Change site or dates
+              </a>
+              <button className="btn" onClick={() => downloadTrack(focus, focusSamples, startDate, endDate)} disabled={focusSamples.length === 0}>
+                Download CSV
+              </button>
+            </div>
           </div>
           {mode === 'explore' && (
             <p className="explain">

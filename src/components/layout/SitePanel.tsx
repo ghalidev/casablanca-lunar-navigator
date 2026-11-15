@@ -17,7 +17,7 @@ export function SitePanel() {
   };
 
   return (
-    <aside className="panel">
+    <aside className="panel" id="site-panel">
       <div className="map-box">
         <SouthPoleMap sites={sites} focusId={focusId} compareIds={compareIds} onFocus={setFocus} onCustom={addCustomSite} />
       </div>
