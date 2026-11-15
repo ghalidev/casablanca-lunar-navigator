@@ -3,7 +3,7 @@ import type { Site } from '../types';
 import { loadSites } from './sites';
 
 export type Mode = 'planner' | 'explore';
-export type Tab = 'site' | 'compare';
+export type Tab = 'site' | 'compare' | 'windows';
 
 export const MAX_COMPARE = 4;
 const DAY_MS = 86_400_000;
@@ -45,7 +45,7 @@ function readUrl(): UrlState {
     to: day('to'),
     compare: p.get('compare')?.split(',').filter(Boolean),
     mode: p.get('mode') === 'explore' ? 'explore' : undefined,
-    tab: p.get('tab') === 'compare' ? 'compare' : undefined,
+    tab: p.get('tab') === 'compare' ? 'compare' : p.get('tab') === 'windows' ? 'windows' : undefined,
     lat: hasPoint ? lat : undefined,
     lon: hasPoint ? lon : undefined,
   };
@@ -145,7 +145,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const shared = compareIds.filter((id) => !id.startsWith('custom-'));
     if (shared.length) p.set('compare', shared.join(','));
     if (mode === 'explore') p.set('mode', 'explore');
-    if (tab === 'compare') p.set('tab', 'compare');
+    if (tab !== 'site') p.set('tab', tab);
     window.history.replaceState(null, '', `${window.location.pathname}?${p.toString().replace(/%2C/g, ',')}`);
   }, [sitesLoading, sites, focusId, startDate, endDate, compareIds, mode, tab]);
 

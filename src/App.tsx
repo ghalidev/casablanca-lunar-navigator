@@ -7,7 +7,8 @@ import { Banners, Header } from './components/layout/Header';
 import { SitePanel } from './components/layout/SitePanel';
 import { Timeline } from './components/timeline/Timeline';
 import { MetricCards } from './components/cards/MetricCards';
-import { computeMetricsLocal } from './components/cards/localMetrics';
+import { computeMetrics } from './lib/metrics';
+import { WindowFinder } from './components/windows/WindowFinder';
 import { CompareTable } from './components/compare/CompareTable';
 import { downloadCompare, downloadTrack } from './components/layout/csv';
 
@@ -31,13 +32,13 @@ function Main() {
 
   const tracks = useTracks(needed, startISO, endISO, stepMin);
   const focusSamples = useMemo(() => (focus ? tracks.get(focus.id) ?? [] : []), [focus, tracks]);
-  const focusMetrics = useMemo(() => computeMetricsLocal(focusSamples, stepMin), [focusSamples, stepMin]);
+  const focusMetrics = useMemo(() => computeMetrics(focusSamples, stepMin), [focusSamples, stepMin]);
   const [timeIndex, setTimeIndex] = useState(0);
   const compareRows = useMemo(
     () =>
       sites
         .filter((s) => compareIds.includes(s.id))
-        .map((site) => ({ site, metrics: computeMetricsLocal(tracks.get(site.id) ?? [], stepMin) })),
+        .map((site) => ({ site, metrics: computeMetrics(tracks.get(site.id) ?? [], stepMin) })),
     [sites, compareIds, tracks, stepMin],
   );
 
@@ -52,6 +53,9 @@ function Main() {
         </button>
         <button role="tab" aria-selected={tab === 'compare'} className={tab === 'compare' ? 'on' : ''} onClick={() => setTab('compare')}>
           Compare ({compareIds.length})
+        </button>
+        <button role="tab" aria-selected={tab === 'windows'} className={tab === 'windows' ? 'on' : ''} onClick={() => setTab('windows')}>
+          Best dates
         </button>
       </div>
 
@@ -80,6 +84,8 @@ function Main() {
           <SkyPanel site={focus} samples={focusSamples} index={timeIndex} onIndex={setTimeIndex} />
         </>
       )}
+
+      {tab === 'windows' && <WindowFinder mode={mode} />}
 
       {tab === 'compare' && (
         <>

@@ -14,3 +14,4 @@ Every modelling choice: value, justification, source. Numbers here must match `p
 | A8 | Landing dispersion σ | TBD | Motivated by Athena: 250 m (IM) / >400 m (NASA) from target | |
 | A9 | Lander panels, battery, load | TBD | | `pipeline/config.py` |
 | A10 | Comms OK threshold on `earth_frac` | TBD | | |
+| A11 | Best-dates window score | sunlight % + 0.5 x Earth-in-view % - 2 x longest darkness (h); ties broken by energy | Power first (a lander dies in the dark), comms second, long nights penalised. Samples every 2 h, candidate start every 6 h, best 3 non-overlapping windows per site. | `src/lib/windows.ts` |

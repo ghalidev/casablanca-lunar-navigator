@@ -113,3 +113,13 @@ input[type='date'], .custom input { background: var(--bg); border: 1px solid var
 .sky-controls { display: flex; gap: 10px; align-items: center; }
 .sky-controls input[type='range'] { flex: 1; min-width: 0; accent-color: var(--sun); }
 @media (max-width: 860px) { .sky-panel { grid-template-columns: minmax(0, 1fr); } }
+
+.finder { display: flex; flex-direction: column; gap: 12px; }
+.finder-controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
+.finder-controls label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted); }
+.finder-controls input, .finder-controls select { background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: 4px; padding: 5px 6px; font: inherit; }
+.finder-controls input[type='number'] { width: 80px; }
+.btn.primary { border-color: var(--sun); color: var(--sun); }
+.windows tbody tr { cursor: pointer; }
+.windows tbody tr:hover { background: #18181b; }
+.windows td:first-child, .windows th:first-child { text-align: left; }
