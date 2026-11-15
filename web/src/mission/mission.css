@@ -319,3 +319,9 @@
 .sx-launch { margin-top: 12px; width: 100%; padding: 9px 12px; background: var(--amber); color: var(--ink); border: 0; font: 600 13px 'Host Grotesk', system-ui, sans-serif; cursor: pointer; }
 .sx-launch:hover { filter: brightness(1.08); }
 @media (prefers-reduced-motion: reduce) { .sx-dot, .sx-card { animation: none; } }
+
+/* Tall data panels (Compare, Best windows) sit over bright terrain: a stronger, taller scrim. */
+.mm-panel.is-plan::before, .mm-panel.is-verdict::before {
+  top: -14vh; bottom: -10vh; right: -18vw;
+  background: linear-gradient(90deg, rgba(5, 6, 10, 0.92) 0%, rgba(5, 6, 10, 0.86) 62%, rgba(5, 6, 10, 0.5) 82%, transparent 100%);
+}

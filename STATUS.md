@@ -40,3 +40,23 @@ Feature freeze at hour 2:30. Submit at least 1 hour before the deadline.
 - Fixed: black 3D view when two overview chapters sit next to each other (zero-length camera flight → NaN).
 - Deploy: in Vercel, set the project's Root Directory to `web` (main link), and add a second project at the repo root for the classic app.
 - Not verified on a real GPU: open http://localhost:5191 (or the Vercel preview) and scroll through all chapters once.
+
+## Overnight Sun 15 Nov ~03:00–05:00 (Claude, while the team slept): the 3D app comes alive
+All pushed to `main`; also live on the temporary Cloudflare link while Ghali's PC stays on.
+- **Logo**: redrawn as SVG from the Gemini design (`web/public/brand/lastlight-mark.svg`, favicon) in both apps.
+- **Fonts**: Host Grotesk ExtraBold (800) titles, Regular (400) text; numbers stay monospace.
+- **Alive when idle**: twinkling star field + faint Milky Way band; the Moon turns slowly on the opening shot.
+- **NASA 3D models** (NASA 3D Resources GitHub, public): LRO orbiting over the pole (its LOLA laser made our terrain),
+  Saturn V drifting past the Moon, Apollo Lunar Module at the chosen site. Each has a clickable info card.
+  Click "Lander" → "Launch the ascent stage" for a liftoff. `&launch=5` in the URL launches after 5 s (for the video).
+  Models are enlarged (constant on-screen size) and every card says "not to scale".
+- **Soundtrack**: new generative music (calm major-key pads, soft pentatonic bells, echo, reverb), softer in the dark.
+- Compare / Best windows panels got a darker backdrop (text was hard to read over bright terrain).
+- Checked: all 6 chapters render on the real GPU (screenshots), 30 tests pass, both apps build.
+- NOT checked: how the music sounds (I can't listen), phones, and the copilot (needs the Groq key).
+
+### First things this morning
+1. Open the app and scroll through it once with sound ON. If the music or anything feels wrong, say so.
+2. Vercel: Settings → Build and Deployment → Root Directory = `web` → Redeploy (the main link becomes the 3D app).
+3. Record the 30 s video from the 3D app (tip: `?ch=site&site=haworth&launch=4` for the liftoff shot).
+4. Rehearse twice (docs/rehearsal.md), then submit.
