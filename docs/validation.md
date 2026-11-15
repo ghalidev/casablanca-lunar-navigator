@@ -50,10 +50,10 @@ Per site, date and body:
   orientation model (IAU rotation model in astronomy-engine vs the high-precision lunar orientation
   Horizons uses), not from the site geometry.
 - At these levels the sunlight and Earth-visibility timings shown in the app are not limited by the
-  ephemeris. They are limited by **terrain** (flat horizon today) and by the **site position**
+  ephemeris. They are limited by **terrain resolution** (474 m LOLA grid) and by the **site position**
   (one point per region, about ±3 km).
 
 ## What this does not validate
-- Terrain: the horizon is flat until LOLA terrain horizons are added. Validating terrain lighting
-  needs a comparison with LROC or LOLA-based illumination maps (not done).
+- Terrain: the LOLA terrain horizons (Adam, `scripts/terrain_horizons.py`) are not validated here. Validating
+  terrain lighting needs a comparison with LROC or LOLA-based illumination maps (not done).
 - Site positions (digitized from NASA's map, documented in `docs/assumptions.md`, A7).

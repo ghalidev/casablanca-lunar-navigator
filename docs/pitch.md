@@ -40,8 +40,8 @@ Open the live link. Have it loaded before you start. Planner mode.
 > one hundredth of the width of the Sun."
 (Validation done: docs/validation.md.)
 
-> "And we say what we don't do yet: the horizon is flat, so real sites can be darker. Terrain from
-> NASA's LOLA laser altimeter is our next step." (drop this line if the terrain ships)
+> "And the hills are real: every site's skyline comes from NASA's LOLA laser altimeter, out to
+> 200 kilometres. What we don't model yet, we write on the screen."
 
 ## 2:30–2:50 · Impact (Adam)
 > "NASA's own site-selection paper says a single region rarely meets every constraint, so several
@@ -58,7 +58,7 @@ Open the live link. Have it loaded before you start. Planner mode.
 |---|---|
 | Where do the positions come from? | NASA publishes no coordinate table for the 9 regions; we read the centre of each region box on NASA's official map (George et al., LPSC 2026), about ±3 km. Documented in docs/assumptions.md. |
 | How accurate is the Sun/Earth position? | IAU lunar orientation model + astronomy-engine; compared with JPL Horizons (docs/validation.md). |
-| Why is the horizon flat? | Terrain needs NASA's LOLA elevation model; [shipped / in progress]. Flat horizon is labelled on screen. |
+| Where do the hills come from? | NASA LOLA elevation grid (474 m), 360 directions, out to 200 km, Moon curvature included (scripts/terrain_horizons.py). Smaller obstacles are not seen; we say so. |
 | Did AI make the numbers? | No. Code was co-written with Claude Code; every number is computed by our code. The film app's copilot only triggers UI actions. |
 | What's next? | Real terrain, landing-error uncertainty, survival odds per window, the Athena replay. |
 

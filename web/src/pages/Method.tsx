@@ -4,7 +4,7 @@ import { motion } from 'motion/react'
 const STEPS = [
   { n: 1, title: 'The Moon’s orientation', text: 'For every hour, the Moon’s pole direction and spin come from the IAU lunar rotation model, so we know which way each site faces.' },
   { n: 2, title: 'Sun and Earth, hour by hour', text: 'The astronomy-engine library gives where the Sun and Earth are. We turn that into azimuth and elevation seen from the site, including the Earth parallax (about 0.26°).' },
-  { n: 3, title: 'Power and a line home', text: 'The share of the Sun’s disc above the horizon gives sunlight; a vertical panel turned to the Sun gives power. Earth counts when its centre is above the horizon.' },
+  { n: 3, title: 'Power and a line home', text: 'From each site, NASA LOLA terrain (474 m grid) out to 200 km, seen from a 2 m mast with the Moon’s curvature, gives the skyline in every direction. The share of the Sun’s disc above that skyline gives sunlight; Earth counts when its centre clears it.' },
   { n: 4, title: 'Every landing date, ranked', text: 'For a 6- or 14-day mission we try a landing every 6 hours at every region and rank them: sunlight first, Earth second, long nights penalised.' },
 ]
 
@@ -71,8 +71,8 @@ export function Method() {
         <div>
           <h2 className="section-title">What we don’t model yet</h2>
           <ul className="plain">
-            <li>Terrain shadows: the horizon is treated as flat. Mountains up to 150 km away can hide a low Sun, so real sites can be darker. NASA LOLA terrain horizons are our next step.</li>
-            <li>Exact landing points: each Artemis III region is one point read off NASA’s map (about ±3 km).</li>
+            <li>Terrain finer than the 474 m LOLA grid: small ridges and boulders near the lander.</li>
+            <li>Exact landing points: each Artemis III region is one point, its highest ground inside the region box read off NASA’s map.</li>
             <li>Temperature, dust, rocks and slopes, landing error.</li>
             <li>The 3D relief (×2.5) is a visual from NASA’s CGI Moon Kit (LOLA, LROC); it does not enter the numbers.</li>
           </ul>

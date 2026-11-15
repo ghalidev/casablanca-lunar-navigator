@@ -651,7 +651,7 @@ export function Mission() {
                     <div className="mm-readout">
                       <div className={sunOn ? 'sun' : 'off'}>
                         <span>Sun</span>
-                        <b>{series ? (sunOn ? 'Visible' : 'Below horizon') : '…'}</b>
+                        <b>{series ? (sunOn ? 'Visible' : 'Behind terrain') : '…'}</b>
                       </div>
                       <div className={earthOn ? 'earth' : 'off'}>
                         <span>Earth</span>
@@ -805,7 +805,7 @@ export function Mission() {
                         </li>
                       ))}
                     </ol>
-                    <p className="mm-fine">Score: sunlight % + 0.5 × Earth-in-view % − 2 × longest night (h). Flat horizon: terrain shadows not included yet.</p>
+                    <p className="mm-fine">Score: sunlight % + 0.5 × Earth-in-view % − 2 × longest night (h). Terrain horizons from NASA LOLA; each region is one point (its highest ground).</p>
                     <div className="mm-actions">
                       <button className="mm-cta ghost" onClick={downloadCsv} disabled={!rows.length}>
                         <DownloadSimple size={16} /> Export CSV
@@ -871,9 +871,9 @@ export function Mission() {
               {chapter === 'crash'
                 ? 'Ghost landers drawn 3× real size; positions and failures from the landing simulation. Relief ×2.5, real LOLA terrain.'
                 : chapter === 'site'
-                  ? 'Sun and Earth: our ephemeris, checked against NASA JPL Horizons (max 0.004°). Horizon treated as flat; relief ×2.5 is visual only.'
+                  ? 'Sun and Earth: our ephemeris, checked against NASA JPL Horizons (max 0.004°). Horizon: NASA LOLA terrain (474 m grid). Relief ×2.5 is visual only.'
                   : chapter === 'plan' || chapter === 'verdict'
-                    ? 'Real hourly Sun and Earth data for 2027 from our validated ephemeris. Flat horizon: terrain shadows not included yet.'
+                    ? 'Real hourly Sun and Earth data for 2027 from our validated ephemeris, against NASA LOLA terrain horizons.'
                   : chapter === 'moon'
                     ? 'LROC colour, LOLA relief: NASA SVS CGI Moon Kit.'
                     : 'Relief ×2.5, overview lighting. Terrain and colour: LRO (LOLA, LROC), NASA SVS CGI Moon Kit.'}

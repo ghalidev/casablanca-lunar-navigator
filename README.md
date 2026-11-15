@@ -78,10 +78,11 @@ Full list: `docs/data-sources.md`. Model assumptions: `docs/assumptions.md`.
 
 ## Limitations
 
-- **Terrain is not included yet**: the horizon is treated as flat (0°). Near the pole, mountains up
-  to ~150 km away can block a Sun that is only a few degrees high, so real sites can be darker than shown.
-- NASA publishes no numeric coordinates for the 9 regions; each is one point digitized from NASA's
-  map and stands for a region 15–30 km wide.
+- **Terrain** comes from a global NASA LOLA grid (474 m), out to 200 km with the Moon's curvature
+  (`scripts/terrain_horizons.py`). Obstacles smaller than a few grid cells (small ridges, boulders) are not seen.
+- NASA publishes no numeric coordinates for the 9 regions; each is one point: the highest LOLA ground
+  inside the region box digitized from NASA's map. A region is 15–30 km wide.
+- Terrain lighting is not yet validated against LROC illumination maps (the astronomy is: JPL Horizons).
 - No thermal model, no lander-specific panel geometry.
 
 Full list: `docs/limitations.md`.

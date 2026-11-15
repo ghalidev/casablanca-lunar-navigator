@@ -2,7 +2,7 @@
 // the root app (src/lib/ephemeris.ts, checked against NASA JPL Horizons: docs/validation.md).
 //   cd web && node --experimental-strip-types scripts/gen-real-data.mts
 //
-// Writes: sites.json (Adam's NASA-map positions, FLAT horizon), series/{id}_2027.json (hourly),
+// Writes: sites.json (Adam's NASA-map positions + LOLA terrain horizons), series/{id}_2027.json (hourly),
 // windows.json (best landing windows, real ranking from src/lib/windows.ts).
 // No survival / crash-test files: that landing simulation was never built.
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
@@ -18,7 +18,7 @@ const OUT = join(here, '..', 'public', 'data')
 const YEAR = 2027
 const EARTH_RADIUS_DEG = 0.95 // mean apparent radius of Earth from the Moon
 const SOLAR_CONSTANT = 1361 // W/m²
-const PARAMS = 'astronomy-engine IAU lunar model; flat horizon (0°); validated vs JPL Horizons, max 0.004° (docs/validation.md)'
+const PARAMS = 'astronomy-engine IAU lunar model; LOLA terrain horizons (scripts/terrain_horizons.py); validated vs JPL Horizons, max 0.004° (docs/validation.md)'
 const r3 = (x: number) => Math.round(x * 1000) / 1000
 
 interface RawSite {
@@ -28,11 +28,25 @@ interface RawSite {
   lon: number
   source: string
   approximate?: boolean
+  heightM?: number
+  horizon?: number[] // terrain horizon elevation (deg), one value per azimuth step from 0° (north), clockwise
+  horizonSource?: string
 }
 
 const raw = JSON.parse(readFileSync(join(ROOT, 'public', 'data', 'sites.json'), 'utf8')) as { sites: RawSite[] }
-const sites: Site[] = raw.sites.map((s) => ({ id: s.id, name: s.name, lat: s.lat, lon: s.lon, source: s.source, approximate: s.approximate }))
+const sites: Site[] = raw.sites.map((s) => ({ id: s.id, name: s.name, lat: s.lat, lon: s.lon, heightM: s.heightM, source: s.source, approximate: s.approximate, horizon: s.horizon }))
 const flat = new Array(720).fill(0)
+/** Resample a horizon (any number of azimuth steps) to the film's 720 values at 0.5°, linear and wrapping. */
+function to720(h: number[] | undefined): number[] {
+  if (!h || !h.length) return flat
+  const n = h.length
+  return Array.from({ length: 720 }, (_, i) => {
+    const x = ((i * 0.5) / 360) * n
+    const i0 = Math.floor(x) % n
+    const f = x - Math.floor(x)
+    return r3(h[i0] * (1 - f) + h[(i0 + 1) % n] * f)
+  })
+}
 const now = new Date().toISOString()
 
 mkdirSync(join(OUT, 'series'), { recursive: true })
@@ -50,8 +64,9 @@ writeFileSync(
       lon: s.lon,
       position_source: 'digitized',
       position_note: s.source,
-      elevation_m: 0,
-      horizon: { az_step_deg: 0.5, mast_2m: flat, mast_10m: flat },
+      horizon_source: s.horizonSource ?? (s.horizon ? 'terrain' : 'flat'),
+      elevation_m: s.heightM ?? 0,
+      horizon: { az_step_deg: 0.5, mast_2m: to720(s.horizon), mast_10m: to720(s.horizon) },
       validation: { lroc_illum_pct: null, model_illum_pct: null },
     })),
   }),
@@ -109,7 +124,7 @@ writeFileSync(
       mock: false,
       params_ref: PARAMS,
       year: YEAR,
-      score: 'sunlight % + 0.5 x Earth-in-view % - 2 x longest darkness (h); ties broken by energy (docs/assumptions.md A11)',
+      score: 'sunlight % + 0.5 x Earth-in-view % - 2 x longest darkness (h); ties broken by energy (docs/assumptions.md A13)',
       windows,
     },
     null,
