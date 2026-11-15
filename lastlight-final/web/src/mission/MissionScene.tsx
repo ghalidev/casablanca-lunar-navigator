@@ -2,7 +2,7 @@ import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber'
 import { Html, PerformanceMonitor } from '@react-three/drei'
 import { Bloom, EffectComposer, Noise, ToneMapping, Vignette } from '@react-three/postprocessing'
 import { BlendFunction, ToneMappingMode } from 'postprocessing'
-import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { Suspense, memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js'
 import { injectReliefDetail } from './reliefDetail'
@@ -42,8 +42,10 @@ export interface Light {
 
 const CENTER = new THREE.Vector3(0, -MOON_R_KM, 0)
 
-function Globe({ fade, spin }: { fade: React.MutableRefObject<number>; spin: boolean }) {
+function Globe({ fade, spin, onReady }: { fade: React.MutableRefObject<number>; spin: boolean; onReady: () => void }) {
   const [color, height] = useLoader(THREE.TextureLoader, ['/moon/color_4k.jpg', '/moon/globe_height.png'])
+  // Committed = both textures are in: the rest of the scene (pole relief, NASA models) may start loading now.
+  useEffect(() => onReady(), [onReady])
   // Configure once per texture. Setting needsUpdate on every render re-uploaded the 4K map
   // to the GPU each time the shot changed: a ~200 ms freeze at the start of every flight.
   useMemo(() => {
@@ -815,6 +817,9 @@ function MissionSceneImpl({
   prev: Shot | null
   next: Shot | null
 }) {
+  // Deep links straight to the pole or the ground load everything at once (no Moon-first stage).
+  const [late, setLate] = useState(shot.kind !== 'globe')
+  const showLate = useMemo(() => () => setLate(true), [])
   const fade = useRef(1)
   const [dpr, setDpr] = useState(() => Math.min(1.5, window.devicePixelRatio))
   useEffect(() => {
@@ -844,10 +849,16 @@ function MissionSceneImpl({
       <SunRig light={light} label={skyLabels} />
       <Earth dir={earthDir} label={skyLabels} />
       <StarField fade={fade} />
-      <Globe fade={fade} spin={shot.kind === 'globe'} />
-      <Orbiter visible={shot.kind === 'globe' || shot.kind === 'pole'} />
-      <Lander terrain={terrain} at={shot.kind === 'surface' && activeSite ? siteAt(sites, activeSite) : null} />
-      <Relief terrain={terrain} fade={fade} />
+      <Globe fade={fade} spin={shot.kind === 'globe'} onReady={showLate} />
+      {/* Loaded after the Moon is on screen (first paint ~3 MB sooner); the opening shot doesn't need them. */}
+      {late && (
+        <Suspense fallback={null}>
+          <Orbiter visible={shot.kind === 'globe' || shot.kind === 'pole'} />
+          <Lander terrain={terrain} at={shot.kind === 'surface' && activeSite ? siteAt(sites, activeSite) : null} />
+          <Relief terrain={terrain} fade={fade} />
+          <Warmup />
+        </Suspense>
+      )}
       <SiteMarkers sites={sites} terrain={terrain} onPick={onPick} active={activeSite} show={showPins} badges={badges} tones={tones} />
       {athena && <AthenaMark terrain={terrain} at={athena} />}
       {crash && crash.landers.length > 0 && <CrashGhosts terrain={terrain} crash={crash} />}

@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
+import { REFERENCE } from '../data/lander'
+import { formatLander, parseLander } from '../pages/LanderLab'
 import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
 import type { Action, CopilotPlan, SiteId } from './actions'
@@ -69,6 +71,7 @@ export const COMMANDS: Cmd[] = [
   { name: 'athena', args: '', hint: 'Where Athena tipped over, March 2025', sites: 0 },
   { name: 'verdict', args: '', hint: 'Best day of each region', sites: 0, alias: ['top'] },
   { name: 'moon', args: '', hint: 'Back to the whole Moon', sites: 0, alias: ['home'] },
+  { name: 'lander', args: '[region] [date] [4000wh] [90w] [6 panels] [warm]', hint: 'Your own lander: battery, load, panels, thermal model', sites: 1, alias: ['design'] },
   { name: 'planner', args: '[region] [date]', hint: 'Every landing day 2027–2030, ranked, CSV', sites: 1, alias: ['plan'] },
   { name: 'method', args: '', hint: 'Data, validation, assumptions, limits', sites: 0 },
   { name: 'help', args: '', hint: 'Every command, with examples', sites: 0, alias: ['?'] },
@@ -118,6 +121,32 @@ function parseCommand(text: string, sites: SiteRef[], today: string): Local | nu
       if (s) q.set('site', s.id)
       if (date) q.set('date', date)
       return { plan: { say: '', actions: [] }, nav: `/explore${q.toString() ? `?${q}` : ''}` }
+    }
+    case 'lander': {
+      // Lander numbers are written with their units, so they never collide with a region name.
+      const L = { ...REFERENCE }
+      const take = (re: RegExp, f: (m: RegExpMatchArray) => void) => {
+        const mm = rest.match(re)
+        if (mm) {
+          f(mm)
+          rest = rest.replace(mm[0], ' ').trim()
+        }
+      }
+      take(/\b(\d{4}-\d{2}-\d{2})\b/, (x) => (date = x[1]))
+      take(/(\d+(?:\.\d+)?)\s*kwh\b/i, (x) => (L.batteryWh = Number(x[1]) * 1000))
+      take(/(\d+)\s*wh\b/i, (x) => (L.batteryWh = Number(x[1])))
+      take(/(\d+)\s*w\b/i, (x) => (L.loadW = Number(x[1])))
+      take(/(\d+(?:\.\d+)?)\s*m2\b/i, (x) => (L.areaM2 = Number(x[1])))
+      take(/(\d+)\s*%/, (x) => (L.efficiency = Number(x[1]) / 100))
+      take(/\b([1-8])\s*(?:panels?|faces?)\b/i, (x) => (L.faces = Number(x[1])))
+      take(/\b(?:sun-?)?tracking\b/i, () => (L.faces = 0))
+      take(/\b(?:warm|thermal|heaters?)\b/i, () => Object.assign(L, { radiatorM2: 0.5, tMinC: -20 }))
+      const s = one()
+      const q = new URLSearchParams()
+      if (s) q.set('site', s.id)
+      q.set('date', date ?? today)
+      q.set('lander', formatLander(parseLander(formatLander(L))))
+      return { plan: { say: '', actions: [] }, nav: `/explore?${q}#lander` }
     }
     case 'method':
       return { plan: { say: '', actions: [{ type: 'open_method' }] } }

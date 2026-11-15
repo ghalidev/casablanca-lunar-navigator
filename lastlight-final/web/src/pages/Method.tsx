@@ -14,8 +14,8 @@ const STEPS = [
 // The case in one screen. Every figure comes from the pipeline outputs (web/public/data) or the published mission record.
 const PROOF = [
   { n: '13,023,000', l: 'simulated landings: 1,000 landers × 1,447 days × 9 regions' },
-  { n: '96.4%', l: 'best 14-day survival found: Malapert Massif, 15 Oct 2029' },
-  { n: '0.004°', l: 'largest gap to NASA JPL Horizons on the Sun and Earth' },
+  { n: '96.4%', l: 'best 14-day power survival found (generic lander, 964 of 1,000 draws, 95% interval 95.1–97.4%): Malapert Massif, 15 Oct 2029' },
+  { n: '0.014°', l: 'largest gap on the Sun and Earth vs an independent calculator, itself within 0.004° of NASA JPL Horizons' },
 ]
 const RECORD = [
   'Athena (IM-2) reached Mons Mouton on 6 March 2025, landed on its side and went dark in under 13 hours: its panels could not see the Sun.',
@@ -108,7 +108,7 @@ export function Method() {
         <div>
           <h2>Checked against independent sources</h2>
           <p className="lead">Two separate codebases compute where the Sun and Earth are. They agree to a hundredth of a degree, and both match NASA’s own Horizons service.</p>
-          <p className="fine">Not done yet: the pixel-by-pixel comparison with the LROC illumination map (3,807 photos). Our skyline and the team’s 474 m terrain agree in shape but differ by about 0.3 to 2.5° on average, so skyline accuracy is the next thing to prove.</p>
+          <p className="fine">Against real photographs (LROC, 3,807 images, Feb 2010 – Feb 2011): de Gerlache Rim 2, the only region inside the 88–90°S map, is sunlit 87% of the year at our point (84% median within our ±3 km position error); our model gives 61%. Our skyline is darker than the photos there: pessimistic about power. Reproduce: <code>pipeline/validate_lroc.py</code>; details in <code>docs/validation-lroc.md</code>.</p>
         </div>
         <div className="validate-fig">
           <table className="method-table">
@@ -138,9 +138,12 @@ export function Method() {
         <div>
           <h2 className="section-title">What we don’t model</h2>
           <ul className="plain">
-            <li>Temperature. Cold killed Athena too; we only track the battery.</li>
-            <li>The lander is generic (four vertical panels, 2.5 kWh, 60 W). It is not any real vehicle, and all its numbers are in the repository.</li>
-            <li>Region positions come from NASA’s map and are good to about 3 km.</li>
+            <li>The survival % is a power-survival index for comparing places and days: the share of 1,000 simulated landings whose battery lasts 14 days. It is not the chance that a real mission succeeds.</li>
+            <li>In the 1,000-lander percentages: temperature. Cold killed Athena too. In the Planner, “Keep electronics warm” adds a one-node thermal balance (radiator to space, sunlight on the box, thermostat heater paid from the battery). Not modelled anywhere: battery fade in the cold, part-by-part temperature limits.</li>
+            <li>The lander is generic (four vertical panels, 2.5 kWh, 60 W), not any real vehicle. In the Planner you can enter your own battery, load and panels; a sensitivity study shows the site ranking holds in 7 of 8 variants.</li>
+            <li>Tip-over is a simple 15° limit (10° and 20° tested).</li>
+            <li>Region positions are digitized by hand from NASA’s map (no coordinates are published), good to about 3 km.</li>
+            <li>Skyline vs LROC photos is checked at one region only (the map covers 88–90°S) and differs by 26 points, on the dark side.</li>
             <li>Rocks and slopes under 20 m, dust on panels.</li>
           </ul>
         </div>

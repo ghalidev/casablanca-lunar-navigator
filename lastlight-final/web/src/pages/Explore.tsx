@@ -8,6 +8,8 @@ import { loadSeries } from '../data/load'
 import { VISIBLE_FRAC, windowStats } from '../data/stats'
 import type { SeriesFile, Site } from '../data/types'
 import { heat, heatText } from '../mission/charts'
+import { LanderLab, formatLander, parseLander } from './LanderLab'
+import { REFERENCE } from '../data/lander'
 import './explore.css'
 
 /*
@@ -323,6 +325,8 @@ export function Explore() {
   }
 
   const series = useSeries(site?.id, year)
+  const landerQ = q.get('lander')
+  const lander = useMemo(() => parseLander(landerQ), [landerQ])
   const g = site ? geo.get(site.id) : undefined
   const st = series ? windowStats(series, msOf(iso), 14) : null
   const h0 = Math.round((msOf(iso) - Date.UTC(year, 0, 1)) / 3_600_000)
@@ -449,6 +453,15 @@ export function Explore() {
             <dd title='How many of the following landing days also stay at or above 95%'>{site && day >= 0 && alive != null ? (!meets ? 'No (below 95%)' : site.slip[day] === 0 ? 'No: the next day drops below 95%' : `Up to ${site.slip[day]} day${site.slip[day] === 1 ? '' : 's'}`) : '…'}</dd>
           </div>
         </dl>
+
+        <LanderLab
+          series={series}
+          siteId={site?.id}
+          year={year}
+          startMs={msOf(iso)}
+          spec={lander}
+          onSpec={(L) => set({ lander: formatLander(L) === formatLander(REFERENCE) ? null : formatLander(L) })}
+        />
 
         {/* the skyline: what the panels see, and the clock that drives the 3D view */}
         <section className="pl-skywrap">

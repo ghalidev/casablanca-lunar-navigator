@@ -654,6 +654,21 @@ body:has(.mm) { overflow: hidden; overscroll-behavior: none; }
 .mm-loading span { color: var(--fg-3, #74746f); font-size: 13px; letter-spacing: 0.02em; }
 @media (prefers-reduced-motion: reduce) { .mm-loading .mm-loader .sun { animation: none; transform: translate(110px, 46px); } }
 
+/* first-visit navigation: step buttons on the rail + a hint on the first shot */
+.mm-rail button.step { justify-content: center; width: 36px; height: 28px; padding: 0; margin-left: auto; color: var(--fg-2); border: 1px solid rgba(236, 235, 230, 0.16); border-radius: 8px; background: rgba(7, 8, 11, 0.45); }
+.mm-rail button.step:hover:not(:disabled) { color: var(--fg); border-color: rgba(236, 235, 230, 0.4); }
+.mm-rail button.step:disabled { opacity: 0.25; cursor: default; }
+.mm-scrollhint { position: absolute; z-index: 27; left: 50%; bottom: calc(118px + env(safe-area-inset-bottom)); transform: translateX(-50%); display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; border: 1px solid rgba(236, 235, 230, 0.16); background: rgba(7, 8, 11, 0.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: var(--fg-2); font: inherit; font-size: 13px; cursor: pointer; white-space: nowrap; animation: mm-hint 2.4s ease-in-out infinite; }
+.mm-scrollhint:hover { color: var(--fg); }
+.mm.is-flying .mm-scrollhint { opacity: 0; pointer-events: none; }
+@keyframes mm-hint { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 4px); } }
+@media (max-width: 760px) {
+  .mm-rail button.step { display: none; }
+  .mm-scrollhint { font-size: 12px; bottom: calc(108px + env(safe-area-inset-bottom)); }
+}
+@media (prefers-reduced-motion: reduce) { .mm-scrollhint { animation: none; } }
+.mm-scrollhint .m { display: none; }
+@media (hover: none) { .mm-scrollhint .d { display: none; } .mm-scrollhint .m { display: inline; } }
 /* Side by side: a dark backdrop over the map labels, and never taller than the space under the top bar. */
 .mm-panel.has-compare {
   background: linear-gradient(90deg, rgba(5, 6, 10, 0.92), rgba(5, 6, 10, 0.8) 75%, rgba(5, 6, 10, 0.55));

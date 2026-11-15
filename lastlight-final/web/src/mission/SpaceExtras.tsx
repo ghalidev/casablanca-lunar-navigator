@@ -388,5 +388,4 @@ const _up = new THREE.Vector3()
 const _z = new THREE.Vector3(0, 0, 1)
 const _y = new THREE.Vector3(0, 1, 0)
 
-useGLTF.preload('/models/lro.glb')
-useGLTF.preload('/models/apollo-lm.glb')
+// No preload: these load after the Moon is on screen (MissionScene's late stage).

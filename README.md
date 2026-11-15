@@ -2,6 +2,7 @@
 > Where and when a lander survives the lunar south pole: 1,000 simulated landings per day at the nine NASA Artemis III regions, 2027–2030, on NASA LOLA terrain and NASA/JPL SPICE ephemerides.
 > 30 s demo: https://www.youtube.com/watch?v=ykuUuBfE5Ec
 > Its complete code, data, demo sources and submission texts are in [`lastlight-final/`](lastlight-final/) (start with [`lastlight-final/README.md`](lastlight-final/README.md)). Everything below documents the team's first prototype, kept as it was.
+> The landing simulation (Monte Carlo, 13,023,000 landings) is [`lastlight-final/pipeline/`](lastlight-final/pipeline/); check the published numbers in 1 s with `python3 lastlight-final/pipeline/verify_published.py`. `STATUS.md` notes such as "no landing simulation" (15 Nov 02:30) describe the first prototype below, not the final submission.
 
 # LASTLIGHT
 
