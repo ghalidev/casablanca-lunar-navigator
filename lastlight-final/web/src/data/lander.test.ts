@@ -1,7 +1,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
-import { REFERENCE, runLander } from './lander.ts'
+import { REFERENCE, THERMAL, runLander } from './lander.ts'
 import type { SeriesFile } from './types.ts'
 
 const fake = (n: number, irr: number, frac: number): SeriesFile => ({
@@ -19,11 +19,25 @@ test('in the dark, the battery lasts exactly capacity / load', () => {
   assert.equal(r.aliveHeadings, 0)
 })
 
-test('the survival heater only draws while the Sun is hidden', () => {
-  const dark = runLander(fake(400, 0, 0), T0, 14, { ...REFERENCE, heaterW: 40 })
-  assert.ok(Math.abs((dark.diedH ?? 0) - 2500 / 100) < 1e-6)
-  const lit = runLander(fake(400, 1300, 1), T0, 14, { ...REFERENCE, heaterW: 40 })
+test('thermal model: in the dark the heater settles at eps*sigma*A*Tmin^4 minus the load', () => {
+  const L = { ...REFERENCE, radiatorM2: 0.5, tMinC: -20, batteryWh: 100000 }
+  const r = runLander(fake(400, 0, 0), T0, 14, L)
+  const steady = THERMAL.emissivity * 5.670374419e-8 * 0.5 * 253.15 ** 4 - 60 // ~38.7 W
+  const lastHours = r.heaterWh // total, includes the initial cool-down from 20 °C with no heater
+  assert.ok(lastHours > steady * 300 && lastHours < steady * 336, `heater ${lastHours} Wh vs steady ${steady} W`)
+  assert.ok(Math.abs(r.temp[335] - -20) < 0.01)
+})
+
+test('thermal model: sunlight on the box can replace the heater', () => {
+  const L = { ...REFERENCE, radiatorM2: 0.5, tMinC: -20 }
+  const lit = runLander(fake(400, 1300, 1), T0, 14, L)
   assert.equal(lit.diedH, null)
+  assert.equal(lit.heaterWh, 0)
+})
+
+test('thermal model off = the pipeline reference (no heater energy)', () => {
+  const r = runLander(fake(400, 0, 0), T0, 14, REFERENCE)
+  assert.equal(r.heaterWh, 0)
 })
 
 test('a Sun-tracking panel gets area x efficiency x irradiance', () => {

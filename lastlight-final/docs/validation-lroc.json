@@ -1,0 +1,24 @@
+{
+ "site": "de-gerlache-rim-2",
+ "lat": -88.6478,
+ "lon": -68.1977,
+ "period_utc": [
+  "2010-02-15",
+  "2011-02-05"
+ ],
+ "hours": 8544,
+ "ours_pct_any_sun": 61.3,
+ "ours_pct_half_disc": 59.0,
+ "ours_pct_mean_disc": 59.0,
+ "lroc_pct_at_point": 87.1,
+ "lroc_pct_within_3km": {
+  "min": 32.5,
+  "p25": 78.4,
+  "median": 84.3,
+  "p75": 91.0,
+  "max": 100.0,
+  "pixels": 2829
+ },
+ "lroc_product": "WAC_POLE_ILL_TWI_SOUTH_100M (8-bit browse GeoTIFF), Speyerer & Robinson 2013",
+ "url": "https://pds.lroc.im-ldi.com/data/LRO-L-LROC-5-RDR-V1.0/LROLRC_2001/EXTRAS/BROWSE/WAC_POLE/WAC_POLE_ILL_TWI_SOUTH/WAC_POLE_ILL_TWI_SOUTH_100M.TIF"
+}

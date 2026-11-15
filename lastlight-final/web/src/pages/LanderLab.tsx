@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { ArrowCounterClockwise } from '@phosphor-icons/react'
+import { useLocation } from 'react-router-dom'
 import { loadSeries } from '../data/load'
 import { REFERENCE, runLander, type LanderSpec } from '../data/lander'
 import type { SeriesFile } from '../data/types'
@@ -14,14 +15,18 @@ const DAYS = 14
 const FACES = [0, 1, 2, 3, 4, 6, 8]
 const facesLabel = (f: number) => (f === 0 ? 'Sun-tracking' : String(f))
 
-// Compact URL form, so a design can be shared: battery-load-heater-faces-area-efficiency%
+// Compact URL form, so a design can be shared: battery_load_faces_area_efficiency%_radiator_tmin
 export function parseLander(v: string | null): LanderSpec {
   const n = (v ?? '').split('_').map(Number)
-  if (n.length !== 6 || n.some((x) => !Number.isFinite(x))) return REFERENCE
+  if (n.length !== 7 || n.some((x) => !Number.isFinite(x))) return REFERENCE
   const c = (x: number, a: number, b: number) => Math.min(b, Math.max(a, x))
-  return { batteryWh: c(n[0], 200, 20000), loadW: c(n[1], 5, 500), heaterW: c(n[2], 0, 500), faces: FACES.includes(n[3]) ? n[3] : 4, areaM2: c(n[4], 0.05, 5), efficiency: c(n[5], 5, 45) / 100 }
+  return {
+    batteryWh: c(n[0], 200, 20000), loadW: c(n[1], 5, 500), faces: FACES.includes(n[2]) ? n[2] : 4, areaM2: c(n[3], 0.05, 5),
+    efficiency: c(n[4], 5, 45) / 100, radiatorM2: c(n[5], 0, 3), tMinC: c(n[6], -60, 30),
+  }
 }
-export const formatLander = (L: LanderSpec) => [L.batteryWh, L.loadW, L.heaterW, L.faces, L.areaM2, Math.round(L.efficiency * 100)].join('_')
+export const formatLander = (L: LanderSpec) => [L.batteryWh, L.loadW, L.faces, L.areaM2, Math.round(L.efficiency * 100), L.radiatorM2, L.tMinC].join('_')
+const THERMAL_ON = { radiatorM2: 0.5, tMinC: -20 }
 const same = (a: LanderSpec, b: LanderSpec) => formatLander(a) === formatLander(b)
 
 /** Join a year's series with the next one, for windows that run past 31 December. */
@@ -65,6 +70,13 @@ export function LanderLab({ series, siteId, year, startMs, spec, onSpec }: { ser
 
   const run = useMemo(() => (ready && series ? runLander(join(series, needsNext ? nextSeries : null), startMs, DAYS, spec) : null), [ready, series, nextSeries, needsNext, startMs, spec])
   const set = (patch: Partial<LanderSpec>) => onSpec({ ...spec, ...patch })
+  // /lander in the copilot lands here with #lander
+  const { hash, search } = useLocation()
+  useEffect(() => {
+    if (hash !== '#lander') return
+    const id = window.setTimeout(() => document.getElementById('lander')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 400)
+    return () => window.clearTimeout(id)
+  }, [hash, search])
 
   // hours with the Sun fully hidden, drawn behind the battery curve
   const dark = useMemo(() => {
@@ -79,7 +91,7 @@ export function LanderLab({ series, siteId, year, startMs, spec, onSpec }: { ser
   const alive = run && run.diedH == null
 
   return (
-    <section className="ll" aria-labelledby="ll-h">
+    <section className="ll" id="lander" aria-labelledby="ll-h">
       <div className="ll-head">
         <h2 id="ll-h">Try your own lander</h2>
         <button className="ll-reset" onClick={() => onSpec(REFERENCE)} disabled={same(spec, REFERENCE)}>
@@ -91,7 +103,6 @@ export function LanderLab({ series, siteId, year, startMs, spec, onSpec }: { ser
         <div className="ll-ctl">
           <Slider label="Battery" unit="Wh" value={spec.batteryWh} min={500} max={10000} step={100} onChange={(v) => set({ batteryWh: v })} />
           <Slider label="Constant load" unit="W" value={spec.loadW} min={10} max={200} step={5} onChange={(v) => set({ loadW: v })} />
-          <Slider label="Heater, Sun hidden" unit="W" value={spec.heaterW} min={0} max={150} step={5} onChange={(v) => set({ heaterW: v })} />
           <Slider label="Panel size, each" unit="m²" value={spec.areaM2} min={0.1} max={3} step={0.05} onChange={(v) => set({ areaM2: Math.round(v * 100) / 100 })} />
           <Slider label="Cell efficiency" unit="%" value={Math.round(spec.efficiency * 100)} min={10} max={40} step={1} onChange={(v) => set({ efficiency: v / 100 })} />
           <div className="ll-row">
@@ -104,6 +115,23 @@ export function LanderLab({ series, siteId, year, startMs, spec, onSpec }: { ser
               ))}
             </div>
           </div>
+          <div className="ll-row">
+            <span className="ll-lbl">Thermal model</span>
+            <div className="ll-seg" role="radiogroup" aria-label="Thermal model">
+              <button role="radio" aria-checked={spec.radiatorM2 === 0} className={spec.radiatorM2 === 0 ? 'on' : ''} onClick={() => set({ radiatorM2: 0 })}>
+                Off
+              </button>
+              <button role="radio" aria-checked={spec.radiatorM2 > 0} className={spec.radiatorM2 > 0 ? 'on' : ''} onClick={() => spec.radiatorM2 === 0 && set(THERMAL_ON)}>
+                Keep electronics warm
+              </button>
+            </div>
+          </div>
+          {spec.radiatorM2 > 0 && (
+            <>
+              <Slider label="Radiator" unit="m²" value={spec.radiatorM2} min={0.1} max={2} step={0.05} onChange={(v) => set({ radiatorM2: Math.round(v * 100) / 100 })} />
+              <Slider label="Keep above" unit="°C" value={spec.tMinC} min={-40} max={20} step={5} onChange={(v) => set({ tMinC: v })} />
+            </>
+          )}
         </div>
 
         <div className="ll-out" aria-live="polite">
@@ -136,7 +164,12 @@ export function LanderLab({ series, siteId, year, startMs, spec, onSpec }: { ser
           </div>
           {run && covered && (
             <p className="ll-note">
-              {spec.faces === 0 ? 'Panel always faces the Sun.' : `Worst of 72 headings shown; ${run.aliveHeadings} of 72 headings last the 14 days.`} Upright on the target, no landing error. The 1,000-lander verdict above uses the reference lander (2,500 Wh, 60 W, 4 × 0.75 m², 28%).
+              {spec.radiatorM2 > 0 && (
+                <>
+                  Heaters took <b>{Math.round(run.heaterWh).toLocaleString('en-US')} Wh</b> from the battery to keep the electronics above {spec.tMinC} °C; coldest {Math.round(Math.min(...run.temp))} °C.{' '}
+                </>
+              )}
+              {spec.faces === 0 ? 'Panel always faces the Sun.' : `Worst of 72 headings shown; ${run.aliveHeadings} of 72 headings last the 14 days.`} Upright on the target, no landing error. The 1,000-lander verdict above uses the reference lander (2,500 Wh, 60 W, 4 × 0.75 m², 28%, no thermal model).
             </p>
           )}
         </div>

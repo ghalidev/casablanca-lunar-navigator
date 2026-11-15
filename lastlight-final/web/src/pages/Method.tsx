@@ -108,7 +108,7 @@ export function Method() {
         <div>
           <h2>Checked against independent sources</h2>
           <p className="lead">Two separate codebases compute where the Sun and Earth are. They agree to a hundredth of a degree, and both match NASA’s own Horizons service.</p>
-          <p className="fine">Not done yet: the pixel-by-pixel comparison with the LROC illumination map (3,807 photos). Our skyline and the team’s 474 m terrain agree in shape but differ by about 0.3 to 2.5° on average, so skyline accuracy is the next thing to prove.</p>
+          <p className="fine">Against real photographs (LROC, 3,807 images, Feb 2010 – Feb 2011): de Gerlache Rim 2, the only region inside the 88–90°S map, is sunlit 87% of the year at our point (84% median within our ±3 km position error); our model gives 61%. Our skyline is darker than the photos there: pessimistic about power. Reproduce: <code>pipeline/validate_lroc.py</code>; details in <code>docs/validation-lroc.md</code>.</p>
         </div>
         <div className="validate-fig">
           <table className="method-table">
@@ -139,11 +139,11 @@ export function Method() {
           <h2 className="section-title">What we don’t model</h2>
           <ul className="plain">
             <li>The survival % is a power-survival index for comparing places and days: the share of 1,000 simulated landings whose battery lasts 14 days. It is not the chance that a real mission succeeds.</li>
-            <li>Temperature, heat loss, battery fade in the cold, part temperature limits. Cold killed Athena too. In the Planner you can add a night-time heater draw to see what it costs; that is a proxy, not a thermal model.</li>
+            <li>In the 1,000-lander percentages: temperature. Cold killed Athena too. In the Planner, “Keep electronics warm” adds a one-node thermal balance (radiator to space, sunlight on the box, thermostat heater paid from the battery). Not modelled anywhere: battery fade in the cold, part-by-part temperature limits.</li>
             <li>The lander is generic (four vertical panels, 2.5 kWh, 60 W), not any real vehicle. In the Planner you can enter your own battery, load and panels; a sensitivity study shows the site ranking holds in 7 of 8 variants.</li>
             <li>Tip-over is a simple 15° limit (10° and 20° tested).</li>
             <li>Region positions are digitized by hand from NASA’s map (no coordinates are published), good to about 3 km.</li>
-            <li>The terrain light is not yet compared pixel by pixel with LROC photos. Sun and Earth positions are checked; the skyline is not, yet.</li>
+            <li>Skyline vs LROC photos is checked at one region only (the map covers 88–90°S) and differs by 26 points, on the dark side.</li>
             <li>Rocks and slopes under 20 m, dust on panels.</li>
           </ul>
         </div>
