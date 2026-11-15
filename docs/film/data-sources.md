@@ -1,3 +1,5 @@
+> **Archived working notes (14–15 Nov), superseded.** They describe drafts and the first prototype and may contradict the final submission. The final submission, with its current results, validation and limits, is [`lastlight-final/`](../../lastlight-final/README.md) (start with its README).
+
 # Film app: data, services and fonts
 
 Complements the repo-level `docs/data-sources.md`. NASA does not endorse any non-U.S. Government entity: terms of each non-NASA service apply.

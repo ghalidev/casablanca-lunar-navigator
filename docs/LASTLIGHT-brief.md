@@ -1,3 +1,5 @@
+> **Archived working notes (14–15 Nov), superseded.** They describe drafts and the first prototype and may contradict the final submission. The final submission, with its current results, validation and limits, is [`lastlight-final/`](../lastlight-final/README.md) (start with its README).
+
 # LASTLIGHT — brief projet (NASA Space Apps 2026, Casablanca)
 
 > Ce fichier est la source de vérité du projet. Chaque session Claude Code (la mienne, celle de mon pote, cloud ou local) le lit avant de toucher au code. Si une décision change, on met à jour CE fichier dans la même PR.

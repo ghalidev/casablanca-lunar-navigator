@@ -1,3 +1,5 @@
+> **Archived working notes (14–15 Nov), superseded.** They describe drafts and the first prototype and may contradict the final submission. The final submission, with its current results, validation and limits, is [`lastlight-final/`](../../lastlight-final/README.md) (start with its README).
+
 > **DRAFT, to adapt before submitting.** Written for the 3D film app (`web/`) before the team's scope decision.
 > The root app is the reference build. Parts that describe the Python / Skyfield / Modal pipeline, LOLA horizons, the Monte Carlo
 > survival model or the AI copilot are only true if those parts ship: keep what ships, cut the rest. Every number must come from a file in

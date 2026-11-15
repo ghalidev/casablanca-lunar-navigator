@@ -9,7 +9,7 @@ Read this first tomorrow, then `git pull`.
 - Sun/Earth calculator (`src/lib/ephemeris.ts`, Yasin): ~0.1 s for 30 days.
 - `src/lib/metrics.ts` and `src/lib/windows.ts`: written from Ghali's session tonight because Yasin
   was on the film app. Yasin: review them, they are yours now.
-- Film app (`web/`) and video (`video/`), Yasin: merged, run on MOCK data.
+- Film app (`web/`) and video (`video/`), Yasin: merged, run on MOCK data (at this time; real data since, see the note at the end).
 - Docs: README, pitch (`docs/pitch.md`), slides outline (`docs/slides.md`), honest submission
   texts (`docs/submission.md`), assumptions, limitations, data sources.
 

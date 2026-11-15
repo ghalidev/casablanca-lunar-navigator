@@ -17,7 +17,7 @@ We started late, so we MERGE the two plans:
 - Two apps live in this repo:
   1. ROOT app (`src/`, real computed Sun/Earth data): the planning tool. Owners as listed below.
   2. FILM app (`web/`, separate package, 3D story + crash test + copilot) and VIDEO (`video/`,
-     Remotion, 30 s). Owner: Yasin. See web/README.md. It currently runs on MOCK data.
+     Remotion, 30 s). Owner: Yasin. See web/README.md. It ran on MOCK data at the time of this note; the final version (`lastlight-final/`) runs on the real pipeline output.
 - Never edit `web/` or `video/` unless you are Yasin; never edit root `src/` from the film app.
 - Priority for Sunday: real numbers everywhere (JPL Horizons validation, LOLA terrain), then feed
   the film app with real data instead of contracts/mock.

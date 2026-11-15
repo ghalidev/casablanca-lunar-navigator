@@ -1,3 +1,5 @@
+> **Archived working notes (14–15 Nov), superseded.** They describe drafts and the first prototype and may contradict the final submission. The final submission, with its current results, validation and limits, is [`lastlight-final/`](../../lastlight-final/README.md) (start with its README).
+
 # LASTLIGHT — video script (30 s)
 
 Constraints (Space Apps rules, summarised in `docs/LASTLIGHT-brief.md` §7): 30 s max, burned-in English subtitles, ≤ 60 words of voice-over, AI voice disclosed on screen, real app captures only, licensed music/SFX only. 1920×1080, 30 fps.
