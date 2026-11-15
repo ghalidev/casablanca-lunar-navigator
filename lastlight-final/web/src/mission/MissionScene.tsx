@@ -60,7 +60,12 @@ function Globe({ fade, spin, onReady }: { fade: React.MutableRefObject<number>; 
   const mat = useRef<THREE.MeshStandardMaterial>(null)
   const turn = useRef<THREE.Group>(null)
   const angle = useRef(0)
+  // Opening: the Moon emerges from the dark (fades in and grows 6%) the moment its textures are ready.
+  const intro = useRef(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 1 : 0)
   useFrame((_, dt) => {
+    if (intro.current < 1) intro.current = Math.min(1, intro.current + Math.min(dt, 0.05) / 2.6)
+    const e = 1 - (1 - intro.current) ** 3
+    if (turn.current) turn.current.scale.setScalar(0.94 + 0.06 * e)
     // Alive when idle: one full turn about the polar axis every ~3 minutes on the opening shot.
     // Elsewhere it eases back to rest so the globe lines up with the pole relief it fades into.
     if (spin) angle.current += Math.min(dt, 0.1) * 0.035
@@ -70,8 +75,9 @@ function Globe({ fade, spin, onReady }: { fade: React.MutableRefObject<number>; 
     }
     if (turn.current) turn.current.rotation.y = angle.current
     if (mat.current) {
-      mat.current.opacity = fade.current
-      mat.current.visible = fade.current > 0.01
+      const e2 = 1 - (1 - intro.current) ** 3
+      mat.current.opacity = fade.current * e2
+      mat.current.visible = fade.current * e2 > 0.01
     }
   })
   return (

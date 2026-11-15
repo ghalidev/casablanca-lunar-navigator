@@ -4,7 +4,8 @@
 //
 // Writes: sites.json (Adam's NASA-map positions + LOLA terrain horizons), series/{id}_2027.json (hourly),
 // windows.json (best landing windows, real ranking from src/lib/windows.ts).
-// No survival / crash-test files: that landing simulation was never built.
+// No survival / crash-test files in this intermediate root copy. The final submission's landing simulation is
+// lastlight-final/pipeline/ (survival.py), and its outputs are lastlight-final/web/public/data/survival/ and ghosts/.
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'

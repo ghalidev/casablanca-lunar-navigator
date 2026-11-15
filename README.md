@@ -2,7 +2,7 @@
 > Where and when a lander survives the lunar south pole: 1,000 simulated landings per day at the nine NASA Artemis III regions, 2027–2030, on NASA LOLA terrain and NASA/JPL SPICE ephemerides.
 > 30 s demo: https://www.youtube.com/watch?v=ykuUuBfE5Ec
 > Its complete code, data, demo sources and submission texts are in [`lastlight-final/`](lastlight-final/) (start with [`lastlight-final/README.md`](lastlight-final/README.md)). Everything below documents the team's first prototype, kept as it was.
-> The landing simulation (Monte Carlo, 13,023,000 landings) is [`lastlight-final/pipeline/`](lastlight-final/pipeline/); check the published numbers in 1 s with `python3 lastlight-final/pipeline/verify_published.py`. `STATUS.md` notes such as "no landing simulation" (15 Nov 02:30) describe the first prototype below, not the final submission.
+> The landing simulation (Monte Carlo, 13,023,000 landings) is [`lastlight-final/pipeline/`](lastlight-final/pipeline/); check the published numbers in 1 s with `python3 lastlight-final/pipeline/verify_published.py`. `STATUS.md` notes such as "no landing simulation" (15 Nov 02:30) and the root `scripts/` data generator describe the first prototype below, not the final submission. Every review question is answered in [`lastlight-final/README.md`](lastlight-final/README.md#for-reviewers-every-question-we-were-asked-answered).
 
 # LASTLIGHT
 
@@ -102,7 +102,7 @@ computed by the code in this repository.
 ## Repository layout
 
 - `src/`: the LASTLIGHT planning app (this README).
-- `web/`: **the main LASTLIGHT app**: a 3D scrolling film (Moon → pole → Athena → on the ground → compare → best landing windows) running on REAL data generated from `src/lib/` (`web/scripts/gen-real-data.mts`: hourly Sun/Earth for 2027, flat horizon, ranked windows). Crash test removed: its landing simulation was never built.
+- `web/`: **the main LASTLIGHT app**: a 3D scrolling film (Moon → pole → Athena → on the ground → compare → best landing windows) running on REAL data generated from `src/lib/` (`web/scripts/gen-real-data.mts`: hourly Sun/Earth for 2027, flat horizon, ranked windows). Crash test removed from this intermediate root copy (it had no simulation data). The final submission, `lastlight-final/`, ships the landing simulation (`lastlight-final/pipeline/`, 13,023,000 simulated landings) and its crash test.
 - `video/`: the 30-second video (Remotion).
 - `docs/`: assumptions, limitations, data sources, pitch, slides and submission texts.
 

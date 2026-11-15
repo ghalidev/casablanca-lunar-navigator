@@ -60,3 +60,7 @@ All pushed to `main`; also live on the temporary Cloudflare link while Ghali's P
 2. Vercel: Settings → Build and Deployment → Root Directory = `web` → Redeploy (the main link becomes the 3D app).
 3. Record the 30 s video from the 3D app (tip: `?ch=site&site=haworth&launch=4` for the liftoff shot).
 4. Rehearse twice (docs/rehearsal.md), then submit.
+
+---
+### 15 Nov 23:40 — note for reviewers (appended, nothing above edited)
+The entries above track the first prototype at the repository root. "Crash test removed (no landing simulation)" (02:30) is about that prototype. The final submission is `lastlight-final/`: its landing simulation is `lastlight-final/pipeline/` (13,023,000 simulated landings), checkable with `python3 lastlight-final/pipeline/verify_published.py`. Live: https://lastlight.apospace.com

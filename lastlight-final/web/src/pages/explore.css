@@ -156,3 +156,6 @@
   .ll-grid { grid-template-columns: 1fr; }
   .ll-row { grid-template-columns: 112px minmax(0, 1fr) 76px; }
 }
+.pl-batt { display: flex; align-items: center; gap: 10px; margin: 12px 0 0; max-width: 300px; font-size: 13px; line-height: 1.35; color: var(--fg-2); }
+.pl-batt svg { flex: none; color: var(--fg-3); }
+.pl-batt.ok svg { color: var(--amber); }
