@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { ArrowRight, CaretLeft, CaretRight, Check, DownloadSimple, LinkSimple, Pause, Play } from '@phosphor-icons/react'
+import { ArrowRight, BatteryEmpty, BatteryFull, BatteryHigh, BatteryLow, BatteryMedium, CaretLeft, CaretRight, Check, DownloadSimple, LinkSimple, Pause, Play } from '@phosphor-icons/react'
 import { TopBar } from '../components/TopBar'
 import { NOTICE } from '../components/notice'
 import { useSites } from '../data/hooks'
@@ -10,6 +10,7 @@ import type { SeriesFile, Site } from '../data/types'
 import { heat, heatText } from '../mission/charts'
 import { LanderLab, formatLander, parseLander } from './LanderLab'
 import { REFERENCE } from '../data/lander'
+import { DEFAULT_PLAN, getPlan, setPlan } from '../lib/plan'
 import './explore.css'
 
 /*
@@ -125,6 +126,26 @@ function Landers({ alive }: { alive: number }) {
         <i key={i} className={i < lit ? 'on' : ''} style={{ transitionDelay: `${(i % 20) * 6}ms` }} />
       ))}
     </div>
+  )
+}
+
+/** Why landers die here, in one line: the typical (median) lander's battery, from the pipeline's median_days_alive. */
+function Battery({ life, alive }: { life: number; alive: number }) {
+  const f = Math.max(0, Math.min(1, life / 14))
+  const Icon = f >= 1 ? BatteryFull : f > 0.66 ? BatteryHigh : f > 0.33 ? BatteryMedium : f > 0 ? BatteryLow : BatteryEmpty
+  const text =
+    life >= 14
+      ? alive >= 1000
+        ? 'Every battery lasts the 14 days.'
+        : `The typical lander's battery lasts the 14 days; ${(1000 - alive).toLocaleString('en-US')} go dark or tip over.`
+      : life < 0.05
+        ? 'Most landers tip over on the slope at touchdown.'
+        : `They land, then the dark drains them: the typical lander's battery is empty on day ${Math.ceil(life)}.`
+  return (
+    <p className={'pl-batt' + (life >= 14 ? ' ok' : '')}>
+      <Icon size={22} weight="fill" aria-hidden="true" />
+      <span>{text}</span>
+    </p>
   )
 }
 
@@ -299,9 +320,11 @@ export function Explore() {
 
   // Regions ranked by their best landing day, the same ranking as the film's verdict.
   const regions = useMemo(() => (plan ? [...plan.sites].map((s) => ({ s, best: bestDay(s) })).sort((a, b) => b.s.p[b.best] - a.s.p[a.best]) : []), [plan])
-  const siteId = q.get('site') ?? regions[0]?.s.id ?? 'malapert-massif'
+  // No site/date in the link: continue the visitor's plan (lib/plan.ts), else the film's opening day.
+  const shared = useMemo(() => getPlan() ?? DEFAULT_PLAN, [])
+  const siteId = q.get('site') ?? shared.site
   const site = plan?.sites.find((s) => s.id === siteId) ?? regions[0]?.s
-  const qDate = q.get('date')
+  const qDate = q.get('date') ?? (q.get('site') && q.get('site') !== shared.site ? null : shared.date)
   const day = site ? (qDate && site.p[dayOf(qDate)] >= 0 ? dayOf(qDate) : bestDay(site)) : -1
   const iso = day >= 0 ? isoOf(T0 + day * DAY) : '2029-10-15'
   const year = Number(iso.slice(0, 4))
@@ -318,6 +341,9 @@ export function Explore() {
       { replace: true },
     )
   const pickDay = (d: number) => site && site.p[d] >= 0 && set({ date: isoOf(T0 + d * DAY) })
+  useEffect(() => {
+    if (site && day >= 0) setPlan({ site: site.id, date: iso })
+  }, [site, day, iso])
   // Keep the day on screen: the % on a region's button is the % you get after clicking it.
   const pickSite = (id: string) => set({ site: id, date: day >= 0 ? iso : q.get('date') })
   const step = (dir: number) => {
@@ -424,6 +450,7 @@ export function Explore() {
               <span>of 1,000 landers alive after 14 days</span>
             </p>
             <Landers alive={alive ?? 0} />
+            {site && day >= 0 && alive != null && <Battery life={site.life[day] / 10} alive={alive} />}
             <p className={'pl-badge' + (meets ? ' ok' : '')}>{alive == null ? ' ' : meets ? 'Safe: above the 95% bar' : 'Risky: below the 95% bar'}</p>
           </div>
           <div className="pl-tools">
@@ -500,8 +527,8 @@ export function Explore() {
               Watch the 1,000 landings <ArrowRight size={16} />
             </Link>
           ) : (
-            <Link className="pl-go" to={`/?ch=pole&date=${iso}`}>
-              See this day on the pole <ArrowRight size={16} />
+            <Link className="pl-go" to={`/?ch=pole&site=${site?.id}`} title="The 3D film and its 1,000-landing replay cover 2027; this page covers 2027–2030.">
+              Open the 3D film (2027) <ArrowRight size={16} />
             </Link>
           )}
           <Link className="pl-go ghost" to="/method">

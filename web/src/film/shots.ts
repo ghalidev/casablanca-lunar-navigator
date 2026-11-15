@@ -2,7 +2,8 @@
 
 export type ShotId = 'moon' | 'pole' | 'athena' | 'site' | 'plan' | 'verdict' | 'crash'
 
-// 'crash' is kept as a type only: its landing simulation was never built, so the shot is not in the film.
+// 'crash' is kept as a type only in this intermediate root copy (no simulation data here). The final submission,
+// lastlight-final/, has the landing simulation (lastlight-final/pipeline/) and the crash shot.
 export const ORDER: ShotId[] = ['moon', 'pole', 'athena', 'site', 'plan', 'verdict']
 
 export const LABEL: Record<ShotId, string> = {

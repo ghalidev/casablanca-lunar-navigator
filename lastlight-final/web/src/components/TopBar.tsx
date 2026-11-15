@@ -1,13 +1,30 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { Play } from '@phosphor-icons/react'
 import { FilmPlayer } from './FilmPlayer'
+import { getPlan, inFilmYear } from '../lib/plan'
 
 /** One top bar for the whole app: the mark, the team, three places, and the film. */
 export function TopBar({ variant = 'page', right }: { variant?: 'page' | 'mission'; right?: React.ReactNode }) {
   const [film, setFilm] = useState(false)
   const { pathname } = useLocation()
   const here = (p: string) => (pathname === p ? ' on' : '')
+  // Carry the visitor's region and day between pages (lib/plan.ts): the % never changes on the way.
+  const nav = useNavigate()
+  const links = () => {
+    const plan = getPlan()
+    return {
+      planner: `/explore${plan ? `?site=${plan.site}&date=${plan.date}` : ''}`,
+      story: plan ? (inFilmYear(plan.date) ? `/?ch=pole&site=${plan.site}&date=${plan.date}` : `/?ch=pole&site=${plan.site}`) : '/',
+    }
+  }
+  const { planner: planTo, story: storyTo } = links()
+  // Read the plan again at click time: the page may have changed it since this bar rendered.
+  const follow = (k: 'planner' | 'story') => (e: React.MouseEvent) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return
+    e.preventDefault()
+    nav(links()[k])
+  }
   return (
     <header className={'topbar is-' + variant}>
       <div className="topbar-left">
@@ -21,10 +38,10 @@ export function TopBar({ variant = 'page', right }: { variant?: 'page' | 'missio
       </div>
       <nav className="topbar-right">
         {right}
-        <Link to="/" className={'topbar-link' + here('/')}>
+        <Link to={pathname === '/' ? '/' : storyTo} onClick={pathname === '/' ? undefined : follow('story')} className={'topbar-link' + here('/')}>
           Story
         </Link>
-        <Link to="/explore" className={'topbar-link' + here('/explore')}>
+        <Link to={planTo} onClick={follow('planner')} className={'topbar-link' + here('/explore')}>
           Planner
         </Link>
         <Link to="/method" className={'topbar-link' + here('/method')}>

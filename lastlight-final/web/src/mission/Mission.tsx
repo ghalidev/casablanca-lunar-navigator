@@ -13,6 +13,7 @@ import { Copilot } from '../copilot/Copilot'
 import { TopBar } from '../components/TopBar'
 import { HorizonRing } from '../components/HorizonRing'
 import { prettyDate } from '../lib/geo'
+import { DEFAULT_PLAN, getPlan, inFilmYear, setPlan } from '../lib/plan'
 import type { GhostLander, SeriesFile, Site } from '../data/types'
 import { LABEL, ORDER, isShot, type ShotId } from '../film/shots'
 import { createClock, hourOfDate, sampleAt, sampleAzAt } from '../film/clock'
@@ -127,7 +128,14 @@ export function Mission() {
   const q = useMemo(() => new URLSearchParams(window.location.search), [])
   const [chapter, setChapter] = useState<ShotId>(() => initialShot(q))
   const ci = ORDER.indexOf(chapter)
-  const [siteId, setSiteId] = useState<string>(() => q.get('site') ?? 'malapert-massif')
+  // The shared plan (lib/plan.ts) fills in what the link leaves out, when its day is one the film can show.
+  const stored = useMemo(() => {
+    const p = getPlan()
+    return p && inFilmYear(p.date) ? p : null
+  }, [])
+  const [siteId, setSiteId] = useState<string>(() => q.get('site') ?? stored?.site ?? 'malapert-massif')
+  // True once the visitor changes the day or the region here (then the film's plan wins over an older one).
+  const touched = useRef(false)
   const [compare, setCompare] = useState<[string, string] | null>(null)
   // Compare mode on the pole: tap two sites. `cmpFirst` is the first one tapped (shown as A).
   const [cmpMode, setCmpMode] = useState(false)
@@ -146,8 +154,9 @@ export function Mission() {
   // Start the ground clock on the linked day (or 1 March): it must never overwrite the date of a shared link.
   const ground = useMemo(() => {
     if (q.get('t')) return createClock(Number(q.get('t')))
-    const d = q.get('date') ? dayOfIso(`${q.get('date')}T00:00:00Z`) : NaN
-    return createClock(Number.isFinite(d) && d >= 0 && d < 365 ? d * 24 + 12 : 24 * 59)
+    const qd = q.get('date') ?? stored?.date
+    const d = qd ? dayOfIso(`${qd}T00:00:00Z`) : NaN
+    return createClock(Number.isFinite(d) && d >= 0 && d < 365 ? d * 24 + 12 : dayOfIso(`${DEFAULT_PLAN.date}T00:00:00Z`) * 24 + 12)
   }, [q])
   const crashClock = useMemo(() => createClock(0), [])
   const [playing, setPlaying] = useState(!clean || q.has('play'))
@@ -156,9 +165,9 @@ export function Mission() {
   // stands on it. `userPicked` means a pin was clicked; otherwise the best site of the day is used.
   // ?date=YYYY-MM-DD (in the shipped year) makes a shared link land on the same landing day.
   const [pickDay, setPickDay] = useState(() => {
-    const d = q.get('date')
+    const d = q.get('date') ?? stored?.date
     const day = d ? dayOfIso(`${d}T00:00:00Z`) : NaN
-    return Number.isFinite(day) && day >= 0 && day < 365 ? day : 8
+    return Number.isFinite(day) && day >= 0 && day < 365 ? day : dayOfIso(`${DEFAULT_PLAN.date}T00:00:00Z`)
   })
   const survival = useSurvival(chapter === 'crash' ? site?.id : undefined).data
   // The crash test replays the picked day: 1,000 simulated landings, the same draws as the pole's percentage.
@@ -185,7 +194,7 @@ export function Mission() {
   const earthDir = useRef({ x: -0.3, y: 0.15, z: -1 })
   const flying = useSyncExternalStore(camBus.subscribe, camBus.isFlying)
 
-  const userPicked = useRef(!!q.get('site'))
+  const userPicked = useRef(!!q.get('site') || !!stored)
   const surv = useSurvivalAll(siteIdList, chapter === 'pole' || chapter === 'crash' || chapter === 'verdict')
   const bestOfDay = useMemo(() => {
     let b: { id: string; p: number; slip: number } | null = null
@@ -236,7 +245,7 @@ export function Mission() {
   }, [clean])
   const startDone = useRef(false)
   useEffect(() => {
-    if (startDone.current || !top10 || q.get('site') || q.get('date')) return
+    if (startDone.current || !top10 || q.get('site') || q.get('date') || stored) return
     // The ground series covers 2027: start on the best ranked window that falls in that year.
     const first = [...top10.windows].sort((a, b) => a.rank - b.rank).find((w) => w.landing_utc.startsWith(String(YEAR)))
     if (first) {
@@ -266,6 +275,8 @@ export function Mission() {
     setChapter(isShot(c) ? c : 'moon')
     const sid = p.get('site')
     if (sid) setSiteId(sid)
+    const d = p.get('date') ? dayOfIso(`${p.get('date')}T00:00:00Z`) : NaN
+    if (Number.isFinite(d) && d >= 0 && d < 365) setPickDay(d)
   }, [loc.key, loc.search])
 
   // The address bar follows the film (replace, never push), so reload and share land on the same shot.
@@ -283,11 +294,16 @@ export function Mission() {
       u.searchParams.set('date', new Date(pickMs).toISOString().slice(0, 10))
     }
     window.history.replaceState(null, '', u)
+    // Share the plan with the Planner, unless it holds a 2028–2030 day the visitor has not changed here.
+    const prev = getPlan()
+    if (touched.current || !prev || inFilmYear(prev.date) || (chapter !== 'moon' && chapter !== 'athena' && q.get('date')))
+      setPlan({ site: siteId, date: new Date(pickMs).toISOString().slice(0, 10) })
   }, [chapter, siteId, clean, pickMs])
 
   // One landing day drives the whole film: the pole's lights, the crash test and the ground clock.
   const moveDay = (d: number) => {
     if (!Number.isFinite(d)) return
+    touched.current = true
     const day = Math.max(0, Math.min(364, Math.round(d)))
     setPickDay(day)
     ground.set(day * 24)
@@ -577,6 +593,7 @@ export function Mission() {
         return
       }
       userPicked.current = true
+      touched.current = true
       setSiteId(s.id)
       if (chapter !== 'pole') go('site')
     },
@@ -590,6 +607,7 @@ export function Mission() {
         // A site named by the agent stays: the "best site of the day" rule must not replace it.
         if (sid) {
           userPicked.current = true
+          touched.current = true
           setSiteId(sid)
         }
         setCompare(null)
@@ -601,6 +619,7 @@ export function Mission() {
       setTime(date) {
         // One date for the whole film: the pole, the crash test and the ground view all move to it.
         const d = dayOfIso(`${date}T00:00:00Z`)
+        touched.current = true
         if (d >= 0 && d < 365) setPickDay(d)
         ground.set(hourOfDate(date, `${YEAR}-01-01T00:00:00Z`, 365 * 24))
         setPlaying(false)
@@ -667,7 +686,9 @@ export function Mission() {
               />
             </Suspense>
           )}
-          <div className={'mm-veil' + (ready ? ' gone' : '')}>
+          {/* No loading screen: the page stays dark and the Moon emerges (MissionScene's Globe). The loader only
+              shows if the network is slow (after 3 s), so nobody stares at a black screen. */}
+          <div className={'mm-veil quiet' + (ready ? ' gone' : '')}>
             <Loader />
           </div>
         </div>
@@ -756,7 +777,7 @@ export function Mission() {
                     <CompareCard a={compare[0]} b={compare[1]} startMs={pickMs} names={names} pa={surv[compare[0]]?.get(pickDay)?.p} pb={surv[compare[1]]?.get(pickDay)?.p} />
                     <p className="mm-sub">Drag the date below: both sites update.</p>
                     <div className="mm-actions">
-                      <button className="mm-cta" onClick={() => { userPicked.current = true; setSiteId((surv[compare[0]]?.get(pickDay)?.p ?? 0) >= (surv[compare[1]]?.get(pickDay)?.p ?? 0) ? compare[0] : compare[1]); setCompare(null); go('crash') }}>
+                      <button className="mm-cta" onClick={() => { userPicked.current = true; touched.current = true; setSiteId((surv[compare[0]]?.get(pickDay)?.p ?? 0) >= (surv[compare[1]]?.get(pickDay)?.p ?? 0) ? compare[0] : compare[1]); setCompare(null); go('crash') }}>
                         Crash-test the safer one <ArrowRight size={16} />
                       </button>
                       <button className="mm-cta ghost" onClick={() => setCompare(null)}>
@@ -919,6 +940,7 @@ export function Mission() {
                                 title="Watch the 1,000 landings of this day"
                                 onClick={() => {
                                   userPicked.current = true
+                                  touched.current = true
                                   setSiteId(r.siteId)
                                   setPickDay(dayOfIso(r.landingUtc))
                                   go('crash')

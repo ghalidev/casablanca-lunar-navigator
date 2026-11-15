@@ -57,6 +57,21 @@ All parameters: `pipeline/config.py`. Every assumption with its source: `docs/as
 - Windows are narrow: at the best day (15 Oct 2029, 96.4 %), landing one day later gives 91.6 %, three days later 72.6 %.
 - The ranking is robust to the lander: Malapert stays first in 7 of 8 variants (`docs/sensitivity.md`).
 
+## For reviewers: every question we were asked, answered
+
+| Question raised in review | Answer, and where to check it |
+|---|---|
+| Where is the code that produced the 13,023,000 simulated landings? | `pipeline/` (Python, numba, run on Modal): `survival.py` (Monte Carlo), `app.py` (horizons, Sun/Earth, survival), `config.py` (every parameter). `python3 pipeline/verify_published.py` recounts 9 regions × 1,447 days × 1,000 draws and the 964/1,000 at Malapert in one second. |
+| `STATUS.md` (15 Nov 02:30) says "Crash test removed (no landing simulation)". Why does the final claim one? | That log, and the repository-root data script, describe the team's first prototype (browser-only, astronomy-engine), kept at the root as it was. The final submission is this folder; its simulation outputs are `web/public/data/survival/` and `web/public/data/ghosts/`, which the site loads. |
+| Can the 96.4 % be reproduced? | Yes: the shipped file `web/public/data/survival/malapert-massif.json` (params_ref 319725853747) and the script above; full recomputation from NASA data: `modal run pipeline/app.py`. The 3D crash test replays the exact 1,000 draws of a day; a unit test checks survivors = published % on every 2027 region-day. |
+| What does 96.4 % mean exactly? | 964 of 1,000 simulated landings of a generic lander whose battery lasts 14 days; 95 % interval 95.1–97.4 % (sampling only). A power-survival index for comparing places and days, not the probability a real mission succeeds. See "What the survival percentage means". |
+| 0.004° vs Horizons, or 0.014°? | Two links of one chain: our SPICE/Skyfield angles vs the team's independent calculator, 0.014° max (every hour of 2027, 3 sites); that calculator vs NASA JPL Horizons, 0.004° max (600 comparisons). `docs/validation-pipeline.md`, `../validation/`. |
+| No thermal model? | Not in the 1,000-lander percentages (stated; survival likely overestimated). The Planner has a one-node thermal model of the electronics box (radiator to space, sunlight on the box, thermostat heater paid from the battery), tested in `web/src/data/lander.test.ts`. Constants: `docs/assumptions.md`. |
+| Generic lander, assumed battery/panels/load? | Yes, and stated. Sensitivity study (`docs/sensitivity.md`): absolute values move 10–45 points, Malapert stays first in 7 of 8 variants. The Planner's "Try your own lander" (copilot `/lander`) re-runs any battery, load, panel layout and efficiency. |
+| Tip-over is a simple 15° threshold | Yes; 10° and 20° are in the sensitivity study. |
+| Terrain illumination not validated against LROC | Done where the LROC map exists (88–90°S, only de Gerlache Rim 2): photos 87 % lit, our model 61 %, so our skyline is pessimistic there (`docs/validation-lroc.md`, `pipeline/validate_lroc.py`). The team also compared terrain sunlight with Bussey et al. 2010 published points (`../scripts/validate_illumination.py`). |
+| Region positions ±3 km | NASA publishes regions, not coordinates; Adam digitized them from NASA's official map. Inside each region the 1,000 landings spread over ±800 m around the highest ground; the LROC check reports the spread inside the 3 km circle. |
+
 ## What the survival percentage means (and does not)
 
 - **96.4 %** = 964 of 1,000 simulated landings of the *generic* lander at Malapert Massif on 15 Oct 2029 whose battery never ran empty in 14 days. Sampling uncertainty: 95 % interval 95.1 % to 97.4 % (Wilson, n = 1,000).
