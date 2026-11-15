@@ -29,7 +29,7 @@ The team's calculator was itself compared with NASA JPL Horizons: 600 comparison
 ## 3. Terrain
 - Site heights from our 20 m DEM against the team's 474 m grid: differences 0.4 to 27.1 m over the 9 regions.
 - Horizon profiles (mast 2 m), ours against the team's, mean absolute difference per site: Slater Plain 0.32°, Mons Mouton 0.65°, de Gerlache Rim 2 0.94°, Nobile Rim 1 1.20°, Malapert Massif 1.58°, Mons Mouton Plateau 1.66°, Nobile Rim 2 1.72°, Haworth 1.92°, Peak near Cabeus B 2.49°. Correlation at zero azimuth shift: 0.64 to 0.86 at 8 sites, negative at Peak near Cabeus B. **Open question**, see limitations.
-- Not done yet: comparison with the LROC illumination map.
+- Comparison with the LROC illumination map: done at the only region inside the map (de Gerlache Rim 2), photos 87 % lit vs our 61 %, see docs/validation-lroc.md.
 
 ## 4. Internal consistency
 - A window's `p_survive_14d` and the ghost landers of the same window come from the same draws: alive/total of the ghost sample equals the window probability exactly (checked in the run log for all 9 sites).
