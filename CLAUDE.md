@@ -10,8 +10,19 @@ We started late, so we MERGE the two plans:
   (src/lib/ephemeris.ts, already working). Screens: Site view (timeline + metrics), Compare,
   Horizon ring (sky view), best-window finder. Terrain horizons from LOLA if time allows (Adam).
 - STRETCH (Sunday only, if everything else is done): simplified survival odds per window.
-- DROPPED: Python/Skyfield/Modal pipeline, crash-test 3D, raymarched lander view, Remotion video.
+- DROPPED: Python/Skyfield/Modal pipeline, raymarched lander view.
   Read docs/LASTLIGHT-brief.md for background and the pitch story only.
+
+## UPDATE (Ghali, Sun 15 Nov ~00:15): Yasin's film app and video are merged
+- Two apps live in this repo:
+  1. ROOT app (`src/`, real computed Sun/Earth data): the planning tool. Owners as listed below.
+  2. FILM app (`web/`, separate package, 3D story + crash test + copilot) and VIDEO (`video/`,
+     Remotion, 30 s). Owner: Yasin. See web/README.md. It currently runs on MOCK data.
+- Never edit `web/` or `video/` unless you are Yasin; never edit root `src/` from the film app.
+- Priority for Sunday: real numbers everywhere (JPL Horizons validation, LOLA terrain), then feed
+  the film app with real data instead of contracts/mock.
+- Competitors (docs/competition.md): LunaNav already has LOLA terrain + Horizons + 3D. Our edge is
+  validation, survival under uncertainty and the Athena story: protect it.
 
 ## Design system (from LASTLIGHT)
 Background #0B0B0C, text #E8E6E1, grey #6B6B6B. Sun #F2A93B, Earth #4C8DF6, both #3FB68B,
@@ -51,6 +62,7 @@ and their own Claude Code. We stay in sync through GitHub, on branch `main`.
   `src/lib/*.test.ts`, `docs/validation.md`
 - Adam: `public/data/`, `scripts/` (Python terrain pipeline), `src/components/map/`,
   `src/components/sky/`
+- Yasin also owns: `web/` (film app) and `video/` (Remotion video)
 - Shared/frozen: `src/types.ts`, `CLAUDE.md`, `package.json`, `contracts/`
 - Shared docs (anyone may append): `docs/`
 - `public/data/sites.json` may use either the `Site[]` shape from src/types.ts or the LASTLIGHT
