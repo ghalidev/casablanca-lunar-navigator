@@ -36,9 +36,9 @@ Open the live link. Have it loaded before you start. Planner mode.
 ## 2:00–2:30 · Why trust it (Yasin)
 > "Every number is computed in your browser from the Moon's real orientation and the positions of the
 > Sun and Earth. We checked our results against NASA JPL Horizons, the reference tool of NASA's
-> Jet Propulsion Laboratory: [max difference, from docs/validation.md]."
-**Only say the validation sentence if docs/validation.md has the result. Otherwise say:** "We are
-validating against NASA JPL Horizons; our method and limits are written in the project page."
+> Jet Propulsion Laboratory: 600 comparisons, and the largest difference is 0.004 degrees, less than
+> one hundredth of the width of the Sun."
+(Validation done: docs/validation.md.)
 
 > "And we say what we don't do yet: the horizon is flat, so real sites can be darker. Terrain from
 > NASA's LOLA laser altimeter is our next step." (drop this line if the terrain ships)

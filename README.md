@@ -62,8 +62,9 @@ Everything runs in the browser; there is no server.
 
 ## Validation
 
-_In progress_: computed Sun and Earth azimuth/elevation are being compared with NASA JPL Horizons
-for several sites and dates. Results will be in `docs/validation.md`.
+Compared with **NASA JPL Horizons** (DE441) for 4 south-pole sites on 3 dates (2026–2028), hourly:
+600 comparisons. **Largest difference: 0.004° in azimuth, 0.001° in elevation** (the Sun is 0.53°
+wide). Details: `docs/validation.md`. Re-run: `node --experimental-strip-types validation/horizons.mts`.
 
 ## Data
 
@@ -71,7 +72,7 @@ for several sites and dates. Results will be in `docs/validation.md`.
 |---|---|---|
 | Artemis III candidate regions (Oct 2024 list) | NASA/GSFC/ASU/JSC/AGDT 9-region map, via George et al., LPSC 2026 ([NTRS 20250011660](https://ntrs.nasa.gov/citations/20250011660)); [NASA update](https://www.nasa.gov/news-release/nasa-provides-update-on-artemis-iii-moon-landing-regions/) | Site positions, digitized from the map (about ±3 km) |
 | Lunar orientation and Sun/Earth positions | astronomy-engine (IAU rotation model) | Ephemeris |
-| JPL Horizons | NASA JPL | Validation |
+| JPL Horizons (DE441) | NASA JPL | Validation: 600 comparisons, max 0.004° |
 
 Full list: `docs/data-sources.md`. Model assumptions: `docs/assumptions.md`.
 

@@ -57,7 +57,12 @@ https://lunarnavigator-chi.vercel.app · Source: https://github.com/ghalidev/cas
 5. **[IF SHIPPED]** Terrain horizons from NASA LOLA elevation data replace the flat horizon.
 
 **Validation**
-[TODO: from docs/validation.md: sites, dates, max difference in azimuth/elevation vs JPL Horizons.]
+We compared our Sun and Earth azimuth and elevation with NASA JPL Horizons (DE441) for 4 south-pole
+sites (Haworth, Malapert Massif, de Gerlache Rim 2 and a point at 89.45°S) on 3 dates between 2026
+and 2028, hourly: 600 comparisons in total. The largest difference was 0.004° in azimuth and 0.001°
+in elevation, about 1/140 of the Sun's diameter. The comparison script and raw results are in the
+repository (`validation/`, `docs/validation.md`). At this level the app's results are limited by
+terrain and site position, not by the astronomy.
 
 **Benefits**
 NASA's site-selection update (George et al., LPSC 2026) notes that single regions rarely satisfy

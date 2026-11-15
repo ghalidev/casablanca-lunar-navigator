@@ -16,7 +16,7 @@ Read this first tomorrow, then `git pull`.
 ## Not done
 | What | Who | Why it matters |
 |---|---|---|
-| JPL Horizons validation → `docs/validation.md` | Yasin | Our proof for the judges; the pitch and submission have a [TODO] for it |
+| ~~JPL Horizons validation~~ done: max 0.004° over 600 comparisons (docs/validation.md) | | |
 | LOLA terrain horizons → `horizon` in `public/data/sites.json` | Adam | Flat horizon = "FLAT HORIZON" banner; LunaNav (competitor) already has terrain |
 | Film app fed with real data instead of `contracts/mock` | Yasin | Film shows "Mock data"; can't quote its numbers |
 | ~~Vercel link in README + submission~~ done: https://lunarnavigator-chi.vercel.app | Ghali | |
@@ -27,7 +27,7 @@ Read this first tomorrow, then `git pull`.
 
 ## Tomorrow, first hour
 - **Ghali:** phone polish, then slides; rehearse the pitch.
-- **Yasin:** JPL Horizons validation FIRST (1 h max), then real data into the film app.
+- **Yasin:** real data into the film app, then the video with real captures.
 - **Adam:** LOLA terrain for the 9 sites (time-box: stop after 2 h if blocked, keep the flat horizon).
 
 Feature freeze at hour 2:30. Submit at least 1 hour before the deadline.

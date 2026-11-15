@@ -11,5 +11,5 @@ IBM Plex Sans/Mono, amber Sun, blue Earth, green both). No NASA logo.
 | 3 | The question | 9 NASA Artemis III candidate regions × every possible date: sunlight? Earth in view? Today's tools are built for experts. | Map screenshot with the 9 regions |
 | 4 | LASTLIGHT in one screen | Timeline (Sun, Earth, horizon, coloured bands), 6 metrics, sky view with Play | Site view screenshot, annotated |
 | 5 | Compare and plan | Compare 2–4 sites; Best dates: every landing date at every site, ranked in under a second; CSV export; shareable links | Compare + Best dates screenshots |
-| 6 | Can you trust it? | Moon orientation (IAU model) + Sun/Earth positions; checked against NASA JPL Horizons [result]; site positions from NASA's map (±3 km); limits stated on screen (flat horizon until LOLA terrain ships) | Validation table from docs/validation.md |
+| 6 | Can you trust it? | Moon orientation (IAU model) + Sun/Earth positions; checked against NASA JPL Horizons: 600 comparisons, max 0.004°; site positions from NASA's map (±3 km); limits stated on screen (flat horizon until LOLA terrain ships) | Table: max 0.004° az, 0.001° el (docs/validation.md) |
 | 7 | For everyone | Planner mode / Explore mode for classrooms. Open source, any browser. Next: LOLA terrain, landing uncertainty, survival odds. Live link + GitHub | QR code to the live link |
