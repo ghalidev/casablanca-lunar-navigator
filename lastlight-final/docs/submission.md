@@ -12,7 +12,7 @@ LASTLIGHT
 At the lunar south pole the Sun never climbs more than a few degrees above the horizon, so a ridge kilometres away can switch a lander's power off for days. In March 2025 the Athena lander touched down at Mons Mouton, one of NASA's nine Artemis III candidate regions, landed on its side in a crater, and went silent in under 13 hours. LASTLIGHT asks the question every polar mission now has to answer: if we aim here, on this day, will the lander survive? It computes each region's real skyline from NASA LOLA laser altimetry, follows the Sun and Earth hour by hour with NAIF SPICE, and crash-tests 1,000 simulated landings for every day from 2027 to 2030, each one off target and tilted by the real terrain. Result: only Malapert Massif gives a generic lander a 95% chance of lasting 14 days, on 12 days out of 1,447, and landing one day late already costs about five points.
 
 ## Link to Project Demo
-https://www.youtube.com/watch?v=ykuUuBfE5Ec (unlisted, 29.9 s, English subtitles burned in, AI-generated voice stated on screen, in the video description and in the file metadata)
+https://www.youtube.com/watch?v=ykuUuBfE5Ec (unlisted, 29 s, English subtitles burned in, AI-generated voice stated on screen, in the video description and in the file metadata)
 
 ## Link to Final Project
 https://lastlight.apospace.com (public, no login, works on laptop and phone). Source code: https://github.com/ghalidev/casablanca-lunar-navigator. The Planner is at https://lastlight.apospace.com/explore
@@ -119,7 +119,7 @@ NASA does not endorse any non-U.S. Government entity and is not responsible for 
 ## Checklist before pressing Submit
 - [x] Production URL works without login (Cloudflare Pages).
 - [x] No "Mock data" banner (all data `mock: false`).
-- [x] Video is 29.9 s (rule: 30 s or less, or the project is not eligible for Global Judging).
+- [x] Video is 29 s (rule: 30 s or less, or the project is not eligible for Global Judging).
 - [x] Video uploaded to YouTube (unlisted, no login): https://www.youtube.com/watch?v=ykuUuBfE5Ec
 - [ ] YouTube description states "Voice-over: AI-generated (ElevenLabs)" (SI rule for audio).
 - [x] No image, video or audio of anyone under 18 in the demo or the final project (team photo removed from the site).
